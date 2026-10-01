@@ -29,6 +29,7 @@ export default function DoctorGenerations() {
   const [generations, setGenerations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedGeneration, setSelectedGeneration] = useState(null);
 
   useEffect(() => {
     if (!qrToken) {
@@ -121,9 +122,11 @@ export default function DoctorGenerations() {
               {generations.map((generation) => {
                 const receiverName = generation.metadata?.receiverName || "Personalized card";
                 return (
-                  <article
+                  <button
                     key={generation._id}
-                    className="flex flex-col gap-4 rounded-[20px] border border-slate-100 bg-slate-50 p-4 sm:flex-row sm:items-center"
+                    type="button"
+                    onClick={() => setSelectedGeneration(generation)}
+                    className="flex w-full flex-col gap-4 rounded-[20px] border border-slate-100 bg-slate-50 p-4 text-left transition hover:border-orange-100 hover:bg-[#fffaf5] sm:flex-row sm:items-center"
                   >
                     <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[14px] bg-white shadow-sm">
                       {generation.outputUrl ? (
@@ -171,9 +174,71 @@ export default function DoctorGenerations() {
                     <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-bold capitalize text-emerald-600">
                       {generation.status}
                     </span>
-                  </article>
+                  </button>
                 );
               })}
+            </div>
+          )}
+
+          {selectedGeneration && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-[#10233f]/60 p-4 backdrop-blur-sm"
+              onClick={() => setSelectedGeneration(null)}
+            >
+              <div
+                className="w-full max-w-[520px] overflow-hidden rounded-[26px] bg-white shadow-2xl"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+                  <div>
+                    <h2 className="text-[18px] font-bold">
+                      {titleFromTemplate(selectedGeneration.template)}
+                    </h2>
+                    <p className="mt-0.5 text-[12px] text-[#718198]">
+                      {selectedGeneration.metadata?.receiverName || "Personalized card"}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedGeneration(null)}
+                    className="rounded-full bg-slate-100 px-3 py-1.5 text-[12px] font-semibold text-slate-600"
+                  >
+                    Close
+                  </button>
+                </div>
+
+                <div className="bg-slate-50 p-5">
+                  {selectedGeneration.outputUrl ? (
+                    <img
+                      src={selectedGeneration.outputUrl}
+                      alt={selectedGeneration.metadata?.receiverName || "Generated card"}
+                      className="mx-auto max-h-[65vh] w-auto max-w-full rounded-xl shadow-md"
+                    />
+                  ) : (
+                    <div className="flex h-64 items-center justify-center rounded-xl bg-white text-sm text-slate-500">
+                      Generated file is unavailable.
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between gap-3 px-5 py-4">
+                  <div className="text-[11px] text-[#718198]">
+                    Created {formatDate(selectedGeneration.createdAt)}
+                  </div>
+                  {selectedGeneration.outputUrl && (
+                    <a
+                      href={selectedGeneration.outputUrl}
+                      download
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(event) => event.stopPropagation()}
+                      className="rounded-full bg-orange-500 px-4 py-2 text-[12px] font-semibold text-white"
+                    >
+                      Download Card
+                    </a>
+                  )}
+                </div>
+              </div>
             </div>
           )}
         </div>
