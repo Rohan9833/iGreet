@@ -27,9 +27,7 @@ const upload = multer({
       .slice(file.originalname.lastIndexOf("."));
 
     if (!allowedExtensions.includes(extension)) {
-      return cb(
-        new Error("Only .xlsx, .xls and .csv files are allowed."),
-      );
+      return cb(new Error("Only .xlsx, .xls and .csv files are allowed."));
     }
 
     cb(null, true);
@@ -45,9 +43,7 @@ app.use(
         return callback(null, true);
       }
 
-      return callback(
-        new Error("CORS blocked for origin: " + origin),
-      );
+      return callback(new Error("CORS blocked for origin: " + origin));
     },
     credentials: true,
   }),
@@ -65,31 +61,8 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    message: "API is healthy",
-  });
-});
-
 app.use("/api/qr", qrRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/hierarchy", upload.single("file"), hierarchyRoutes);
-
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "Route not found",
-  });
-});
-
-app.use((err, req, res, next) => {
-  console.error(err);
-
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message || "Internal server error",
-  });
-});
 
 module.exports = app;
