@@ -12,7 +12,7 @@ import {
   UsersRound,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useState } from "react";\nimport { getAdminUser, logoutAdmin } from "../../api/adminAuth.api";
 
 const navigation = [
   { label: "Dashboard", to: "/admin", icon: LayoutDashboard, end: true },
@@ -30,7 +30,7 @@ const pageTitles = {
   "/admin/generations": ["Generations", "Monitor doctor creations and credit usage"],
 };
 
-export default function AdminLayout() {
+export default function AdminLayout() {\n  const adminUser = getAdminUser();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
@@ -122,7 +122,7 @@ export default function AdminLayout() {
             </div>
           </div>
 
-          <button className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-50 hover:text-slate-800">
+          <button onClick={() => { logoutAdmin(); window.location.href = "/admin-login"; }} className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-50 hover:text-slate-800">
             <LogOut className="h-[18px] w-[18px]" />
             Sign out
           </button>
