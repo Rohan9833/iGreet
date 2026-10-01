@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { createDoctorGeneration, getDoctorByQRToken } from "../api/doctor.api";
 import { UserRound, ArrowRight, X, Send, Sparkles } from "lucide-react";
+import { toBlob } from "html-to-image";
 
 /* -------------------------------------------------------
    Logo
@@ -76,48 +77,6 @@ const TemplatesStackIllustration = () => (
 );
 
 /* -------------------------------------------------------
-   Decorations for template cards
-------------------------------------------------------- */
-const Flower = ({ className = "" }) => (
-  <svg viewBox="0 0 40 40" className={className}>
-    {[0, 72, 144, 216, 288].map((r) => (
-      <ellipse
-        key={r}
-        cx="20"
-        cy="10"
-        rx="6"
-        ry="9"
-        fill="#f7b9a6"
-        transform={`rotate(${r} 20 20)`}
-      />
-    ))}
-    <circle cx="20" cy="20" r="4" fill="#f4c26b" />
-  </svg>
-);
-
-const Leaves = ({ className = "" }) => (
-  <svg viewBox="0 0 60 60" className={className}>
-    <path d="M5 55 Q30 40 55 8" stroke="#7a9a78" strokeWidth="1.5" fill="none" />
-    {[
-      [18, 44, -35],
-      [28, 36, 40],
-      [36, 26, -35],
-      [46, 16, 40],
-    ].map(([x, y, r], i) => (
-      <ellipse
-        key={i}
-        cx={x}
-        cy={y}
-        rx="9"
-        ry="4"
-        fill="#9db89a"
-        transform={`rotate(${r} ${x} ${y})`}
-      />
-    ))}
-  </svg>
-);
-
-/* -------------------------------------------------------
    Templates data + preview
 ------------------------------------------------------- */
 const TEMPLATES = [
@@ -149,13 +108,21 @@ const TEMPLATES = [
 
 /* -------------------------------------------------------
    Template previews
+   -------------------------------------------------------
+   NOTE: All font sizes use `em` units relative to a base font
+   size that is proportional to the card width (via `cqw` container
+   query units). This guarantees the text scales correctly both in
+   the on-screen preview AND in the off-screen html-to-image render.
 ------------------------------------------------------- */
 const TeacherDayCard = ({
   receiverName = "",
   senderName = "",
   imageUrl = "",
 }) => (
-  <div className="relative w-full overflow-hidden bg-white">
+  <div
+    className="relative w-full overflow-hidden bg-white"
+    style={{ containerType: "inline-size" }}
+  >
     <img
       src="/teachersday.png"
       alt="Teachers Day greeting card template"
@@ -171,13 +138,13 @@ const TeacherDayCard = ({
     )}
 
     {receiverName && (
-      <div className="absolute left-[10%] right-[10%] top-[65.5%] text-center text-[clamp(10px,1.6vw,20px)] font-extrabold uppercase leading-none text-[#f39a18]">
+      <div className="absolute left-[10%] right-[10%] top-[65.5%] text-center text-[7cqw] font-extrabold uppercase leading-none text-[#f39a18]">
         {receiverName}
       </div>
     )}
 
     {senderName && (
-      <div className="absolute left-[8%] right-[8%] top-[91.5%] text-center text-[clamp(7px,2vw,20px)] font-extrabold uppercase leading-none text-[#f39a18]">
+      <div className="absolute left-[8%] right-[8%] top-[91.5%] text-center text-[5cqw] font-extrabold uppercase leading-none text-[#f39a18]">
         {senderName}
       </div>
     )}
@@ -189,19 +156,19 @@ const FESTIVAL_LAYOUTS = {
     image:
       "absolute left-[25%] top-[4%] h-[36%] w-[50%] rounded-full object-cover",
     name:
-      "absolute left-[30%] right-[30%] top-[45.8%] text-center text-[clamp(9px,1.15vw,16px)] font-extrabold uppercase leading-none text-white",
+      "absolute left-[30%] right-[30%] top-[45.8%] text-center text-[5cqw] font-extrabold uppercase leading-none text-white",
   },
   dussehra: {
     image:
       "absolute left-[25%] top-[4%] h-[36%] w-[50%] rounded-full object-cover",
     name:
-      "absolute left-[30%] right-[30%] top-[45.8%] text-center text-[clamp(9px,1.15vw,16px)] font-extrabold uppercase leading-none text-white",
+      "absolute left-[30%] right-[30%] top-[45.8%] text-center text-[5cqw] font-extrabold uppercase leading-none text-white",
   },
   anniversary: {
     image:
       "absolute left-[29%] top-[12%] h-[42%] w-[42%] rounded-full object-cover",
     name:
-      "absolute left-[24%] right-[24%] top-[90%] text-center text-[clamp(10px,1.35vw,18px)] font-extrabold uppercase leading-none text-[#ef5f1f]",
+      "absolute left-[24%] right-[24%] top-[90%] text-center text-[5cqw] font-extrabold uppercase leading-none text-[#ef5f1f]",
   },
 };
 
@@ -213,7 +180,10 @@ const FestivalCard = ({
   const layout = FESTIVAL_LAYOUTS[template.id] || FESTIVAL_LAYOUTS["independence-day"];
 
   return (
-    <div className="relative w-full overflow-hidden bg-white">
+    <div
+      className="relative w-full overflow-hidden bg-white"
+      style={{ containerType: "inline-size" }}
+    >
       <img
         src={template.image}
         alt={`${template.title} greeting card template`}
@@ -399,7 +369,6 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
       return;
     }
 
-    // Export at the highest useful resolution for the selected crop.
     const sourceCropSize = Math.min(
       image.naturalWidth,
       image.naturalHeight,
@@ -539,133 +508,62 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
 };
 
 /* -------------------------------------------------------
-   Popup form
+   Render greeting card to blob (using html-to-image)
 ------------------------------------------------------- */
-const loadCardImage = (src) =>
-  new Promise((resolve, reject) => {
-    const image = new Image();
-    image.onload = () => resolve(image);
-    image.onerror = reject;
-    image.src = src;
-  });
+const renderGreetingCardBlob = async (template, form, width = 800) => {
+  const container = document.createElement("div");
+  container.style.position = "fixed";
+  container.style.left = "-99999px";
+  container.style.top = "0";
+  container.style.width = `${width}px`;
+  container.style.background = "#ffffff";
+  container.style.zIndex = "-1";
+  document.body.appendChild(container);
 
-const drawCenteredText = (context, text, x, y, maxWidth, fontSize, color) => {
-  if (!text) return;
+  const { createRoot } = await import("react-dom/client");
+  const root = createRoot(container);
 
-  let size = fontSize;
-  context.font = `800 ${size}px Arial, sans-serif`;
+  try {
+    await new Promise((resolve) => {
+      root.render(
+        <TemplatePreview
+          template={template}
+          receiverName={form.receiverName}
+          senderName={form.senderName}
+          imageUrl={form.imageUrl}
+        />,
+      );
+      setTimeout(resolve, 250);
+    });
 
-  while (context.measureText(text).width > maxWidth && size > 10) {
-    size -= 1;
-    context.font = `800 ${size}px Arial, sans-serif`;
-  }
+    const imgs = container.querySelectorAll("img");
+    await Promise.all(
+      Array.from(imgs).map((img) =>
+        img.complete && img.naturalWidth > 0
+          ? Promise.resolve()
+          : new Promise((resolve) => {
+              img.onload = resolve;
+              img.onerror = resolve;
+            }),
+      ),
+    );
 
-  context.fillStyle = color;
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-  context.fillText(text, x, y);
-};
+    const blob = await toBlob(container.firstChild, {
+      quality: 1.0,
+      pixelRatio: 2,
+      cacheBust: true,
+      backgroundColor: "#ffffff",
+    });
 
-const renderGreetingCardBlob = async (template, form) => {
-  const templateImage = await loadCardImage(template.image);
-  const canvas = document.createElement("canvas");
-  canvas.width = templateImage.naturalWidth;
-  canvas.height = templateImage.naturalHeight;
-
-  const context = canvas.getContext("2d");
-  context.drawImage(templateImage, 0, 0, canvas.width, canvas.height);
-
-  if (form.imageUrl) {
-    const photo = await loadCardImage(form.imageUrl);
-
-    let photoX;
-    let photoY;
-    let photoWidth;
-    let photoHeight;
-
-    if (template.id === "anniversary") {
-      photoX = canvas.width * 0.29;
-      photoY = canvas.height * 0.12;
-      photoWidth = canvas.width * 0.42;
-      photoHeight = canvas.height * 0.42;
-    } else {
-      photoX = canvas.width * 0.25;
-      photoY = canvas.height * 0.04;
-      photoWidth = canvas.width * 0.50;
-      photoHeight = canvas.height * 0.36;
+    if (!blob) {
+      throw new Error("Unable to render the card.");
     }
 
-    context.save();
-    context.beginPath();
-    context.ellipse(
-      photoX + photoWidth / 2,
-      photoY + photoHeight / 2,
-      photoWidth / 2,
-      photoHeight / 2,
-      0,
-      0,
-      Math.PI * 2,
-    );
-    context.clip();
-    context.drawImage(photo, photoX, photoY, photoWidth, photoHeight);
-    context.restore();
+    return { blob };
+  } finally {
+    root.unmount();
+    document.body.removeChild(container);
   }
-
-  const centerX = canvas.width / 2;
-
-  if (template.id === "teachers-day") {
-    drawCenteredText(
-      context,
-      form.receiverName,
-      centerX,
-      canvas.height * 0.655,
-      canvas.width * 0.80,
-      canvas.width * 0.016,
-      "#f39a18",
-    );
-    drawCenteredText(
-      context,
-      form.senderName,
-      centerX,
-      canvas.height * 0.915,
-      canvas.width * 0.80,
-      canvas.width * 0.011,
-      "#f39a18",
-    );
-  } else if (
-    template.id === "independence-day" ||
-    template.id === "dussehra"
-  ) {
-    drawCenteredText(
-      context,
-      form.receiverName,
-      centerX,
-      canvas.height * 0.458,
-      canvas.width * 0.40,
-      canvas.width * 0.0115,
-      "#ffffff",
-    );
-  } else if (template.id === "anniversary") {
-    drawCenteredText(
-      context,
-      form.receiverName,
-      centerX,
-      canvas.height * 0.90,
-      canvas.width * 0.52,
-      canvas.width * 0.0135,
-      "#ef5f1f",
-    );
-  }
-
-  const blob = await new Promise((resolve, reject) => {
-    canvas.toBlob(
-      (value) => (value ? resolve(value) : reject(new Error("Unable to render the card."))),
-      "image/png",
-      1,
-    );
-  });
-
-  return { blob, canvas };
 };
 
 const downloadGreetingCard = async (template, form) => {
@@ -683,6 +581,10 @@ const downloadGreetingCard = async (template, form) => {
   link.click();
   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 };
+
+/* -------------------------------------------------------
+   Popup form
+------------------------------------------------------- */
 const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => {
   const isTeachersDay = template.id === "teachers-day";
   const [form, setForm] = useState({
@@ -775,8 +677,6 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
         throw new Error("Unable to prepare the generated card file.");
       }
 
-      // Convert the canvas Blob to a real File so multipart/form-data
-      // is always sent as an actual uploaded file to Multer.
       const cardFile = new File(
         [cardBlob],
         `${template.id}-${Date.now()}.png`,
@@ -791,10 +691,8 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
         cardBlob: cardFile,
       });
 
-      // Use the server's post-charge balance immediately.
       onGenerated?.(data.credits);
 
-      // Re-read the doctor from MongoDB so the header can never remain stale.
       try {
         const latest = await getDoctorByQRToken(qrToken);
         onGenerated?.(latest.doctor?.credits ?? data.credits);
@@ -1089,13 +987,6 @@ export default function Drcreate() {
               <Sparkles className="h-3.5 w-3.5" />
               <span>{doctor?.credits ?? 0} Credits</span>
             </button>
-
-            {/* <button
-              type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#edf3f8] text-[#263b55]"
-            >
-              <UserRound className="h-5 w-5" />
-            </button> */}
           </div>
         </header>
 
