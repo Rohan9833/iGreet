@@ -6,6 +6,7 @@ const helmet = require("helmet");
 
 const connectDB = require("./config/db");
 const qrRoutes = require("./routes/qr.routes");
+const doctorRoutes = require("./routes/doctor.routes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -59,6 +60,7 @@ app.get("/api/health", (req, res) => {
 
 // QR management
 app.use("/api/qr", qrRoutes);
+app.use("/api/doctors", doctorRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
