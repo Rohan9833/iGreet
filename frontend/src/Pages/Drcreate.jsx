@@ -130,19 +130,19 @@ const TEMPLATES = [
   {
     id: "independence-day",
     title: "Independence Day",
-    image: "/independence.jpg",
+    image: "/independence.png",
     fields: ["receiverName", "image"],
   },
   {
     id: "dussehra",
     title: "Dussehra",
-    image: "/dussehra.jpg",
+    image: "/dussehra.png",
     fields: ["receiverName", "image"],
   },
   {
     id: "anniversary",
     title: "Anniversary",
-    image: "/anniversary.jpg",
+    image: "/anniversary.png",
     fields: ["receiverName", "image"],
   },
 ];
