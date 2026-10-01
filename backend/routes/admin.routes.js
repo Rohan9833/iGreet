@@ -10,8 +10,11 @@ const {
   setQRStatus,
   listHierarchySummary,
 } = require("../controllers/admin.controller");
+const { requireAdminAuth } = require("../middleware/adminAuth");
 
 const router = express.Router();
+
+router.use(requireAdminAuth);
 
 router.get("/dashboard", getDashboard);
 router.get("/doctors", listDoctors);
