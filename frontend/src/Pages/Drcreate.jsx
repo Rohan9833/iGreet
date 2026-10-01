@@ -125,13 +125,36 @@ const TEMPLATES = [
     id: "teachers-day",
     title: "Teachers Day",
     image: "/teachersday.png",
+    fields: ["receiverName", "senderName", "image"],
+  },
+  {
+    id: "independence-day",
+    title: "Independence Day",
+    image: "/independence.png",
+    fields: ["receiverName", "image"],
+  },
+  {
+    id: "dussehra",
+    title: "Dussehra",
+    image: "/dussehra.png",
+    fields: ["receiverName", "image"],
+  },
+  {
+    id: "anniversary",
+    title: "Anniversary",
+    image: "/anniversary.png",
+    fields: ["receiverName", "image"],
   },
 ];
 
 /* -------------------------------------------------------
-   Teachers Day preview
+   Template previews
 ------------------------------------------------------- */
-const TeacherDayCard = ({ receiverName = "", senderName = "", imageUrl = "" }) => (
+const TeacherDayCard = ({
+  receiverName = "",
+  senderName = "",
+  imageUrl = "",
+}) => (
   <div className="relative aspect-[1448/2048] w-full overflow-hidden bg-white">
     <img
       src="/teachersday.png"
@@ -160,6 +183,54 @@ const TeacherDayCard = ({ receiverName = "", senderName = "", imageUrl = "" }) =
     )}
   </div>
 );
+
+const FestivalCard = ({
+  template,
+  receiverName = "",
+  imageUrl = "",
+}) => (
+  <div className="relative aspect-[1448/2048] w-full overflow-hidden bg-white">
+    <img
+      src={template.image}
+      alt={`${template.title} greeting card template`}
+      className="absolute inset-0 h-full w-full object-cover"
+    />
+
+    {imageUrl && (
+      <img
+        src={imageUrl}
+        alt="Uploaded recipient"
+        className="absolute left-[27.25%] top-[27.4%] h-[32%] w-[45.5%] rounded-full border border-white object-cover"
+      />
+    )}
+
+    {receiverName && (
+      <div className="absolute left-[8%] right-[8%] top-[63%] text-center text-[clamp(10px,3vw,30px)] font-extrabold uppercase leading-none text-[#f39a18]">
+        {receiverName}
+      </div>
+    )}
+  </div>
+);
+
+const TemplatePreview = ({ template, receiverName, senderName, imageUrl }) => {
+  if (template.id === "teachers-day") {
+    return (
+      <TeacherDayCard
+        receiverName={receiverName}
+        senderName={senderName}
+        imageUrl={imageUrl}
+      />
+    );
+  }
+
+  return (
+    <FestivalCard
+      template={template}
+      receiverName={receiverName}
+      imageUrl={imageUrl}
+    />
+  );
+};
 
 /* -------------------------------------------------------
    Image crop editor
@@ -446,6 +517,7 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
    Popup form
 ------------------------------------------------------- */
 const TemplateModal = ({ template, onClose }) => {
+  const isTeachersDay = template.id === "teachers-day";
   const [form, setForm] = useState({
     receiverName: "",
     senderName: "",
@@ -462,7 +534,7 @@ const TemplateModal = ({ template, onClose }) => {
 
   useEffect(() => {
     return () => {
-      if (form.imageUrl) {
+      if (form.imageUrl?.startsWith("blob:")) {
         URL.revokeObjectURL(form.imageUrl);
       }
     };
@@ -488,6 +560,10 @@ const TemplateModal = ({ template, onClose }) => {
   };
 
   const handleCropApply = (croppedImage) => {
+    if (cropSource) {
+      URL.revokeObjectURL(cropSource);
+    }
+
     setForm((previous) => ({
       ...previous,
       imageUrl: croppedImage,
@@ -507,10 +583,10 @@ const TemplateModal = ({ template, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Teachers Day card data:", {
+    console.log(`${template.title} card data:`, {
       template: template.id,
       receiverName: form.receiverName,
-      senderName: form.senderName,
+      ...(isTeachersDay ? { senderName: form.senderName } : {}),
       image: form.imageUrl,
     });
 
@@ -524,121 +600,127 @@ const TemplateModal = ({ template, onClose }) => {
     <>
       <div
         className="fixed inset-0 z-50 flex items-end justify-center bg-[#10233f]/50 p-0 backdrop-blur-sm sm:items-center sm:p-4"
-      onClick={onClose}
-    >
-      <div
-        className="max-h-[94vh] w-full max-w-[460px] overflow-y-auto rounded-t-[28px] bg-white p-5 shadow-2xl sm:rounded-[28px]"
-        onClick={(e) => e.stopPropagation()}
+        onClick={onClose}
       >
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className="text-[20px] font-bold tracking-[-0.5px] text-[#10233f]">
-              {template.title}
-            </h3>
-            <p className="text-[13px] text-[#718198]">
-              Add the recipient, sender and photo.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#edf3f8] text-[#263b55]"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-
-        {sent ? (
-          <div className="py-6">
-            <div className="mx-auto w-full max-w-[260px] overflow-hidden rounded-xl border border-slate-100 shadow-sm">
-              <TeacherDayCard
-                receiverName={form.receiverName}
-                senderName={form.senderName}
-                imageUrl={form.imageUrl}
-              />
+        <div
+          className="max-h-[94vh] w-full max-w-[460px] overflow-y-auto rounded-t-[28px] bg-white p-5 shadow-2xl sm:rounded-[28px]"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <h3 className="text-[20px] font-bold tracking-[-0.5px] text-[#10233f]">
+                {template.title}
+              </h3>
+              <p className="text-[13px] text-[#718198]">
+                {isTeachersDay
+                  ? "Add the receiver, sender and photo."
+                  : "Add the receiver name and photo."}
+              </p>
             </div>
-
-            <p className="mt-4 text-center text-[16px] font-bold text-[#10233f]">
-              Teachers Day card created!
-            </p>
 
             <button
               type="button"
               onClick={onClose}
-              className="mt-4 w-full rounded-full bg-orange-500 px-6 py-2.5 text-[14px] font-semibold text-white"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#edf3f8] text-[#263b55]"
             >
-              Done
+              <X className="h-4 w-4" />
             </button>
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="mt-4">
-            <div className="mx-auto mb-5 w-[180px] overflow-hidden rounded-xl border border-orange-100 shadow-sm">
-              <TeacherDayCard
-                receiverName={form.receiverName}
-                senderName={form.senderName}
-                imageUrl={form.imageUrl}
-              />
+
+          {sent ? (
+            <div className="py-6">
+              <div className="mx-auto w-full max-w-[260px] overflow-hidden rounded-xl border border-slate-100 shadow-sm">
+                <TemplatePreview
+                  template={template}
+                  receiverName={form.receiverName}
+                  senderName={form.senderName}
+                  imageUrl={form.imageUrl}
+                />
+              </div>
+
+              <p className="mt-4 text-center text-[16px] font-bold text-[#10233f]">
+                {template.title} card created!
+              </p>
+
+              <button
+                type="button"
+                onClick={onClose}
+                className="mt-4 w-full rounded-full bg-orange-500 px-6 py-2.5 text-[14px] font-semibold text-white"
+              >
+                Done
+              </button>
             </div>
-
-            <div className="space-y-3">
-              <div>
-                <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
-                  Receiver Name
-                </label>
-                <input
-                  required
-                  name="receiverName"
-                  value={form.receiverName}
-                  onChange={handleChange}
-                  placeholder="e.g. HARSH"
-                  className={inputCls}
+          ) : (
+            <form onSubmit={handleSubmit} className="mt-4">
+              <div className="mx-auto mb-5 w-[180px] overflow-hidden rounded-xl border border-orange-100 shadow-sm">
+                <TemplatePreview
+                  template={template}
+                  receiverName={form.receiverName}
+                  senderName={form.senderName}
+                  imageUrl={form.imageUrl}
                 />
               </div>
 
-              <div>
-                <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
-                  Sender Name
-                </label>
-                <input
-                  required
-                  name="senderName"
-                  value={form.senderName}
-                  onChange={handleChange}
-                  placeholder="e.g. ROHAN CHANDRAJEET PAL"
-                  className={inputCls}
-                />
-              </div>
+              <div className="space-y-3">
+                <div>
+                  <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
+                    Receiver Name
+                  </label>
+                  <input
+                    required
+                    name="receiverName"
+                    value={form.receiverName}
+                    onChange={handleChange}
+                    placeholder="e.g. HARSH"
+                    className={inputCls}
+                  />
+                </div>
 
-              <div>
-                <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
-                  Recipient Image
-                </label>
-                <input
-                  required={!form.imageUrl}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="block w-full cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-orange-50 file:px-3 file:py-1.5 file:text-[12px] file:font-semibold file:text-orange-600"
-                />
-                {form.imageUrl && (
-                  <p className="mt-1.5 text-[11px] font-medium text-emerald-600">
-                    Photo cropped. Choose another image to crop it again.
-                  </p>
+                {isTeachersDay && (
+                  <div>
+                    <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
+                      Sender Name
+                    </label>
+                    <input
+                      required
+                      name="senderName"
+                      value={form.senderName}
+                      onChange={handleChange}
+                      placeholder="e.g. ROHAN CHANDRAJEET PAL"
+                      className={inputCls}
+                    />
+                  </div>
                 )}
-              </div>
-            </div>
 
-            <button
-              type="submit"
-              className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-[15px] font-semibold text-white shadow-sm transition active:scale-[0.98]"
-            >
-              <Send className="h-4 w-4" />
-              Create Card
-            </button>
-          </form>
-        )}
-      </div>
+                <div>
+                  <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
+                    Recipient Image
+                  </label>
+                  <input
+                    required={!form.imageUrl}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="block w-full cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-orange-50 file:px-3 file:py-1.5 file:text-[12px] file:font-semibold file:text-orange-600"
+                  />
+                  {form.imageUrl && (
+                    <p className="mt-1.5 text-[11px] font-medium text-emerald-600">
+                      Photo cropped. Choose another image to crop it again.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-[15px] font-semibold text-white shadow-sm transition active:scale-[0.98]"
+              >
+                <Send className="h-4 w-4" />
+                Create Card
+              </button>
+            </form>
+          )}
+        </div>
       </div>
 
       {cropSource && (
@@ -651,6 +733,7 @@ const TemplateModal = ({ template, onClose }) => {
     </>
   );
 };
+
 
 /* -------------------------------------------------------
    Main Page
