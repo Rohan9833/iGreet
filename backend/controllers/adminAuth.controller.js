@@ -24,11 +24,23 @@ const loginAdmin = async (req, res, next) => {
 
     const account = await findAccount(loginId);
 
-    if (!account || account.tlmPassword !== password && account.slmPassword !== password && account.flmPassword !== password) {
-      return res.status(401).json({ success: false, message: "Invalid credentials. Use your TLM, SLM or FLM credentials." });
+    let role = null;
+    let validPassword = false;
+
+    if (account?.tlmId) {
+      role = "tlm";
+      validPassword = account.tlmPassword === password;
+    } else if (account?.slmId) {
+      role = "slm";
+      validPassword = account.slmPassword === password;
+    } else if (account?.flmId) {
+      role = "flm";
+      validPassword = account.flmPassword === password;
     }
 
-    const role = account.tlmId ? "tlm" : account.slmId ? "slm" : "flm";
+    if (!account || !validPassword || !role) {
+      return res.status(401).json({ success: false, message: "Invalid credentials. Use your TLM, SLM or FLM credentials." });
+    }
 
     return res.json({
       success: true,
