@@ -2,6 +2,7 @@ import "./App.css";
 import MrForm from "./Pages/MrForm";
 import Drcreate from "./Pages/Drcreate";
 import QRScan from "./Pages/QRScan";
+import MrLogin from "./Pages/MrLogin";
 import AdminLayout from "./Pages/admin/AdminLayout";
 import AdminDashboard from "./Pages/admin/AdminDashboard";
 import AdminQRCodes from "./Pages/admin/AdminQRCodes";
@@ -18,6 +19,7 @@ function App() {
       <Route path="/qr/:token" element={<QRScan />} />
       <Route path="/register-doctor" element={<MrForm />} />
       <Route path="/doctor" element={<Drcreate />} />
+      <Route path="/mr-login" element={<MrLogin />} />
 
       <Route path="/admin-login" element={<AdminLogin />} />
 
