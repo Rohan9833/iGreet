@@ -104,3 +104,27 @@ export const createDoctorGeneration = async ({
 
   return data;
 };
+
+
+export const getDoctorGenerationsByQRToken = async (token) => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/doctors/generations/by-qr/${encodeURIComponent(token)}?t=${Date.now()}`,
+    {
+      method: "GET",
+      headers: API_HEADERS,
+    },
+  );
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("The server returned an invalid response.");
+  }
+
+  if (!response.ok || !data?.success) {
+    throw new Error(data?.message || "Unable to load generations.");
+  }
+
+  return data;
+};
