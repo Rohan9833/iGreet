@@ -11,6 +11,8 @@ import AdminMRs from "./Pages/admin/AdminMRs";
 import AdminGenerations from "./Pages/admin/AdminGenerations";
 import AdminLogin from "./Pages/admin/AdminLogin";
 import AdminProtectedRoute from "./Pages/admin/AdminProtectedRoute";
+import DoctorTemplates from "./Pages/DoctorTemplates";
+import DoctorGenerations from "./Pages/DoctorGenerations";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
       <Route path="/qr/:token" element={<QRScan />} />
       <Route path="/register-doctor" element={<MrForm />} />
       <Route path="/doctor" element={<Drcreate />} />
+      <Route path="/doctor/templates" element={<DoctorTemplates />} />
+      <Route path="/doctor/generations" element={<DoctorGenerations />} />
       <Route path="/mr-login" element={<MrLogin />} />
 
       <Route path="/admin-login" element={<AdminLogin />} />
