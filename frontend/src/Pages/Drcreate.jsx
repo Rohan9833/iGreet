@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UserRound, ArrowRight, Heart, X, Send } from "lucide-react";
+import { UserRound, ArrowRight, Heart, X, Send, Sparkles } from "lucide-react";
 
 /* -------------------------------------------------------
    Logo
@@ -22,68 +22,17 @@ const MediQRLogo = () => (
    Doctor Illustration (SVG)
 ------------------------------------------------------- */
 const DoctorIllustration = () => (
-  <svg viewBox="0 0 200 230" className="h-[175px] w-[160px]" fill="none">
-    {/* bg blob */}
-    <circle cx="125" cy="105" r="82" fill="#fff0e5" />
-    <circle cx="160" cy="130" r="40" fill="#ffe6d2" opacity="0.7" />
+  <div className="relative h-[175px] w-[160px] overflow-hidden">
+    <div className="absolute right-[-8px] top-[10px] h-[150px] w-[150px] rounded-full bg-[#fff0e5]" />
+    <div className="absolute right-[5px] top-[45px] h-[90px] w-[90px] rounded-full bg-[#ffe6d2] opacity-70" />
 
-    {/* body / coat */}
-    <path
-      d="M28 230 C28 172 58 150 100 150 C142 150 172 172 172 230 Z"
-      fill="#ffffff"
-      stroke="#e3ebf4"
+    <img
+      src="https://thumbs.wbm.im/pw/medium/3b21f74f5ebf5b1afbc7ee50c0a6dd1a.png"
+      alt="Smiling doctor wearing a white coat and stethoscope"
+      className="absolute bottom-[-12px] right-[-8px] h-[168px] w-[150px] object-contain object-bottom"
+      loading="eager"
     />
-    {/* blue scrub */}
-    <path d="M78 150 L100 205 L122 150 Z" fill="#4c8ed8" />
-    {/* lapels */}
-    <path d="M78 150 L98 200 L84 160 Z" fill="#f1f5fa" />
-    <path d="M122 150 L102 200 L116 160 Z" fill="#f1f5fa" />
-
-    {/* neck */}
-    <rect x="90" y="122" width="20" height="32" rx="8" fill="#d88d63" />
-
-    {/* ears */}
-    <ellipse cx="66" cy="98" rx="5" ry="8" fill="#d88d63" />
-    <ellipse cx="134" cy="98" rx="5" ry="8" fill="#d88d63" />
-
-    {/* face */}
-    <ellipse cx="100" cy="95" rx="33" ry="37" fill="#e5a074" />
-
-    {/* hair */}
-    <path
-      d="M65 92 C58 52 92 44 108 48 C140 50 146 76 135 94 C130 78 120 68 100 68 C84 68 72 77 65 92 Z"
-      fill="#3c2928"
-    />
-
-    {/* eyes */}
-    <circle cx="87" cy="98" r="3.2" fill="#172033" />
-    <circle cx="113" cy="98" r="3.2" fill="#172033" />
-    {/* brows */}
-    <path d="M81 90 Q87 86 93 90" stroke="#3c2928" strokeWidth="2" strokeLinecap="round" />
-    <path d="M107 90 Q113 86 119 90" stroke="#3c2928" strokeWidth="2" strokeLinecap="round" />
-    {/* nose + smile */}
-    <path d="M100 100 Q96 108 101 108" stroke="#b56f4f" strokeWidth="1.8" strokeLinecap="round" />
-    <path d="M88 114 Q100 126 112 114 Q100 118 88 114 Z" fill="#fff" stroke="#9b4e43" strokeWidth="1.5" />
-
-    {/* stethoscope */}
-    <path
-      d="M74 150 C64 190 92 210 104 196"
-      stroke="#64748b"
-      strokeWidth="4"
-      strokeLinecap="round"
-    />
-    <circle cx="106" cy="193" r="6" fill="#cbd5e1" stroke="#64748b" strokeWidth="3" />
-
-    {/* card in hand */}
-    <g transform="rotate(-10 40 150)">
-      <rect x="14" y="120" width="46" height="58" rx="5" fill="#ffffff" stroke="#e3ebf4" />
-      <path
-        d="M37 156 C28 148 30 140 37 143 C44 140 46 148 37 156 Z"
-        fill="#ef6a5e"
-      />
-    </g>
-    <circle cx="52" cy="170" r="10" fill="#e5a074" />
-  </svg>
+  </div>
 );
 
 /* -------------------------------------------------------
@@ -406,12 +355,23 @@ export default function Drcreate() {
         {/* Header */}
         <header className="flex items-center justify-between">
           <MediQRLogo />
-          <button
-            type="button"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#edf3f8] text-[#263b55]"
-          >
-            <UserRound className="h-5 w-5" />
-          </button>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="flex h-9 items-center gap-1.5 rounded-full border border-orange-100 bg-[#fff5ec] px-3 text-[12px] font-semibold text-[#e96526] shadow-sm"
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>120 Credits</span>
+            </button>
+
+            <button
+              type="button"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#edf3f8] text-[#263b55]"
+            >
+              <UserRound className="h-5 w-5" />
+            </button>
+          </div>
         </header>
 
         {/* Welcome */}
