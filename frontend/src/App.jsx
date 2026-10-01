@@ -1,19 +1,21 @@
 import "./App.css";
 import MrForm from "./Pages/MrForm";
 import Drcreate from "./Pages/Drcreate";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import QRScan from "./Pages/QRScan";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <Routes>
-        {/* MR scans an unassigned QR */}
-        <Route path="/register-doctor" element={<MrForm />} />
+    <Routes>
+      {/* QR decides whether this visitor goes to MR or Doctor side */}
+      <Route path="/qr/:token" element={<QRScan />} />
 
-        {/* Doctor scans an already assigned QR */}
-        <Route path="/doctor" element={<Drcreate />} />
-      </Routes>
-    </>
+      {/* MR scans an unassigned QR */}
+      <Route path="/register-doctor" element={<MrForm />} />
+
+      {/* Doctor scans an already assigned QR */}
+      <Route path="/doctor" element={<Drcreate />} />
+    </Routes>
   );
 }
 
