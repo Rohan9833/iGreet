@@ -72,19 +72,22 @@ export const createDoctorGeneration = async ({
   template,
   receiverName,
   senderName = "",
+  cardBlob,
 }) => {
+  const formData = new FormData();
+  formData.append("qrToken", qrToken);
+  formData.append("template", template);
+  formData.append("receiverName", receiverName);
+  formData.append("senderName", senderName);
+
+  if (cardBlob) {
+    formData.append("card", cardBlob, `${template}-card.png`);
+  }
+
   const response = await fetch(`${API_BASE_URL}/api/doctors/generate`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...API_HEADERS,
-    },
-    body: JSON.stringify({
-      qrToken,
-      template,
-      receiverName,
-      senderName,
-    }),
+    headers: API_HEADERS,
+    body: formData,
   });
 
   let data;
@@ -104,7 +107,6 @@ export const createDoctorGeneration = async ({
 
   return data;
 };
-
 
 export const getDoctorGenerationsByQRToken = async (token) => {
   const response = await fetch(
