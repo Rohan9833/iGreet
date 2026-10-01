@@ -5,6 +5,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 const connectDB = require("./config/db");
+const qrRoutes = require("./routes/qr.routes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,6 +16,9 @@ app.use(helmet());
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Generated QR images
+app.use("/qrcodes", express.static("storage/qrcodes"));
 
 app.get("/", (req, res) => {
   res.json({
@@ -29,6 +33,9 @@ app.get("/api/health", (req, res) => {
     message: "API is healthy",
   });
 });
+
+// QR management
+app.use("/api/qr", qrRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
