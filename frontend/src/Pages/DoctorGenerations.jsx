@@ -133,7 +133,19 @@ export default function DoctorGenerations() {
                           className="h-full w-full object-cover"
                         />
                       ) : (
-                        <FileImage className="h-6 w-6 text-orange-400" />
+                        <img
+                          src={
+                            generation.template === "teachers-day"
+                              ? "/teachersday.png"
+                              : generation.template === "independence-day"
+                                ? "/independence.png"
+                                : generation.template === "dussehra"
+                                  ? "/dussehra.png"
+                                  : "/anniversary.png"
+                          }
+                          alt={titleFromTemplate(generation.template)}
+                          className="h-full w-full object-cover"
+                        />
                       )}
                     </div>
 
