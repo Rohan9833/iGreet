@@ -727,7 +727,17 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
         senderName: isTeachersDay ? form.senderName : "",
       });
 
+      // Use the server's post-charge balance immediately.
       onGenerated?.(data.credits);
+
+      // Re-read the doctor from MongoDB so the header can never remain stale.
+      try {
+        const latest = await getDoctorByQRToken(qrToken);
+        onGenerated?.(latest.doctor?.credits ?? data.credits);
+      } catch (refreshError) {
+        console.warn("Unable to refresh doctor credits:", refreshError);
+      }
+
       setSent(true);
     } catch (error) {
       console.error("Unable to create generation:", error);
