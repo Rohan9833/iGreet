@@ -155,11 +155,11 @@ const TeacherDayCard = ({
   senderName = "",
   imageUrl = "",
 }) => (
-  <div className="relative aspect-[1448/2048] w-full overflow-hidden bg-white">
+  <div className="relative w-full overflow-hidden bg-white">
     <img
       src="/teachersday.png"
       alt="Teachers Day greeting card template"
-      className="absolute inset-0 h-full w-full object-cover"
+      className="block h-auto w-full"
     />
 
     {imageUrl && (
@@ -213,11 +213,11 @@ const FestivalCard = ({
   const layout = FESTIVAL_LAYOUTS[template.id] || FESTIVAL_LAYOUTS["independence-day"];
 
   return (
-    <div className="relative aspect-[1448/2048] w-full overflow-hidden bg-white">
+    <div className="relative w-full overflow-hidden bg-white">
       <img
         src={template.image}
         alt={`${template.title} greeting card template`}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="block h-auto w-full"
       />
 
       {imageUrl && (
@@ -580,29 +580,34 @@ const downloadGreetingCard = async (template, form) => {
 
     let photoX;
     let photoY;
-    let photoSize;
+    let photoWidth;
+    let photoHeight;
 
     if (template.id === "anniversary") {
       photoX = canvas.width * 0.29;
       photoY = canvas.height * 0.12;
-      photoSize = canvas.width * 0.42;
+      photoWidth = canvas.width * 0.42;
+      photoHeight = canvas.height * 0.42;
     } else {
       photoX = canvas.width * 0.25;
       photoY = canvas.height * 0.04;
-      photoSize = canvas.width * 0.50;
+      photoWidth = canvas.width * 0.50;
+      photoHeight = canvas.height * 0.36;
     }
 
     context.save();
     context.beginPath();
-    context.arc(
-      photoX + photoSize / 2,
-      photoY + photoSize / 2,
-      photoSize / 2,
+    context.ellipse(
+      photoX + photoWidth / 2,
+      photoY + photoHeight / 2,
+      photoWidth / 2,
+      photoHeight / 2,
+      0,
       0,
       Math.PI * 2,
     );
     context.clip();
-    context.drawImage(photo, photoX, photoY, photoSize, photoSize);
+    context.drawImage(photo, photoX, photoY, photoWidth, photoHeight);
     context.restore();
   }
 
