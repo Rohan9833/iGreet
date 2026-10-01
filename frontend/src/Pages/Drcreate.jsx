@@ -189,19 +189,19 @@ const FESTIVAL_LAYOUTS = {
     image:
       "absolute left-[25%] top-[4%] h-[36%] w-[50%] rounded-full object-cover",
     name:
-      "absolute left-[23%] right-[23%] top-[40.2%] text-center text-[clamp(10px,3vw,30px)] font-extrabold uppercase leading-none text-white",
+      "absolute left-[28%] right-[28%] top-[43.8%] text-center text-[clamp(10px,4vw,18px)] font-extrabold uppercase leading-none text-white",
   },
   dussehra: {
     image:
       "absolute left-[25%] top-[4%] h-[36%] w-[50%] rounded-full object-cover",
     name:
-      "absolute left-[23%] right-[23%] top-[40.2%] text-center text-[clamp(10px,3vw,30px)] font-extrabold uppercase leading-none text-white",
+      "absolute left-[28%] right-[28%] top-[44%] text-center text-[clamp(10px,4vw,18px)] font-extrabold uppercase leading-none text-white",
   },
   anniversary: {
     image:
       "absolute left-[29%] top-[12%] h-[42%] w-[42%] rounded-full object-cover",
     name:
-      "absolute left-[16%] right-[16%] top-[35.5%] text-center text-[clamp(10px,3vw,30px)] font-extrabold uppercase leading-none text-[#9c1f60]",
+      "absolute left-[24%] right-[24%] top-[52.5%] text-center text-[clamp(10px,4vw,19px)] font-extrabold uppercase leading-none text-[#9c1f60]",
   },
 };
 
