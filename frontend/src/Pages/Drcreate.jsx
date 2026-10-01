@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { createDoctorGeneration, getDoctorByQRToken } from "../api/doctor.api";
 import { UserRound, ArrowRight, X, Send, Sparkles } from "lucide-react";
 
@@ -946,8 +946,10 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
    Main Page
 ------------------------------------------------------- */
 export default function Drcreate() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const qrToken = searchParams.get("qrToken") || "";
+  const templateId = searchParams.get("template") || "";
   const [doctor, setDoctor] = useState(null);
   const [loadingDoctor, setLoadingDoctor] = useState(true);
   const [doctorError, setDoctorError] = useState("");
@@ -967,6 +969,13 @@ export default function Drcreate() {
           throw new Error("This QR code is not assigned to a doctor.");
         }
         setDoctor(data.doctor);
+
+        if (templateId) {
+          const requestedTemplate = TEMPLATES.find(
+            (template) => template.id === templateId,
+          );
+          setActiveTemplate(requestedTemplate || null);
+        }
       } catch (error) {
         console.error(error);
         setDoctorError(error.message || "Unable to load doctor details.");
@@ -976,7 +985,7 @@ export default function Drcreate() {
     };
 
     loadDoctor();
-  }, [qrToken]);
+  }, [qrToken, templateId]);
 
   if (loadingDoctor) {
     return (
@@ -1046,9 +1055,10 @@ export default function Drcreate() {
           </div>
         </section>
 
-        {/* Create Greeting Card */}
+        {/* Create Personalized Cards */}
         <button
           type="button"
+          onClick={() => navigate(`/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`)}
           className="group relative mt-4 flex min-h-[145px] w-full items-center gap-2 overflow-hidden rounded-[18px] border border-orange-100 bg-[#fff4e9] px-4 text-left transition active:scale-[0.99]"
         >
           <GreetingCardIllustration />
@@ -1056,10 +1066,10 @@ export default function Drcreate() {
             <h2 className="text-[22px] font-bold leading-[1.1] tracking-[-0.6px] text-[#10233f]">
               Create
               <br />
-              Greeting Card
+              Personalized Cards
             </h2>
             <p className="mt-2 text-[12.5px] leading-[1.4] text-[#718198]">
-              Design personalized greeting cards for your patients.
+              Design your personalized cards for your patients.
             </p>
           </div>
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white shadow-md transition group-active:scale-95">
@@ -1067,20 +1077,21 @@ export default function Drcreate() {
           </div>
         </button>
 
-        {/* Browse Templates */}
+        {/* View Generations */}
         <button
           type="button"
+          onClick={() => navigate(`/doctor/generations?qrToken=${encodeURIComponent(qrToken)}`)}
           className="group relative mt-3 flex min-h-[135px] w-full items-center gap-2 overflow-hidden rounded-[18px] border border-blue-100 bg-[#f1f6ff] px-4 text-left transition active:scale-[0.99]"
         >
           <TemplatesStackIllustration />
           <div className="flex-1">
             <h2 className="text-[22px] font-bold leading-[1.1] tracking-[-0.6px] text-[#10233f]">
-              Browse
+              View
               <br />
-              Templates
+              Generations
             </h2>
             <p className="mt-2 text-[12.5px] leading-[1.4] text-[#718198]">
-              Choose from beautiful ready-to-use templates.
+              View all the personalized cards you have created.
             </p>
           </div>
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3ecfb] text-[#17263a] transition group-active:scale-95">
@@ -1096,6 +1107,11 @@ export default function Drcreate() {
             </h2>
             <button
               type="button"
+              onClick={() =>
+                navigate(
+                  `/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`,
+                )
+              }
               className="flex items-center gap-1 rounded-full bg-[#fff1e5] px-4 py-2 text-[13px] font-medium text-orange-500"
             >
               View All
@@ -1143,7 +1159,10 @@ export default function Drcreate() {
               previous ? { ...previous, credits } : previous,
             )
           }
-          onClose={() => setActiveTemplate(null)}
+          onClose={() => {
+            setActiveTemplate(null);
+            navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, { replace: true });
+          }}
         />
       )}
     </main>
