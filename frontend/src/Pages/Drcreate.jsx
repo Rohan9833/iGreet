@@ -541,6 +541,94 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
 /* -------------------------------------------------------
    Popup form
 ------------------------------------------------------- */
+const loadCardImage = (src) =>
+  new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = src;
+  });
+
+const drawCenteredText = (context, text, x, y, maxWidth, fontSize, color) => {
+  if (!text) return;
+
+  let size = fontSize;
+  context.font = `800 ${size}px Arial, sans-serif`;
+
+  while (context.measureText(text).width > maxWidth && size > 10) {
+    size -= 1;
+    context.font = `800 ${size}px Arial, sans-serif`;
+  }
+
+  context.fillStyle = color;
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillText(text, x, y);
+};
+
+const downloadGreetingCard = async (template, form) => {
+  const templateImage = await loadCardImage(template.image);
+  const canvas = document.createElement("canvas");
+  canvas.width = templateImage.naturalWidth;
+  canvas.height = templateImage.naturalHeight;
+
+  const context = canvas.getContext("2d");
+  context.drawImage(templateImage, 0, 0, canvas.width, canvas.height);
+
+  if (form.imageUrl) {
+    const photo = await loadCardImage(form.imageUrl);
+
+    let photoX;
+    let photoY;
+    let photoSize;
+
+    if (template.id === "anniversary") {
+      photoX = canvas.width * 0.29;
+      photoY = canvas.height * 0.12;
+      photoSize = canvas.width * 0.42;
+    } else {
+      photoX = canvas.width * 0.25;
+      photoY = canvas.height * 0.04;
+      photoSize = canvas.width * 0.50;
+    }
+
+    context.save();
+    context.beginPath();
+    context.arc(
+      photoX + photoSize / 2,
+      photoY + photoSize / 2,
+      photoSize / 2,
+      0,
+      Math.PI * 2,
+    );
+    context.clip();
+    context.drawImage(photo, photoX, photoY, photoSize, photoSize);
+    context.restore();
+  }
+
+  const centerX = canvas.width / 2;
+
+  if (template.id === "teachers-day") {
+    drawCenteredText(context, form.receiverName, centerX, canvas.height * 0.655, canvas.width * 0.80, canvas.width * 0.016, "#f39a18");
+    drawCenteredText(context, form.senderName, centerX, canvas.height * 0.915, canvas.width * 0.80, canvas.width * 0.011, "#f39a18");
+  } else if (template.id === "independence-day" || template.id === "dussehra") {
+    drawCenteredText(context, form.receiverName, centerX, canvas.height * 0.458, canvas.width * 0.40, canvas.width * 0.0115, "#ffffff");
+  } else if (template.id === "anniversary") {
+    drawCenteredText(context, form.receiverName, centerX, canvas.height * 0.90, canvas.width * 0.52, canvas.width * 0.0135, "#ef5f1f");
+  }
+
+  const link = document.createElement("a");
+  const safeName = (form.receiverName || "greeting-card")
+    .trim()
+    .replace(/[^a-z0-9]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+
+  link.download = `${template.id}-${safeName || "card"}.png`;
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+};
+
 const TemplateModal = ({ template, onClose }) => {
   const isTeachersDay = template.id === "teachers-day";
   const [form, setForm] = useState({
@@ -550,6 +638,7 @@ const TemplateModal = ({ template, onClose }) => {
   });
   const [cropSource, setCropSource] = useState("");
   const [sent, setSent] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
@@ -618,6 +707,18 @@ const TemplateModal = ({ template, onClose }) => {
     setSent(true);
   };
 
+  const handleDownload = async () => {
+    try {
+      setDownloading(true);
+      await downloadGreetingCard(template, form);
+    } catch (error) {
+      console.error("Unable to download greeting card:", error);
+      window.alert("Unable to download the card. Please try again.");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   const inputCls =
     "w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-[14px] text-[#10233f] outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:bg-white focus:ring-2 focus:ring-orange-100";
 
@@ -667,13 +768,24 @@ const TemplateModal = ({ template, onClose }) => {
                 {template.title} card created!
               </p>
 
-              <button
-                type="button"
-                onClick={onClose}
-                className="mt-4 w-full rounded-full bg-orange-500 px-6 py-2.5 text-[14px] font-semibold text-white"
-              >
-                Done
-              </button>
+              <div className="mt-4 flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleDownload}
+                  disabled={downloading}
+                  className="flex-1 rounded-full border border-orange-200 bg-orange-50 px-4 py-2.5 text-[14px] font-semibold text-orange-600 disabled:opacity-60"
+                >
+                  {downloading ? "Preparing..." : "Download Card"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="flex-1 rounded-full bg-orange-500 px-4 py-2.5 text-[14px] font-semibold text-white"
+                >
+                  Done
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="mt-4">
