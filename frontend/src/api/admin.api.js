@@ -36,6 +36,18 @@ export const getAdminQRCodes = async () => {
   return data.qrCodes || [];
 };
 
+export const generateAdminQRCodes = async (quantity) => {
+  const data = await request("/api/qr/generate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ quantity: Number(quantity) }),
+  });
+
+  return data.qrCodes || [];
+};
+
 export const getDoctorByQRToken = async (token) => {
   const data = await request(
     `/api/doctors/by-qr/${encodeURIComponent(token)}`,
