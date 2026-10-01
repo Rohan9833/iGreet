@@ -143,15 +143,7 @@ const TEMPLATES = [
 
 const TemplatePreview = ({ type }) => {
   if (type === "get-well") {
-    if (loadingDoctor) {
-    return <main className="flex min-h-screen items-center justify-center bg-[#f6f9fc] text-[#10233f]">Loading doctor profile...</main>;
-  }
-
-  if (doctorError) {
-    return <main className="flex min-h-screen items-center justify-center bg-[#f6f9fc] px-5 text-center text-[#10233f]">{doctorError}</main>;
-  }
-
-  return (
+    return (
       <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-[#fffaf4]">
         <Flower className="absolute -left-3 -top-3 h-14 w-14" />
         <Flower className="absolute left-5 top-1 h-8 w-8 opacity-80" />
@@ -381,6 +373,22 @@ export default function Drcreate() {
 
     loadDoctor();
   }, [qrToken]);
+
+  if (loadingDoctor) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#f6f9fc] text-[#10233f]">
+        Loading doctor profile...
+      </main>
+    );
+  }
+
+  if (doctorError) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#f6f9fc] px-5 text-center text-[#10233f]">
+        {doctorError}
+      </main>
+    );
+  }
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#f6f9fc] font-sans">
