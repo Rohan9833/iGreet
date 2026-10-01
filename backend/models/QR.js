@@ -27,6 +27,11 @@ const qrSchema = new mongoose.Schema(
       ref: "Doctor",
       default: null,
     },
+    assignedByMr: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "MR",
+      default: null,
+    },
     qrUrl: {
       type: String,
       required: true,
