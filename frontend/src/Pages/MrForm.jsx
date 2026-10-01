@@ -62,7 +62,7 @@ const Logo = () => (
     </div>
 
     <div className="text-[26px] font-bold tracking-[-1.2px] text-slate-900 text-[22px] sm:text-[30px]">
-      Medi<span className="text-orange-500">QR</span>
+      <span className="text-orange-500"> i  </span>Greet
     </div>
   </div>
 );
