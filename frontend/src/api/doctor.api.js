@@ -7,12 +7,23 @@ const API_HEADERS = {
   "ngrok-skip-browser-warning": "true",
 };
 
+const getMrAuthHeaders = () => {
+  const token = localStorage.getItem("igreet_mr_token");
+
+  return token
+    ? {
+        Authorization: `Bearer ${token}`,
+      }
+    : {};
+};
+
 export const registerDoctor = async (doctorData) => {
   const response = await fetch(`${API_BASE_URL}/api/doctors/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       ...API_HEADERS,
+      ...getMrAuthHeaders(),
     },
     body: JSON.stringify(doctorData),
   });
