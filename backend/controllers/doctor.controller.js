@@ -267,4 +267,39 @@ const createGeneration = async (req, res, next) => {
   }
 };
 
-module.exports = { registerDoctor, getDoctorByQRToken, createGeneration };
+
+const getDoctorGenerationsByQRToken = async (req, res, next) => {
+  try {
+    const qr = await QR.findOne({ token: req.params.token });
+
+    if (!qr) {
+      return res.status(404).json({
+        success: false,
+        message: "QR code not found.",
+      });
+    }
+
+    if (!qr.doctor) {
+      return res.status(409).json({
+        success: false,
+        message: "This QR code is not assigned to a doctor.",
+      });
+    }
+
+    const generations = await Generation.find({ doctor: qr.doctor })
+      .sort({ createdAt: -1 })
+      .limit(200)
+      .select("type template creditsUsed status outputUrl metadata createdAt updatedAt")
+      .lean();
+
+    return res.json({
+      success: true,
+      count: generations.length,
+      generations,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+module.exports = { registerDoctor, getDoctorByQRToken, createGeneration, getDoctorGenerationsByQRToken };
