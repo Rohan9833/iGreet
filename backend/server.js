@@ -51,13 +51,6 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    message: "API is healthy",
-  });
-});
-
 // QR management
 app.use("/api/qr", qrRoutes);
 app.use("/api/doctors", doctorRoutes);
