@@ -615,12 +615,17 @@ const TemplateModal = ({ template, onClose }) => {
                   Recipient Image
                 </label>
                 <input
-                  required
+                  required={!form.imageUrl}
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
                   className="block w-full cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-orange-50 file:px-3 file:py-1.5 file:text-[12px] file:font-semibold file:text-orange-600"
                 />
+                {form.imageUrl && (
+                  <p className="mt-1.5 text-[11px] font-medium text-emerald-600">
+                    Photo cropped. Choose another image to crop it again.
+                  </p>
+                )}
               </div>
             </div>
 
