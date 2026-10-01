@@ -109,6 +109,7 @@ const listQRCodes = async (req, res, next) => {
       .select(
         "code token status doctor assignedByMr qrUrl imageFileName assignedAt createdAt updatedAt",
       )
+      .populate("doctor", "doctorName doctorCode speciality clinicName city area email mobile credits status")
       .populate("assignedByMr", "mrId mrName");
 
     const qrCodes = qrs.map((qr) => ({
