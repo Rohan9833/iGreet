@@ -1,4 +1,9 @@
-const getAdminAuthHeaders = () => {\n  const token = localStorage.getItem("igreet_admin_token");\n  return token ? { Authorization: `Bearer ${token}` } : {};\n};\n\nconst API_BASE_URL = (
+const getAdminAuthHeaders = () => {
+  const token = localStorage.getItem("igreet_admin_token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
+const API_BASE_URL = (
   import.meta.env.VITE_API_URL || "https://duplex-slate-kilobyte.ngrok-free.dev"
 ).replace(/\/$/, "");
 
