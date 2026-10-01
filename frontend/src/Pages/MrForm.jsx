@@ -305,7 +305,7 @@ export default function MrForm() {
               onChange={handleChange}
               placeholder="Enter doctor's full name"
               autoComplete="name"
-              className={`h-10 w-full rounded-[9px] border bg-white px-3 text-[13px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
+              className={`h-10 w-full rounded-[9px] border bg-white px-3 text-[12px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
                 errors.doctorName ? "border-red-400" : "border-slate-300"
               }`}
             />
@@ -357,7 +357,7 @@ export default function MrForm() {
               value={formData.doctorCode}
               onChange={handleChange}
               placeholder="Enter MCL code or doctor code"
-              className={`h-[50px] w-full rounded-[11px] border bg-white px-4 text-[15px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
+              className={`h-[50px] w-full rounded-[11px] border bg-white px-4 text-[13px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
                 errors.doctorCode ? "border-red-400" : "border-slate-300"
               }`}
             />
@@ -390,7 +390,7 @@ export default function MrForm() {
               value={formData.city}
               onChange={handleChange}
               placeholder="Enter city name"
-              className={`h-[50px] w-full rounded-[11px] border bg-white px-4 text-[15px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
+              className={`h-[50px] w-full rounded-[11px] border bg-white px-4 text-[13px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
                 errors.city ? "border-red-400" : "border-slate-300"
               }`}
             />
@@ -419,7 +419,7 @@ export default function MrForm() {
               onChange={handleChange}
               placeholder="Enter email address"
               autoComplete="email"
-              className={`h-[50px] w-full rounded-[11px] border bg-white px-4 text-[15px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
+              className={`h-[50px] w-full rounded-[11px] border bg-white px-4 text-[13px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
                 errors.email ? "border-red-400" : "border-slate-300"
               }`}
             />
@@ -436,7 +436,7 @@ export default function MrForm() {
             <div className="grid grid-cols-[65px_minmax(0,1fr)] gap-2 sm:grid-cols-[120px_minmax(0,1fr)]">
               {/* Country code */}
 
-              <div className="flex h-10 items-center justify-between rounded-[9px] border border-slate-300 bg-white px-2.5 text-[13px] text-slate-800 sm:h-14 sm:rounded-[13px] sm:px-4 sm:text-[16px]">
+              <div className="flex h[50px] items-center justify-between rounded-[9px] border border-slate-300 bg-white px-2.5 text-[13px] text-slate-800 sm:h-14 sm:rounded-[13px] sm:px-4 sm:text-[16px]">
                 <span>+91</span>
 
                 <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -452,7 +452,7 @@ export default function MrForm() {
                 placeholder="Enter mobile number"
                 inputMode="numeric"
                 autoComplete="tel"
-                className={`h-[50px] min-w-0 rounded-[11px] border bg-white px-3 text-[15px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
+                className={`h-[50px] min-w-0 rounded-[11px] border bg-white px-3 text-[12px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
                   errors.mobile ? "border-red-400" : "border-slate-300"
                 }`}
               />
