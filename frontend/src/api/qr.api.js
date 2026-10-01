@@ -1,12 +1,18 @@
 const API_BASE_URL = (import.meta.env.VITE_API_URL || "https://duplex-slate-kilobyte.ngrok-free.dev").replace(/\/$/, "");
 
+const API_HEADERS = {
+  Accept: "application/json",
+  "ngrok-skip-browser-warning": "true",
+};
+
 export const getQRByToken = async (token) => {
-  const response = await fetch(`${API_BASE_URL}/api/qr/${encodeURIComponent(token)}`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
+  const response = await fetch(
+    `${API_BASE_URL}/api/qr/${encodeURIComponent(token)}`,
+    {
+      method: "GET",
+      headers: API_HEADERS,
     },
-  });
+  );
 
   let data = null;
 
