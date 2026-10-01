@@ -54,14 +54,14 @@ const SPECIALITIES = [
 
 const Logo = () => (
   <div className="flex items-center justify-center gap-3">
-    <div className="relative h-10 w-10 sm:h-12 sm:w-12">
-      <span className="absolute left-0 top-[12px] h-[16px] w-[16px] rounded-[5px] bg-orange-400 sm:top-[15px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
-      <span className="absolute left-[12px] top-0 h-[16px] w-[16px] rounded-[5px] bg-orange-400 sm:left-[15px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
-      <span className="absolute left-[24px] top-[12px] h-[16px] w-[16px] rounded-[5px] bg-orange-500 sm:left-[30px] sm:top-[15px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
-      <span className="absolute left-[12px] top-[24px] h-[16px] w-[16px] rounded-[5px] bg-orange-500 sm:left-[15px] sm:top-[30px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
+    <div className="relative h-8 w-8 sm:h-12 sm:w-12">
+      <span className="absolute left-0 top-[10px] h-[13px] w-[13px] rounded-[4px] bg-orange-400 sm:top-[15px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
+      <span className="absolute left-[10px] top-0 h-[13px] w-[13px] rounded-[5px] bg-orange-400 sm:left-[15px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
+      <span className="absolute left-[20px] top-[10px] h-[13px] w-[13px] rounded-[5px] bg-orange-500 sm:left-[30px] sm:top-[15px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
+      <span className="absolute left-[10px] top-[20px] h-[13px] w-[13px] rounded-[5px] bg-orange-500 sm:left-[15px] sm:top-[30px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
     </div>
 
-    <div className="text-[26px] font-bold tracking-[-1.2px] text-slate-900 sm:text-[30px]">
+    <div className="text-[26px] font-bold tracking-[-1.2px] text-slate-900 text-[22px] sm:text-[30px]">
       Medi<span className="text-orange-500">QR</span>
     </div>
   </div>
@@ -77,13 +77,13 @@ const FormField = ({
   error,
 }) => {
   return (
-    <div className="grid grid-cols-[28px_minmax(0,1fr)] gap-3 sm:grid-cols-[35px_minmax(0,1fr)] sm:gap-3">
-      <div className="mt-7 flex h-6 w-6 items-center justify-center text-slate-600 sm:mt-8 sm:h-7 sm:w-7">
+    <div className="grid grid-cols-[24px_minmax(0,1fr)] gap-2 sm:grid-cols-[35px_minmax(0,1fr)] sm:gap-3">
+      <div className="mt-6 flex h-5 w-5 items-center justify-center text-slate-600 sm:mt-8 sm:h-7 sm:w-7">
         <Icon />
       </div>
 
       <div className="min-w-0">
-        <label className="mb-1.5 block text-[15px] font-semibold text-[#213653] sm:mb-2 sm:text-[18px]">
+        <label className="mb-1 block text-[13px] font-semibold text-[#213653] sm:mb-2 sm:text-[18px]">
           {label}
 
           {required && <span className="ml-1 text-red-500">*</span>}
@@ -225,7 +225,7 @@ export default function MrForm() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#f8fafb] px-2.5 py-4 font-sans sm:px-6 sm:py-8 lg:py-12">
+    <main className="relative min-h-screen overflow-hidden bg-[#f8fafb] px-1.5 py-2 font-sans sm:px-6 sm:py-8 lg:py-12">
       {/* -------------------------------- */}
       {/* Background Decorations */}
       {/* -------------------------------- */}
@@ -266,21 +266,21 @@ export default function MrForm() {
       {/* Main Card */}
       {/* -------------------------------- */}
 
-      <section className="relative z-10 mx-auto w-full max-w-[745px] rounded-[20px] bg-white px-3.5 py-[22px] shadow-[0_24px_70px_rgba(24,45,69,0.10),0_4px_20px_rgba(24,45,69,0.04)] sm:rounded-[28px] sm:px-10 sm:py-8 lg:px-[50px]">
+      <section className="relative z-10 mx-auto w-full max-w-[745px] rounded-[18px] bg-white px-3 py-3.5 shadow-[0_24px_70px_rgba(24,45,69,0.10),0_4px_20px_rgba(24,45,69,0.04)] sm:rounded-[28px] sm:px-10 sm:py-8 lg:px-[50px]">
         {/* Logo */}
 
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-2.5 sm:mb-6">
           <Logo />
         </div>
 
         {/* Header */}
 
-        <div className="mb-6 text-center sm:mb-8">
-          <h1 className="text-[25px] font-bold leading-[1.15] tracking-[-0.8px] text-[#11233d] sm:text-[36px] lg:text-[43px]">
+        <div className="mb-4 text-center sm:mb-8">
+          <h1 className="text-[22px] font-bold leading-[1.15] tracking-[-0.8px] text-[#11233d] sm:text-[36px] lg:text-[43px]">
             Assign QR to Doctor
           </h1>
 
-          <p className="mx-auto mt-2 max-w-[480px] text-[14px] leading-relaxed text-slate-500 sm:mt-3 sm:text-lg lg:text-xl">
+          <p className="mx-auto mt-1 max-w-[480px] text-[11px] leading-relaxed text-slate-500 sm:mt-3 sm:text-lg lg:text-xl">
             Enter the doctor's details to activate
             <br className="hidden sm:block" />
             this QR code.
@@ -289,7 +289,7 @@ export default function MrForm() {
 
         {/* Form */}
 
-        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-6">
           {/* Doctor Name */}
 
           <FormField
@@ -305,7 +305,7 @@ export default function MrForm() {
               onChange={handleChange}
               placeholder="Enter doctor's full name"
               autoComplete="name"
-              className={`h-[50px] w-full rounded-[11px] border bg-white px-4 text-[15px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
+              className={`h-10 w-full rounded-[9px] border bg-white px-3 text-[13px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px] ${
                 errors.doctorName ? "border-red-400" : "border-slate-300"
               }`}
             />
@@ -324,7 +324,7 @@ export default function MrForm() {
                 name="speciality"
                 value={formData.speciality}
                 onChange={handleChange}
-                className={`h-[50px] w-full cursor-pointer appearance-none rounded-[11px] border bg-white px-4 pr-10 text-[15px] text-slate-800 outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:pr-12 sm:text-[16px] ${
+                className={`h-10 w-full cursor-pointer appearance-none rounded-[9px] border bg-white px-3 pr-9 text-[13px] text-slate-800 outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:pr-12 sm:text-[16px] ${
                   formData.speciality ? "text-slate-800" : "text-slate-400"
                 } ${errors.speciality ? "border-red-400" : "border-slate-300"}`}
               >
@@ -372,7 +372,7 @@ export default function MrForm() {
               value={formData.clinicName}
               onChange={handleChange}
               placeholder="Enter clinic or hospital name"
-              className="h-[50px] w-full rounded-[11px] border border-slate-300 bg-white px-4 text-[15px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px]"
+              className="h-10 w-full rounded-[9px] border border-slate-300 bg-white px-3 text-[13px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px]"
             />
           </FormField>
 
@@ -405,7 +405,7 @@ export default function MrForm() {
               value={formData.area}
               onChange={handleChange}
               placeholder="Enter area or locality"
-              className="h-[50px] w-full rounded-[11px] border border-slate-300 bg-white px-4 text-[15px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px]"
+              className="h-10 w-full rounded-[9px] border border-slate-300 bg-white px-3 text-[13px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px]"
             />
           </FormField>
 
@@ -433,10 +433,10 @@ export default function MrForm() {
             required
             error={errors.mobile}
           >
-            <div className="grid grid-cols-[78px_minmax(0,1fr)] gap-2 sm:grid-cols-[120px_minmax(0,1fr)]">
+            <div className="grid grid-cols-[65px_minmax(0,1fr)] gap-2 sm:grid-cols-[120px_minmax(0,1fr)]">
               {/* Country code */}
 
-              <div className="flex h-[50px] items-center justify-between rounded-[11px] border border-slate-300 bg-white px-3 text-[15px] text-slate-800 sm:h-14 sm:rounded-[13px] sm:px-4 sm:text-[16px]">
+              <div className="flex h-10 items-center justify-between rounded-[9px] border border-slate-300 bg-white px-2.5 text-[13px] text-slate-800 sm:h-14 sm:rounded-[13px] sm:px-4 sm:text-[16px]">
                 <span>+91</span>
 
                 <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -464,7 +464,7 @@ export default function MrForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[11px] bg-gradient-to-r from-orange-500 to-orange-400 text-[16px] font-bold text-white shadow-[0_9px_24px_rgba(255,116,51,0.20)] transition hover:-translate-y-[1px] hover:shadow-[0_12px_28px_rgba(255,116,51,0.27)] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:ml-[43px] sm:h-16 sm:w-[calc(100%-43px)] sm:rounded-[14px] sm:gap-3 sm:text-[20px]"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-[9px] bg-gradient-to-r from-orange-500 to-orange-400 text-[14px] font-bold text-white shadow-[0_9px_24px_rgba(255,116,51,0.20)] transition hover:-translate-y-[1px] hover:shadow-[0_12px_28px_rgba(255,116,51,0.27)] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:ml-[43px] sm:h-16 sm:w-[calc(100%-43px)] sm:rounded-[14px] sm:gap-3 sm:text-[20px]"
           >
             <span>
               {isSubmitting ? "Assigning QR..." : "Assign QR to Doctor"}
