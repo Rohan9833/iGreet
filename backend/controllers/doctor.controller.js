@@ -2,6 +2,8 @@ const Doctor = require("../models/Doctor");
 const QR = require("../models/QR");
 const MR = require("../models/MR");
 const Generation = require("../models/Generation");
+const fs = require("fs/promises");
+const path = require("path");
 
 const GENERATION_CREDIT_COST = 20;
 
@@ -157,6 +159,9 @@ const getDoctorByQRToken = async (req, res, next) => {
 
 
 const createGeneration = async (req, res, next) => {
+  let storedFilePath = null;
+  let chargedDoctorId = null;
+
   try {
     const {
       qrToken,
@@ -169,6 +174,13 @@ const createGeneration = async (req, res, next) => {
       return res.status(400).json({
         success: false,
         message: "qrToken, template and receiverName are required.",
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "The generated card file is required.",
       });
     }
 
@@ -227,6 +239,20 @@ const createGeneration = async (req, res, next) => {
       });
     }
 
+    chargedDoctorId = doctor._id;
+
+    const generationsRoot = path.resolve("storage", "generations");
+    const doctorDirectory = path.join(generationsRoot, String(doctor._id));
+
+    await fs.mkdir(doctorDirectory, { recursive: true });
+
+    const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}.png`;
+    storedFilePath = path.join(doctorDirectory, filename);
+
+    await fs.writeFile(storedFilePath, req.file.buffer);
+
+    const outputUrl = `/generations/${doctor._id}/${filename}`;
+
     try {
       const generation = await Generation.create({
         doctor: doctor._id,
@@ -236,37 +262,48 @@ const createGeneration = async (req, res, next) => {
         template,
         creditsUsed: GENERATION_CREDIT_COST,
         status: "completed",
+        outputUrl,
         metadata: {
           receiverName,
           senderName,
+          mimeType: req.file.mimetype,
+          fileSize: req.file.size,
         },
       });
 
       return res.status(201).json({
         success: true,
-        message: "Generation created successfully.",
+        message: "Generation created and stored successfully.",
         generation: {
           id: generation._id,
           template: generation.template,
           creditsUsed: generation.creditsUsed,
           status: generation.status,
+          outputUrl: generation.outputUrl,
           createdAt: generation.createdAt,
         },
         credits: doctor.credits,
       });
     } catch (error) {
-      // Do not charge the doctor if the generation record itself could not be saved.
-      await Doctor.updateOne(
-        { _id: doctor._id },
-        { $inc: { credits: GENERATION_CREDIT_COST } },
-      );
+      await fs.rm(storedFilePath, { force: true });
+      storedFilePath = null;
       throw error;
     }
   } catch (error) {
+    if (chargedDoctorId) {
+      await Doctor.updateOne(
+        { _id: chargedDoctorId },
+        { $inc: { credits: GENERATION_CREDIT_COST } },
+      );
+    }
+
+    if (storedFilePath) {
+      await fs.rm(storedFilePath, { force: true }).catch(() => {});
+    }
+
     return next(error);
   }
 };
-
 
 const getDoctorGenerationsByQRToken = async (req, res, next) => {
   try {
