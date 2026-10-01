@@ -1,4 +1,4 @@
-const API_BASE_URL = (
+const getAdminAuthHeaders = () => {\n  const token = localStorage.getItem("igreet_admin_token");\n  return token ? { Authorization: `Bearer ${token}` } : {};\n};\n\nconst API_BASE_URL = (
   import.meta.env.VITE_API_URL || "https://duplex-slate-kilobyte.ngrok-free.dev"
 ).replace(/\/$/, "");
 
@@ -10,7 +10,7 @@ const API_HEADERS = {
 const request = async (path, options = {}) => {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
-    headers: { ...API_HEADERS, ...(options.headers || {}) },
+    headers: { ...API_HEADERS, ...(getAdminAuthHeaders()), ...(options.headers || {}) },
   });
 
   let data = null;
