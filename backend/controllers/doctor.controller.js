@@ -1,6 +1,9 @@
 const Doctor = require("../models/Doctor");
 const QR = require("../models/QR");
 const MR = require("../models/MR");
+const Generation = require("../models/Generation");
+
+const GENERATION_CREDIT_COST = 20;
 
 const registerDoctor = async (req, res, next) => {
   try {
@@ -152,4 +155,116 @@ const getDoctorByQRToken = async (req, res, next) => {
   }
 };
 
-module.exports = { registerDoctor, getDoctorByQRToken };
+
+const createGeneration = async (req, res, next) => {
+  try {
+    const {
+      qrToken,
+      template,
+      receiverName,
+      senderName = "",
+    } = req.body;
+
+    if (!qrToken || !template || !receiverName) {
+      return res.status(400).json({
+        success: false,
+        message: "qrToken, template and receiverName are required.",
+      });
+    }
+
+    const qr = await QR.findOne({ token: qrToken });
+
+    if (!qr) {
+      return res.status(404).json({
+        success: false,
+        message: "QR code not found.",
+      });
+    }
+
+    if (qr.status !== "assigned" || !qr.doctor) {
+      return res.status(409).json({
+        success: false,
+        message: "This QR code is not assigned to a doctor.",
+      });
+    }
+
+    const doctor = await Doctor.findOneAndUpdate(
+      {
+        _id: qr.doctor,
+        status: "active",
+        credits: { $gte: GENERATION_CREDIT_COST },
+      },
+      {
+        $inc: { credits: -GENERATION_CREDIT_COST },
+      },
+      {
+        new: true,
+      },
+    );
+
+    if (!doctor) {
+      const currentDoctor = await Doctor.findById(qr.doctor).select("credits status");
+
+      if (!currentDoctor) {
+        return res.status(404).json({
+          success: false,
+          message: "Doctor not found.",
+        });
+      }
+
+      if (currentDoctor.status !== "active") {
+        return res.status(403).json({
+          success: false,
+          message: "This doctor account is inactive.",
+        });
+      }
+
+      return res.status(402).json({
+        success: false,
+        message: "You do not have enough credits to create another generation.",
+        credits: currentDoctor.credits,
+        requiredCredits: GENERATION_CREDIT_COST,
+      });
+    }
+
+    try {
+      const generation = await Generation.create({
+        doctor: doctor._id,
+        mr: qr.assignedByMr || null,
+        qr: qr._id,
+        type: "greeting-card",
+        template,
+        creditsUsed: GENERATION_CREDIT_COST,
+        status: "completed",
+        metadata: {
+          receiverName,
+          senderName,
+        },
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: "Generation created successfully.",
+        generation: {
+          id: generation._id,
+          template: generation.template,
+          creditsUsed: generation.creditsUsed,
+          status: generation.status,
+          createdAt: generation.createdAt,
+        },
+        credits: doctor.credits,
+      });
+    } catch (error) {
+      // Do not charge the doctor if the generation record itself could not be saved.
+      await Doctor.updateOne(
+        { _id: doctor._id },
+        { $inc: { credits: GENERATION_CREDIT_COST } },
+      );
+      throw error;
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+module.exports = { registerDoctor, getDoctorByQRToken, createGeneration };
