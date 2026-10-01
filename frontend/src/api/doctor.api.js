@@ -64,3 +64,42 @@ export const getDoctorByQRToken = async (token) => {
 
   return data;
 };
+
+
+export const createDoctorGeneration = async ({
+  qrToken,
+  template,
+  receiverName,
+  senderName = "",
+}) => {
+  const response = await fetch(`${API_BASE_URL}/api/doctors/generate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...API_HEADERS,
+    },
+    body: JSON.stringify({
+      qrToken,
+      template,
+      receiverName,
+      senderName,
+    }),
+  });
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("The server returned an invalid response.");
+  }
+
+  if (!response.ok || !data?.success) {
+    const error = new Error(data?.message || "Unable to create the generation.");
+    error.status = response.status;
+    error.credits = data?.credits;
+    error.requiredCredits = data?.requiredCredits;
+    throw error;
+  }
+
+  return data;
+};
