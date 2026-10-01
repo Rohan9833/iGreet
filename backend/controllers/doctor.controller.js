@@ -1,5 +1,6 @@
 const Doctor = require("../models/Doctor");
 const QR = require("../models/QR");
+const MR = require("../models/MR");
 
 const registerDoctor = async (req, res, next) => {
   try {
@@ -19,6 +20,13 @@ const registerDoctor = async (req, res, next) => {
       return res.status(400).json({
         success: false,
         message: "qrToken, doctorName, speciality, doctorCode, city and mobile are required.",
+      });
+    }
+
+    if (!req.mr) {
+      return res.status(401).json({
+        success: false,
+        message: "MR login is required before assigning a QR code.",
       });
     }
 
@@ -55,9 +63,20 @@ const registerDoctor = async (req, res, next) => {
     });
 
     const assignedQR = await QR.findOneAndUpdate(
-      { _id: qr._id, status: "unassigned", doctor: null },
-      { $set: { status: "assigned", doctor: doctor._id, assignedAt: new Date() } },
-      { new: true }
+      {
+        _id: qr._id,
+        status: "unassigned",
+        doctor: null,
+      },
+      {
+        $set: {
+          status: "assigned",
+          doctor: doctor._id,
+          assignedAt: new Date(),
+          assignedByMr: req.mr._id,
+        },
+      },
+      { new: true },
     );
 
     if (!assignedQR) {
@@ -67,6 +86,11 @@ const registerDoctor = async (req, res, next) => {
         message: "This QR code was assigned while registration was being completed. Please try again.",
       });
     }
+
+    await MR.updateOne(
+      { _id: req.mr._id },
+      { $addToSet: { doctors: doctor._id } },
+    );
 
     return res.status(201).json({
       success: true,
@@ -90,6 +114,7 @@ const registerDoctor = async (req, res, next) => {
         token: assignedQR.token,
         status: assignedQR.status,
         assignedAt: assignedQR.assignedAt,
+        assignedByMr: assignedQR.assignedByMr,
       },
     });
   } catch (error) {
@@ -99,10 +124,12 @@ const registerDoctor = async (req, res, next) => {
 
 const getDoctorByQRToken = async (req, res, next) => {
   try {
-    const qr = await QR.findOne({ token: req.params.token }).populate(
-      "doctor",
-      "doctorName speciality doctorCode clinicName city area email mobile credits status"
-    );
+    const qr = await QR.findOne({ token: req.params.token })
+      .populate(
+        "doctor",
+        "doctorName speciality doctorCode clinicName city area email mobile credits status",
+      )
+      .populate("assignedByMr", "mrId mrName email hq region zone");
 
     if (!qr) {
       return res.status(404).json({ success: false, message: "QR code not found." });
@@ -116,6 +143,7 @@ const getDoctorByQRToken = async (req, res, next) => {
         token: qr.token,
         status: qr.status,
         assignedAt: qr.assignedAt,
+        assignedByMr: qr.assignedByMr,
       },
       doctor: qr.doctor,
     });
