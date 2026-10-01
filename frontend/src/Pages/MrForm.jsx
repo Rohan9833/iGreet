@@ -203,14 +203,14 @@ const ArrowRightIcon = () => (
 
 const Logo = () => (
   <div className="flex items-center justify-center gap-3">
-    <div className="relative h-12 w-12">
-      <span className="absolute left-0 top-[15px] h-[18px] w-[18px] rounded-[6px] bg-orange-400" />
-      <span className="absolute left-[15px] top-0 h-[18px] w-[18px] rounded-[6px] bg-orange-400" />
-      <span className="absolute left-[30px] top-[15px] h-[18px] w-[18px] rounded-[6px] bg-orange-500" />
-      <span className="absolute left-[15px] top-[30px] h-[18px] w-[18px] rounded-[6px] bg-orange-500" />
+    <div className="relative h-10 w-10 sm:h-12 sm:w-12">
+      <span className="absolute left-0 top-[12px] h-[16px] w-[16px] rounded-[5px] bg-orange-400 sm:top-[15px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
+      <span className="absolute left-[12px] top-0 h-[16px] w-[16px] rounded-[5px] bg-orange-400 sm:left-[15px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
+      <span className="absolute left-[24px] top-[12px] h-[16px] w-[16px] rounded-[5px] bg-orange-500 sm:left-[30px] sm:top-[15px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
+      <span className="absolute left-[12px] top-[24px] h-[16px] w-[16px] rounded-[5px] bg-orange-500 sm:left-[15px] sm:top-[30px] sm:h-[18px] sm:w-[18px] sm:rounded-[6px]" />
     </div>
 
-    <div className="text-[30px] font-bold tracking-[-1.5px] text-slate-900">
+    <div className="text-[26px] font-bold tracking-[-1.2px] text-slate-900 sm:text-[30px]">
       Medi<span className="text-orange-500">QR</span>
     </div>
   </div>
@@ -226,13 +226,13 @@ const FormField = ({
   error,
 }) => {
   return (
-    <div className="grid grid-cols-[35px_minmax(0,1fr)] gap-3">
-      <div className="mt-8 flex h-7 w-7 items-center justify-center text-slate-600">
+    <div className="relative sm:grid sm:grid-cols-[35px_minmax(0,1fr)] sm:gap-3">
+      <div className="mb-2 flex h-6 w-6 items-center justify-center text-slate-600 sm:mb-0 sm:mt-8 sm:h-7 sm:w-7">
         <Icon />
       </div>
 
       <div className="min-w-0">
-        <label className="mb-2 block text-[18px] font-semibold text-[#213653]">
+        <label className="mb-2 block text-[16px] font-semibold text-[#213653] sm:text-[18px]">
           {label}
 
           {required && <span className="ml-1 text-red-500">*</span>}
@@ -415,7 +415,7 @@ export default function MrForm() {
       {/* Main Card */}
       {/* -------------------------------- */}
 
-      <section className="relative z-10 mx-auto w-full max-w-[745px] rounded-[28px] bg-white px-5 py-8 shadow-[0_24px_70px_rgba(24,45,69,0.10),0_4px_20px_rgba(24,45,69,0.04)] sm:px-10 lg:px-[50px]">
+      <section className="relative z-10 mx-auto w-full max-w-[745px] rounded-[22px] bg-white px-4 py-7 shadow-[0_24px_70px_rgba(24,45,69,0.10),0_4px_20px_rgba(24,45,69,0.04)] sm:rounded-[28px] sm:px-10 sm:py-8 lg:px-[50px]">
         {/* Logo */}
 
         <div className="mb-6">
@@ -425,7 +425,7 @@ export default function MrForm() {
         {/* Header */}
 
         <div className="mb-8 text-center">
-          <h1 className="text-[30px] font-bold leading-tight tracking-[-1px] text-[#11233d] sm:text-[36px] lg:text-[43px]">
+          <h1 className="text-[28px] font-bold leading-[1.15] tracking-[-0.8px] text-[#11233d] sm:text-[36px] lg:text-[43px]">
             Assign QR to Doctor
           </h1>
 
@@ -438,7 +438,7 @@ export default function MrForm() {
 
         {/* Form */}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
           {/* Doctor Name */}
 
           <FormField
@@ -613,7 +613,7 @@ export default function MrForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="ml-[43px] flex h-16 w-[calc(100%-43px)] items-center justify-center gap-3 rounded-[14px] bg-gradient-to-r from-orange-500 to-orange-400 text-[18px] font-bold text-white shadow-[0_9px_24px_rgba(255,116,51,0.20)] transition hover:-translate-y-[1px] hover:shadow-[0_12px_28px_rgba(255,116,51,0.27)] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:text-[20px]"
+            className="flex h-14 w-full items-center justify-center gap-3 rounded-[13px] bg-gradient-to-r from-orange-500 to-orange-400 text-[17px] font-bold text-white shadow-[0_9px_24px_rgba(255,116,51,0.20)] transition hover:-translate-y-[1px] hover:shadow-[0_12px_28px_rgba(255,116,51,0.27)] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:ml-[43px] sm:h-16 sm:w-[calc(100%-43px)] sm:rounded-[14px] sm:text-[20px]"
           >
             <span>
               {isSubmitting ? "Assigning QR..." : "Assign QR to Doctor"}
