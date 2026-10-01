@@ -1,4 +1,16 @@
 import { useState } from "react";
+import {
+  UserRound,
+  Stethoscope,
+  IdCard,
+  Hospital,
+  MapPin,
+  LocateFixed,
+  Mail,
+  Phone,
+  ChevronDown,
+  ArrowRight,
+} from "lucide-react";
 
 const SPECIALITIES = [
   "Cardiology",
@@ -37,167 +49,6 @@ const SPECIALITIES = [
   "Pain Medicine",
   "Other",
 ];
-
-/* -------------------- Icons -------------------- */
-
-const DoctorIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7">
-    <path
-      d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-    <path
-      d="M4 21c.8-4 3.45-6 8-6s7.2 2 8 6"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const StethoscopeIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7">
-    <path
-      d="M6 3v5a5 5 0 0 0 10 0V3"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-    <path
-      d="M4 3h4M14 3h4"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-    <path
-      d="M16 13v2a4 4 0 0 0 8 0v-1"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-    <circle cx="23" cy="13" r="1.5" fill="currentColor" />
-  </svg>
-);
-
-const IdCardIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7">
-    <rect
-      x="3"
-      y="5"
-      width="18"
-      height="14"
-      rx="2"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-    <circle cx="8" cy="11" r="2" stroke="currentColor" strokeWidth="1.8" />
-    <path
-      d="M5.5 16c.5-1.5 1.35-2.2 2.5-2.2s2 .7 2.5 2.2M13 10h5M13 14h5"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const HospitalIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7">
-    <path
-      d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h3a1 1 0 0 1 1 1v11M2 21h20"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-    <path
-      d="M10 6v5M7.5 8.5h5M7 14h1M12 14h1M7 18h1M12 18h1"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const LocationIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7">
-    <path
-      d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-    <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="2" />
-  </svg>
-);
-
-const AreaIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7">
-    <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="2" />
-    <circle cx="12" cy="12" r="2" stroke="currentColor" strokeWidth="2" />
-    <path
-      d="M12 2v3M12 19v3M2 12h3M19 12h3"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const EmailIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7">
-    <rect
-      x="3"
-      y="5"
-      width="18"
-      height="14"
-      rx="2"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-    <path
-      d="m4 7 8 6 8-6"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const PhoneIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7">
-    <path
-      d="M7 3h3l1.5 4-2 1.5a16 16 0 0 0 6 6L17 13l4 1.5v3c0 1.1-.9 2-2 2C10.7 19.5 4.5 13.3 4.5 5c0-1.1.9-2 2-2H7Z"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const ChevronDownIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
-    <path
-      d="m6 9 6 6 6-6"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const ArrowRightIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6">
-    <path
-      d="M5 12h14M13 6l6 6-6 6"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 /* -------------------- Logo -------------------- */
 
@@ -442,7 +293,7 @@ export default function MrForm() {
           {/* Doctor Name */}
 
           <FormField
-            icon={DoctorIcon}
+            icon={UserRound}
             label="Doctor Name"
             required
             error={errors.doctorName}
@@ -463,7 +314,7 @@ export default function MrForm() {
           {/* Speciality */}
 
           <FormField
-            icon={StethoscopeIcon}
+            icon={Stethoscope}
             label="Speciality"
             required
             error={errors.speciality}
@@ -487,7 +338,7 @@ export default function MrForm() {
               </select>
 
               <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-800">
-                <ChevronDownIcon />
+                <ChevronDown />
               </div>
             </div>
           </FormField>
@@ -495,7 +346,7 @@ export default function MrForm() {
           {/* Doctor Code */}
 
           <FormField
-            icon={IdCardIcon}
+            icon={IdCard}
             label="MCL Code / Doctor Code"
             required
             error={errors.doctorCode}
@@ -514,7 +365,7 @@ export default function MrForm() {
 
           {/* Clinic / Hospital */}
 
-          <FormField icon={HospitalIcon} label="Clinic / Hospital Name">
+          <FormField icon={Hospital} label="Clinic / Hospital Name">
             <input
               type="text"
               name="clinicName"
@@ -528,7 +379,7 @@ export default function MrForm() {
           {/* City */}
 
           <FormField
-            icon={LocationIcon}
+            icon={MapPin}
             label="City"
             required
             error={errors.city}
@@ -547,7 +398,7 @@ export default function MrForm() {
 
           {/* Area */}
 
-          <FormField icon={AreaIcon} label="Area / Locality">
+          <FormField icon={LocateFixed} label="Area / Locality">
             <input
               type="text"
               name="area"
@@ -560,7 +411,7 @@ export default function MrForm() {
 
           {/* Email */}
 
-          <FormField icon={EmailIcon} label="Email ID" error={errors.email}>
+          <FormField icon={Mail} label="Email ID" error={errors.email}>
             <input
               type="email"
               name="email"
@@ -577,7 +428,7 @@ export default function MrForm() {
           {/* Mobile */}
 
           <FormField
-            icon={PhoneIcon}
+            icon={Phone}
             label="Mobile Number"
             required
             error={errors.mobile}
@@ -588,7 +439,7 @@ export default function MrForm() {
               <div className="flex h-14 items-center justify-between rounded-[13px] border border-slate-300 bg-white px-4 text-[16px] text-slate-800">
                 <span>+91</span>
 
-                <ChevronDownIcon />
+                <ChevronDown />
               </div>
 
               {/* Mobile number */}
@@ -619,7 +470,7 @@ export default function MrForm() {
               {isSubmitting ? "Assigning QR..." : "Assign QR to Doctor"}
             </span>
 
-            {!isSubmitting && <ArrowRightIcon />}
+            {!isSubmitting && <ArrowRight />}
           </button>
         </form>
       </section>
