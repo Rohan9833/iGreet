@@ -771,12 +771,24 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
     try {
       const { blob: cardBlob } = await renderGreetingCardBlob(template, form);
 
+      if (!cardBlob || cardBlob.size === 0) {
+        throw new Error("Unable to prepare the generated card file.");
+      }
+
+      // Convert the canvas Blob to a real File so multipart/form-data
+      // is always sent as an actual uploaded file to Multer.
+      const cardFile = new File(
+        [cardBlob],
+        `${template.id}-${Date.now()}.png`,
+        { type: "image/png" },
+      );
+
       const data = await createDoctorGeneration({
         qrToken,
         template: template.id,
         receiverName: form.receiverName,
         senderName: isTeachersDay ? form.senderName : "",
-        cardBlob,
+        cardBlob: cardFile,
       });
 
       // Use the server's post-charge balance immediately.
