@@ -8,6 +8,7 @@ const doctorRoutes = require("./routes/doctor.routes");
 const hierarchyRoutes = require("./routes/hierarchy.routes");
 const mrAuthRoutes = require("./routes/mrAuth.routes");
 const adminRoutes = require("./routes/admin.routes");
+const adminAuthRoutes = require("./routes/adminAuth.routes");
 
 const app = express();
 
@@ -67,6 +68,7 @@ app.use("/api/qr", qrRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/hierarchy", upload.single("file"), hierarchyRoutes);
 app.use("/api/mr-auth", mrAuthRoutes);
+app.use("/api/admin-auth", adminAuthRoutes);
 app.use("/api/admin", adminRoutes);
 
 module.exports = app;
