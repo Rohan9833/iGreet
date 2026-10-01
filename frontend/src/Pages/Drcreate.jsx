@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getDoctorByQRToken } from "../api/doctor.api";
-import { UserRound, ArrowRight, Heart, X, Send, Sparkles } from "lucide-react";
+import { UserRound, ArrowRight, X, Send, Sparkles } from "lucide-react";
 
 /* -------------------------------------------------------
    Logo
@@ -122,97 +122,106 @@ const Leaves = ({ className = "" }) => (
 ------------------------------------------------------- */
 const TEMPLATES = [
   {
-    id: "get-well",
-    title: "Get Well Soon",
-    defaultMessage:
-      "Wishing you a speedy recovery. Take rest and take care of yourself!",
-  },
-  {
-    id: "birthday",
-    title: "Happy Birthday",
-    defaultMessage:
-      "Wishing you a very Happy Birthday! Stay healthy and happy always.",
-  },
-  {
-    id: "thank-you",
-    title: "Thank You",
-    defaultMessage:
-      "Thank you for trusting me with your care. It was a pleasure.",
+    id: "teachers-day",
+    title: "Teachers Day",
+    image: "/teachersday.png",
   },
 ];
 
-const TemplatePreview = ({ type }) => {
-  if (type === "get-well") {
-    return (
-      <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-[#fffaf4]">
-        <Flower className="absolute -left-3 -top-3 h-14 w-14" />
-        <Flower className="absolute left-5 top-1 h-8 w-8 opacity-80" />
-        <Flower className="absolute -bottom-4 -right-3 h-16 w-16" />
-        <Leaves className="absolute right-0 top-2 h-14 w-14" />
-        <div className="text-center font-serif text-[22px] italic leading-[1.1] text-[#8a3b2a]">
-          Get Well
-          <br />
-          Soon
-        </div>
-        <Heart className="mt-2 h-3.5 w-3.5 fill-[#ef8068] text-[#ef8068]" />
-      </div>
-    );
-  }
+/* -------------------------------------------------------
+   Teachers Day preview
+------------------------------------------------------- */
+const TeacherDayCard = ({ receiverName = "", senderName = "", imageUrl = "" }) => (
+  <div className="relative aspect-[1448/2048] w-full overflow-hidden bg-white">
+    <img
+      src="/teachersday.png"
+      alt="Teachers Day greeting card template"
+      className="absolute inset-0 h-full w-full object-cover"
+    />
 
-  if (type === "birthday") {
-    return (
-      <div className="relative flex h-full w-full flex-col items-center overflow-hidden bg-[#fff8ed] pt-4">
-        <div className="text-[9px] tracking-[5px] text-slate-500">HAPPY</div>
-        <div className="font-serif text-[24px] italic text-[#29394c]">Birthday</div>
-        <svg viewBox="0 0 100 100" className="mt-1 h-[95px] w-[90px]">
-          <path d="M40 60 L48 82 M62 58 L52 82 M50 52 L50 82" stroke="#b9a58f" strokeWidth="1" />
-          <ellipse cx="34" cy="48" rx="15" ry="18" fill="#7aa8c9" />
-          <ellipse cx="62" cy="42" rx="15" ry="18" fill="#eab277" />
-          <ellipse cx="48" cy="34" rx="15" ry="18" fill="#f2c37c" />
-          <rect x="36" y="80" width="28" height="18" rx="2" fill="#4f7c94" />
-          <rect x="47" y="80" width="6" height="18" fill="#f2c37c" />
-        </svg>
-      </div>
-    );
-  }
+    {imageUrl && (
+      <img
+        src={imageUrl}
+        alt="Uploaded recipient"
+        className="absolute left-[27.25%] top-[27.4%] h-[32%] w-[45.5%] rounded-full border border-white object-cover"
+      />
+    )}
 
-  return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-[#fbfcf8]">
-      <Leaves className="absolute right-0 top-0 h-16 w-16" />
-      <Leaves className="absolute bottom-0 left-0 h-16 w-16 rotate-180" />
-      <div className="font-serif text-[22px] italic text-[#304c47]">Thank You</div>
-      <div className="mt-2 h-px w-14 bg-[#d7b49b]" />
-      <Heart className="mt-2 h-3 w-3 fill-[#ef8068] text-[#ef8068]" />
-    </div>
-  );
-};
+    {receiverName && (
+      <div className="absolute left-[8%] right-[8%] top-[63%] text-center text-[clamp(10px,3vw,30px)] font-extrabold uppercase leading-none text-[#f39a18]">
+        {receiverName}
+      </div>
+    )}
+
+    {senderName && (
+      <div className="absolute left-[8%] right-[8%] top-[91.5%] text-center text-[clamp(7px,2vw,20px)] font-extrabold uppercase leading-none text-[#f39a18]">
+        {senderName}
+      </div>
+    )}
+  </div>
+);
 
 /* -------------------------------------------------------
    Popup form
 ------------------------------------------------------- */
-const TemplateModal = ({ template, onClose, doctorName }) => {
+const TemplateModal = ({ template, onClose }) => {
   const [form, setForm] = useState({
-    patientName: "",
-    doctorName: doctorName || "",
-    phone: "",
-    message: template.defaultMessage,
+    receiverName: "",
+    senderName: "",
+    imageUrl: "",
   });
   const [sent, setSent] = useState(false);
 
-  // Esc se close
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const handleChange = (e) =>
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+  useEffect(() => {
+    return () => {
+      if (form.imageUrl) {
+        URL.revokeObjectURL(form.imageUrl);
+      }
+    };
+  }, [form.imageUrl]);
+
+  const handleChange = (e) => {
+    setForm((previous) => ({
+      ...previous,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    setForm((previous) => {
+      if (previous.imageUrl) {
+        URL.revokeObjectURL(previous.imageUrl);
+      }
+
+      return {
+        ...previous,
+        imageUrl: URL.createObjectURL(file),
+      };
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 👉 yaha apna API call / card generate logic daal
-    console.log("Card data:", { template: template.id, ...form });
+
+    console.log("Teachers Day card data:", {
+      template: template.id,
+      receiverName: form.receiverName,
+      senderName: form.senderName,
+      image: form.imageUrl,
+    });
+
     setSent(true);
   };
 
@@ -225,19 +234,19 @@ const TemplateModal = ({ template, onClose, doctorName }) => {
       onClick={onClose}
     >
       <div
-        className="max-h-[92vh] w-full max-w-[430px] overflow-y-auto rounded-t-[28px] bg-white p-5 shadow-2xl sm:rounded-[28px]"
+        className="max-h-[94vh] w-full max-w-[460px] overflow-y-auto rounded-t-[28px] bg-white p-5 shadow-2xl sm:rounded-[28px]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* header */}
         <div className="flex items-start justify-between">
           <div>
             <h3 className="text-[20px] font-bold tracking-[-0.5px] text-[#10233f]">
               {template.title}
             </h3>
             <p className="text-[13px] text-[#718198]">
-              Fill details to create the card
+              Add the recipient, sender and photo.
             </p>
           </div>
+
           <button
             type="button"
             onClick={onClose}
@@ -248,78 +257,76 @@ const TemplateModal = ({ template, onClose, doctorName }) => {
         </div>
 
         {sent ? (
-          <div className="py-10 text-center">
-            <div className="text-5xl">🎉</div>
-            <p className="mt-3 text-[18px] font-bold text-[#10233f]">
-              Card ready for {form.patientName || "patient"}!
+          <div className="py-6">
+            <div className="mx-auto w-full max-w-[260px] overflow-hidden rounded-xl border border-slate-100 shadow-sm">
+              <TeacherDayCard
+                receiverName={form.receiverName}
+                senderName={form.senderName}
+                imageUrl={form.imageUrl}
+              />
+            </div>
+
+            <p className="mt-4 text-center text-[16px] font-bold text-[#10233f]">
+              Teachers Day card created!
             </p>
+
             <button
+              type="button"
               onClick={onClose}
-              className="mt-5 rounded-full bg-orange-500 px-6 py-2.5 text-[14px] font-semibold text-white"
+              className="mt-4 w-full rounded-full bg-orange-500 px-6 py-2.5 text-[14px] font-semibold text-white"
             >
               Done
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-4">
-            {/* preview */}
-            <div className="mx-auto mb-4 h-[150px] w-[115px] overflow-hidden rounded-xl border border-orange-100 shadow-sm">
-              <TemplatePreview type={template.id} />
+            <div className="mx-auto mb-5 w-[180px] overflow-hidden rounded-xl border border-orange-100 shadow-sm">
+              <TeacherDayCard
+                receiverName={form.receiverName}
+                senderName={form.senderName}
+                imageUrl={form.imageUrl}
+              />
             </div>
 
             <div className="space-y-3">
               <div>
                 <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
-                  Patient Name
+                  Receiver Name
                 </label>
                 <input
                   required
-                  name="patientName"
-                  value={form.patientName}
+                  name="receiverName"
+                  value={form.receiverName}
                   onChange={handleChange}
-                  placeholder="e.g. Amit Sharma"
+                  placeholder="e.g. HARSH"
                   className={inputCls}
                 />
               </div>
 
               <div>
                 <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
-                  Doctor Name
+                  Sender Name
                 </label>
                 <input
                   required
-                  name="doctorName"
-                  value={form.doctorName}
+                  name="senderName"
+                  value={form.senderName}
                   onChange={handleChange}
+                  placeholder="e.g. ROHAN CHANDRAJEET PAL"
                   className={inputCls}
                 />
               </div>
 
               <div>
                 <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
-                  Patient Phone (WhatsApp)
+                  Recipient Image
                 </label>
                 <input
-                  name="phone"
-                  type="tel"
-                  value={form.phone}
-                  onChange={handleChange}
-                  placeholder="+91 98765 43210"
-                  className={inputCls}
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
-                  Message
-                </label>
-                <textarea
                   required
-                  name="message"
-                  rows={3}
-                  value={form.message}
-                  onChange={handleChange}
-                  className={`${inputCls} resize-none`}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="block w-full cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-orange-50 file:px-3 file:py-1.5 file:text-[12px] file:font-semibold file:text-orange-600"
                 />
               </div>
             </div>
@@ -488,7 +495,7 @@ export default function Drcreate() {
         <section className="mt-6">
           <div className="flex items-center justify-between">
             <h2 className="text-[20px] font-bold tracking-[-0.5px] text-[#10233f]">
-              Recent Creations
+              Templates
             </h2>
             <button
               type="button"
@@ -500,16 +507,27 @@ export default function Drcreate() {
           </div>
 
           {/* Clickable templates */}
-          <div className="mt-4 grid grid-cols-3 gap-3">
+          <div className="mt-4 grid grid-cols-2 gap-3">
             {TEMPLATES.map((t) => (
               <button
                 key={t.id}
                 type="button"
                 onClick={() => setActiveTemplate(t)}
                 aria-label={t.title}
-                className="aspect-[0.68] overflow-hidden rounded-[12px] border border-orange-100 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-95"
+                className="group overflow-hidden rounded-[14px] border border-orange-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
               >
-                <TemplatePreview type={t.id} />
+                <div className="relative overflow-hidden">
+                  <img
+                    src={t.image}
+                    alt={t.title}
+                    className="block aspect-[1448/2048] w-full object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/45 to-transparent px-3 pb-3 pt-10">
+                    <span className="text-[13px] font-bold text-white">
+                      {t.title}
+                    </span>
+                  </div>
+                </div>
               </button>
             ))}
           </div>
