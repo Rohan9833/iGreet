@@ -10,14 +10,10 @@ const API_HEADERS = {
 const request = async (path, options = {}) => {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
-    headers: {
-      ...API_HEADERS,
-      ...(options.headers || {}),
-    },
+    headers: { ...API_HEADERS, ...(options.headers || {}) },
   });
 
   let data = null;
-
   try {
     data = await response.json();
   } catch {
@@ -31,6 +27,8 @@ const request = async (path, options = {}) => {
   return data;
 };
 
+export const getAdminDashboard = async () => request("/api/admin/dashboard");
+
 export const getAdminQRCodes = async () => {
   const data = await request("/api/qr");
   return data.qrCodes || [];
@@ -39,18 +37,48 @@ export const getAdminQRCodes = async () => {
 export const generateAdminQRCodes = async (quantity) => {
   const data = await request("/api/qr/generate", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ quantity: Number(quantity) }),
   });
-
   return data.qrCodes || [];
 };
 
-export const getDoctorByQRToken = async (token) => {
-  const data = await request(
-    `/api/doctors/by-qr/${encodeURIComponent(token)}`,
-  );
-  return data.doctor || null;
+export const unassignAdminQR = async (id) =>
+  request(`/api/admin/qr/${encodeURIComponent(id)}/unassign`, {
+    method: "PATCH",
+  });
+
+export const updateAdminQRStatus = async (id, status) =>
+  request(`/api/admin/qr/${encodeURIComponent(id)}/status`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+
+export const getAdminDoctors = async (search = "") => {
+  const query = search ? `?search=${encodeURIComponent(search)}` : "";
+  const data = await request(`/api/admin/doctors${query}`);
+  return data.doctors || [];
+};
+
+export const getAdminDoctorDetails = async (id) => {
+  const data = await request(`/api/admin/doctors/${encodeURIComponent(id)}`);
+  return data;
+};
+
+export const getAdminMRs = async (search = "") => {
+  const query = search ? `?search=${encodeURIComponent(search)}` : "";
+  const data = await request(`/api/admin/mrs${query}`);
+  return data.mrs || [];
+};
+
+export const getAdminGenerations = async (search = "") => {
+  const query = search ? `?search=${encodeURIComponent(search)}` : "";
+  const data = await request(`/api/admin/generations${query}`);
+  return data.generations || [];
+};
+
+export const getHierarchySummary = async () => {
+  const data = await request("/api/admin/hierarchy-summary");
+  return data.hierarchy;
 };
