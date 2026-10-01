@@ -266,7 +266,7 @@ export default function MrForm() {
       {/* Main Card */}
       {/* -------------------------------- */}
 
-      <section className="relative z-10 mx-auto w-full max-w-[745px] rounded-[18px] bg-white px-3 py-3.5 shadow-[0_24px_70px_rgba(24,45,69,0.10),0_4px_20px_rgba(24,45,69,0.04)] sm:rounded-[28px] sm:px-10 sm:py-8 lg:px-[50px]">
+      <section className="relative z-10 mx-auto w-[85vw] max-w-[745px] rounded-[18px] bg-white px-3 py-3.5 shadow-[0_24px_70px_rgba(24,45,69,0.10),0_4px_20px_rgba(24,45,69,0.04)] sm:rounded-[28px] sm:px-10 sm:py-8 lg:px-[50px]">
         {/* Logo */}
 
         <div className="mb-2.5 sm:mb-6">
