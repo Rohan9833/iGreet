@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Download, Filter, Plus, QrCode, Search, X } from "lucide-react";
-import { getAdminQRCodes } from "../../api/admin.api";
+import { generateAdminQRCodes, getAdminQRCodes } from "../../api/admin.api";
 
 const statusStyles = {
   assigned: "bg-emerald-50 text-emerald-600",
@@ -15,6 +15,7 @@ export default function AdminQRCodes() {
   const [status, setStatus] = useState("all");
   const [showGenerate, setShowGenerate] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
     getAdminQRCodes().then(setQrs).catch(console.error).finally(() => setLoading(false));
@@ -171,11 +172,29 @@ export default function AdminQRCodes() {
             </label>
 
             <button
-              onClick={() => alert("QR generation API is ready at POST /api/qr/generate. Connect this action when the admin backend endpoint is exposed.")}
+              onClick={async () => {
+                const count = Number(quantity);
+                if (!Number.isInteger(count) || count < 1 || count > 1000) {
+                  alert("Enter a quantity between 1 and 1000.");
+                  return;
+                }
+
+                setGenerating(true);
+
+                try {
+                  const created = await generateAdminQRCodes(count);
+                  setQrs((current) => [...created, ...current]);
+                  setShowGenerate(false);
+                } catch (error) {
+                  alert(error.message || "Unable to generate QR codes.");
+                } finally {
+                  setGenerating(false);
+                }
+              }}
               className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-500 text-sm font-bold text-white hover:bg-orange-400"
             >
               <QrCode className="h-4 w-4" />
-              Generate {quantity || 0} QR codes
+              {generating ? "Generating..." : `Generate ${quantity || 0} QR codes`}
             </button>
           </div>
         </div>
