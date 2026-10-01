@@ -184,33 +184,58 @@ const TeacherDayCard = ({
   </div>
 );
 
+const FESTIVAL_LAYOUTS = {
+  "independence-day": {
+    image:
+      "absolute left-[25%] top-[4%] h-[36%] w-[50%] rounded-full object-cover",
+    name:
+      "absolute left-[23%] right-[23%] top-[40.2%] text-center text-[clamp(10px,3vw,30px)] font-extrabold uppercase leading-none text-white",
+  },
+  dussehra: {
+    image:
+      "absolute left-[25%] top-[4%] h-[36%] w-[50%] rounded-full object-cover",
+    name:
+      "absolute left-[23%] right-[23%] top-[40.2%] text-center text-[clamp(10px,3vw,30px)] font-extrabold uppercase leading-none text-white",
+  },
+  anniversary: {
+    image:
+      "absolute left-[29%] top-[12%] h-[42%] w-[42%] rounded-full object-cover",
+    name:
+      "absolute left-[16%] right-[16%] top-[35.5%] text-center text-[clamp(10px,3vw,30px)] font-extrabold uppercase leading-none text-[#9c1f60]",
+  },
+};
+
 const FestivalCard = ({
   template,
   receiverName = "",
   imageUrl = "",
-}) => (
-  <div className="relative aspect-[1448/2048] w-full overflow-hidden bg-white">
-    <img
-      src={template.image}
-      alt={`${template.title} greeting card template`}
-      className="absolute inset-0 h-full w-full object-cover"
-    />
+}) => {
+  const layout = FESTIVAL_LAYOUTS[template.id] || FESTIVAL_LAYOUTS["independence-day"];
 
-    {imageUrl && (
+  return (
+    <div className="relative aspect-[1448/2048] w-full overflow-hidden bg-white">
       <img
-        src={imageUrl}
-        alt="Uploaded recipient"
-        className="absolute left-[27.25%] top-[27.4%] h-[32%] w-[45.5%] rounded-full border border-white object-cover"
+        src={template.image}
+        alt={`${template.title} greeting card template`}
+        className="absolute inset-0 h-full w-full object-cover"
       />
-    )}
 
-    {receiverName && (
-      <div className="absolute left-[8%] right-[8%] top-[63%] text-center text-[clamp(10px,3vw,30px)] font-extrabold uppercase leading-none text-[#f39a18]">
-        {receiverName}
-      </div>
-    )}
-  </div>
-);
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt="Uploaded recipient"
+          className={layout.image}
+        />
+      )}
+
+      {receiverName && (
+        <div className={layout.name}>
+          {receiverName}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const TemplatePreview = ({ template, receiverName, senderName, imageUrl }) => {
   if (template.id === "teachers-day") {
