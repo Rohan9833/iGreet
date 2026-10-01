@@ -7,32 +7,74 @@ const QR = require("../models/QR");
 
 const QR_STORAGE_DIR = path.resolve(__dirname, "../storage/qrcodes");
 
-const getFrontendUrl = () =>
-  (process.env.FRONTEND_URL || "http://localhost:5173").replace(/\/$/, "");
+/**
+ * Frontend URL
+ *
+ * This is the URL that will actually be encoded inside the QR code.
+ *
+ * Example:
+ * http://192.168.1.3:5173/qr/<token>
+ */
+const getFrontendUrl = () => {
+  return (
+    process.env.FRONTEND_URL || "http://192.168.1.3:5173"
+  ).replace(/\/$/, "");
+};
 
-const getBackendUrl = () =>
-  (
+/**
+ * Backend URL
+ *
+ * This is NOT encoded inside the QR.
+ * It is only used for API/image URLs returned by the backend.
+ *
+ * Example:
+ * https://duplex-slate-kilobyte.ngrok-free.dev
+ */
+const getBackendUrl = () => {
+  return (
     process.env.BACKEND_URL ||
     `http://localhost:${process.env.PORT || 5000}`
   ).replace(/\/$/, "");
+};
 
-const createUniqueToken = () => crypto.randomBytes(18).toString("hex");
-
-const createQRCode = async () => {
+const createUniqueToken = async () => {
   let token;
   let exists = true;
 
   while (exists) {
-    token = createUniqueToken();
-    exists = await QR.exists({ token });
+    token = crypto.randomBytes(18).toString("hex");
+
+    exists = await QR.exists({
+      token,
+    });
   }
 
+  return token;
+};
+
+const createQRCode = async () => {
+  // Create a unique token
+  const token = await createUniqueToken();
+
+  // Human-readable QR code
   const shortToken = token.slice(0, 8).toUpperCase();
   const code = `IG-${shortToken}`;
+
+  /**
+   * THIS IS THE URL STORED INSIDE THE QR CODE.
+   *
+   * Example:
+   * http://192.168.1.3:5173/qr/abc123...
+   */
   const qrUrl = `${getFrontendUrl()}/qr/${token}`;
+
+  // PNG filename
   const imageFileName = `${code}.png`;
+
+  // Full local path where the PNG will be saved
   const imagePath = path.join(QR_STORAGE_DIR, imageFileName);
 
+  // Generate actual QR PNG
   await QRCode.toFile(imagePath, qrUrl, {
     type: "png",
     width: 800,
@@ -40,6 +82,7 @@ const createQRCode = async () => {
     errorCorrectionLevel: "H",
   });
 
+  // Save QR information in MongoDB
   const qr = await QR.create({
     code,
     token,
@@ -52,12 +95,25 @@ const createQRCode = async () => {
     code: qr.code,
     token: qr.token,
     status: qr.status,
+
+    // URL encoded inside the QR
     qrUrl: qr.qrUrl,
+
+    // Public URL to the generated PNG
     imageUrl: `${getBackendUrl()}/qrcodes/${qr.imageFileName}`,
+
     createdAt: qr.createdAt,
   };
 };
 
+/**
+ * POST /api/qr/generate
+ *
+ * Body:
+ * {
+ *   "quantity": 10
+ * }
+ */
 const generateQRCodes = async (req, res, next) => {
   try {
     const requestedQuantity = Number(req.body.quantity);
@@ -76,12 +132,17 @@ const generateQRCodes = async (req, res, next) => {
       });
     }
 
-    await fs.mkdir(QR_STORAGE_DIR, { recursive: true });
+    // Make sure storage directory exists
+    await fs.mkdir(QR_STORAGE_DIR, {
+      recursive: true,
+    });
 
     const qrCodes = [];
 
     for (let index = 0; index < requestedQuantity; index += 1) {
-      qrCodes.push(await createQRCode());
+      const qr = await createQRCode();
+
+      qrCodes.push(qr);
     }
 
     return res.status(201).json({
@@ -95,10 +156,17 @@ const generateQRCodes = async (req, res, next) => {
   }
 };
 
+/**
+ * GET /api/qr
+ *
+ * Returns all generated QR codes.
+ */
 const listQRCodes = async (req, res, next) => {
   try {
     const qrs = await QR.find()
-      .sort({ createdAt: -1 })
+      .sort({
+        createdAt: -1,
+      })
       .select(
         "code token status doctor qrUrl imageFileName assignedAt createdAt updatedAt"
       );
@@ -109,8 +177,13 @@ const listQRCodes = async (req, res, next) => {
       token: qr.token,
       status: qr.status,
       doctor: qr.doctor,
+
+      // URL encoded inside the QR
       qrUrl: qr.qrUrl,
+
+      // Public URL of QR PNG
       imageUrl: `${getBackendUrl()}/qrcodes/${qr.imageFileName}`,
+
       assignedAt: qr.assignedAt,
       createdAt: qr.createdAt,
       updatedAt: qr.updatedAt,
@@ -126,9 +199,16 @@ const listQRCodes = async (req, res, next) => {
   }
 };
 
+/**
+ * GET /api/qr/:token
+ *
+ * Used by the frontend to check a scanned QR.
+ */
 const getQRByToken = async (req, res, next) => {
   try {
-    const qr = await QR.findOne({ token: req.params.token }).select(
+    const qr = await QR.findOne({
+      token: req.params.token,
+    }).select(
       "code token status doctor qrUrl imageFileName assignedAt createdAt"
     );
 
@@ -147,8 +227,13 @@ const getQRByToken = async (req, res, next) => {
         token: qr.token,
         status: qr.status,
         doctor: qr.doctor,
+
+        // URL encoded inside the QR
         qrUrl: qr.qrUrl,
+
+        // Public URL of QR PNG
         imageUrl: `${getBackendUrl()}/qrcodes/${qr.imageFileName}`,
+
         assignedAt: qr.assignedAt,
         createdAt: qr.createdAt,
       },
