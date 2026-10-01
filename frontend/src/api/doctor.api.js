@@ -128,5 +128,15 @@ export const getDoctorGenerationsByQRToken = async (token) => {
     throw new Error(data?.message || "Unable to load generations.");
   }
 
-  return data;
+  return {
+    ...data,
+    generations: (data.generations || []).map((generation) => ({
+      ...generation,
+      outputUrl: generation.outputUrl
+        ? generation.outputUrl.startsWith("http")
+          ? generation.outputUrl
+          : `${API_BASE_URL}${generation.outputUrl}`
+        : "",
+    })),
+  };
 };
