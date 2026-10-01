@@ -12,7 +12,8 @@ import {
   UsersRound,
   X,
 } from "lucide-react";
-import { useState } from "react";\nimport { getAdminUser, logoutAdmin } from "../../api/adminAuth.api";
+import { useState } from "react";
+import { getAdminUser, logoutAdmin } from "../../api/adminAuth.api";
 
 const navigation = [
   { label: "Dashboard", to: "/admin", icon: LayoutDashboard, end: true },
@@ -30,7 +31,7 @@ const pageTitles = {
   "/admin/generations": ["Generations", "Monitor doctor creations and credit usage"],
 };
 
-export default function AdminLayout() {\n  const adminUser = getAdminUser();
+export default function AdminLayout() { const adminUser = getAdminUser();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
