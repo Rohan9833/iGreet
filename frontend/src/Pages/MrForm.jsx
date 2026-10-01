@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { registerDoctor } from "../api/doctor.api";
 import {
   UserRound,
   Stethoscope,
@@ -190,35 +192,20 @@ export default function MrForm() {
       return;
     }
 
+    if (!qrToken) {
+      alert("This registration page was not opened from a valid QR code.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      /*
-       * API WILL BE CONNECTED HERE.
-       *
-       * Later we will send:
-       *
-       * {
-       *   doctorName,
-       *   speciality,
-       *   doctorCode,
-       *   clinicName,
-       *   city,
-       *   area,
-       *   email,
-       *   mobile,
-       *   qrId
-       * }
-       */
-
-      console.log("Doctor registration:", formData);
-
-      await new Promise((resolve) => setTimeout(resolve, 700));
-
+      await registerDoctor({ qrToken, ...formData });
       alert("QR successfully assigned to the doctor.");
+      navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, { replace: true });
     } catch (error) {
       console.error(error);
-      alert("Something went wrong. Please try again.");
+      alert(error.message || "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
