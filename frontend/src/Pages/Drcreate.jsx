@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getDoctorByQRToken } from "../api/doctor.api";
+import { createDoctorGeneration, getDoctorByQRToken } from "../api/doctor.api";
 import { UserRound, ArrowRight, X, Send, Sparkles } from "lucide-react";
 
 /* -------------------------------------------------------
@@ -634,7 +634,7 @@ const downloadGreetingCard = async (template, form) => {
   link.click();
 };
 
-const TemplateModal = ({ template, onClose }) => {
+const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => {
   const isTeachersDay = template.id === "teachers-day";
   const [form, setForm] = useState({
     receiverName: "",
@@ -644,6 +644,11 @@ const TemplateModal = ({ template, onClose }) => {
   const [cropSource, setCropSource] = useState("");
   const [sent, setSent] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [generationError, setGenerationError] = useState("");
+
+  const GENERATION_COST = 20;
+  const canGenerate = credits >= GENERATION_COST;
 
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
@@ -699,17 +704,47 @@ const TemplateModal = ({ template, onClose }) => {
     setCropSource("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(`${template.title} card data:`, {
-      template: template.id,
-      receiverName: form.receiverName,
-      ...(isTeachersDay ? { senderName: form.senderName } : {}),
-      image: form.imageUrl,
-    });
+    if (creating) {
+      return;
+    }
 
-    setSent(true);
+    if (!canGenerate) {
+      setGenerationError("You have no credits left. You cannot create another generation.");
+      return;
+    }
+
+    setCreating(true);
+    setGenerationError("");
+
+    try {
+      const data = await createDoctorGeneration({
+        qrToken,
+        template: template.id,
+        receiverName: form.receiverName,
+        senderName: isTeachersDay ? form.senderName : "",
+      });
+
+      onGenerated?.(data.credits);
+      setSent(true);
+    } catch (error) {
+      console.error("Unable to create generation:", error);
+
+      if (error.status === 402) {
+        onGenerated?.(error.credits ?? 0);
+        setGenerationError(
+          error.credits > 0
+            ? `You have ${error.credits} credits left, but each generation costs 20 credits.`
+            : "You have no credits left. You cannot create another generation.",
+        );
+      } else {
+        setGenerationError(error.message || "Unable to create the generation. Please try again.");
+      }
+    } finally {
+      setCreating(false);
+    }
   };
 
   const handleDownload = async () => {
@@ -853,12 +888,32 @@ const TemplateModal = ({ template, onClose }) => {
                 </div>
               </div>
 
+              {generationError && (
+                <div className="mt-4 rounded-xl border border-red-100 bg-red-50 px-3.5 py-3 text-[12px] font-medium leading-[1.4] text-red-600">
+                  {generationError}
+                </div>
+              )}
+
+              <div className="mt-4 flex items-center justify-between rounded-xl border border-orange-100 bg-orange-50 px-3.5 py-2.5">
+                <span className="text-[12px] font-medium text-[#718198]">
+                  Generation cost
+                </span>
+                <span className="text-[13px] font-bold text-orange-600">
+                  20 credits
+                </span>
+              </div>
+
               <button
                 type="submit"
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-[15px] font-semibold text-white shadow-sm transition active:scale-[0.98]"
+                disabled={creating || !canGenerate}
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-[15px] font-semibold text-white shadow-sm transition active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
               >
                 <Send className="h-4 w-4" />
-                Create Card
+                {creating
+                  ? "Creating..."
+                  : canGenerate
+                    ? "Create Card • 20 Credits"
+                    : "No Credits Left"}
               </button>
             </form>
           )}
@@ -1071,7 +1126,13 @@ export default function Drcreate() {
         <TemplateModal
           key={activeTemplate.id}
           template={activeTemplate}
-          doctorName={doctor?.doctorName}
+          qrToken={qrToken}
+          credits={doctor?.credits ?? 0}
+          onGenerated={(credits) =>
+            setDoctor((previous) =>
+              previous ? { ...previous, credits } : previous,
+            )
+          }
           onClose={() => setActiveTemplate(null)}
         />
       )}
