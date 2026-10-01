@@ -171,7 +171,7 @@ const TeacherDayCard = ({
     )}
 
     {receiverName && (
-      <div className="absolute left-[8%] right-[8%] top-[63%] text-center text-[clamp(10px,3vw,30px)] font-extrabold uppercase leading-none text-[#f39a18]">
+      <div className="absolute left-[10%] right-[10%] top-[65.5%] text-center text-[clamp(10px,1.6vw,20px)] font-extrabold uppercase leading-none text-[#f39a18]">
         {receiverName}
       </div>
     )}
@@ -189,19 +189,19 @@ const FESTIVAL_LAYOUTS = {
     image:
       "absolute left-[25%] top-[4%] h-[36%] w-[50%] rounded-full object-cover",
     name:
-      "absolute left-[28%] right-[28%] top-[43.8%] text-center text-[clamp(10px,4vw,18px)] font-extrabold uppercase leading-none text-white",
+      "absolute left-[30%] right-[30%] top-[45.8%] text-center text-[clamp(9px,1.15vw,16px)] font-extrabold uppercase leading-none text-white",
   },
   dussehra: {
     image:
       "absolute left-[25%] top-[4%] h-[36%] w-[50%] rounded-full object-cover",
     name:
-      "absolute left-[28%] right-[28%] top-[44%] text-center text-[clamp(10px,4vw,18px)] font-extrabold uppercase leading-none text-white",
+      "absolute left-[30%] right-[30%] top-[45.8%] text-center text-[clamp(9px,1.15vw,16px)] font-extrabold uppercase leading-none text-white",
   },
   anniversary: {
     image:
       "absolute left-[29%] top-[12%] h-[42%] w-[42%] rounded-full object-cover",
     name:
-      "absolute left-[24%] right-[24%] top-[52.5%] text-center text-[clamp(10px,4vw,19px)] font-extrabold uppercase leading-none text-[#9c1f60]",
+      "absolute left-[24%] right-[24%] top-[90%] text-center text-[clamp(10px,1.35vw,18px)] font-extrabold uppercase leading-none text-[#ef5f1f]",
   },
 };
 
