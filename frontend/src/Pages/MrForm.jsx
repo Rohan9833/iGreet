@@ -87,7 +87,6 @@ const FormField = ({
       <div className="min-w-0">
         <label className="mb-1 block text-[13px] font-semibold text-[#213653] sm:mb-2 sm:text-[18px]">
           {label}
-
           {required && <span className="ml-1 text-red-500">*</span>}
         </label>
 
@@ -102,6 +101,10 @@ const FormField = ({
 /* -------------------- Main Component -------------------- */
 
 export default function MrForm() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const qrToken = searchParams.get("qrToken") || "";
+
   const [formData, setFormData] = useState({
     doctorName: "",
     speciality: "",
@@ -202,7 +205,9 @@ export default function MrForm() {
     try {
       await registerDoctor({ qrToken, ...formData });
       alert("QR successfully assigned to the doctor.");
-      navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, { replace: true });
+      navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, {
+        replace: true,
+      });
     } catch (error) {
       console.error(error);
       alert(error.message || "Something went wrong. Please try again.");
@@ -213,19 +218,11 @@ export default function MrForm() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#f8fafb] px-1.5 py-2 font-sans sm:px-6 sm:py-8 lg:py-12">
-      {/* -------------------------------- */}
-      {/* Background Decorations */}
-      {/* -------------------------------- */}
-
       <div className="pointer-events-none absolute -left-40 top-20 h-72 w-72 rounded-full bg-orange-50" />
-
       <div className="pointer-events-none absolute -left-28 top-[250px] h-20 w-64 -rotate-[-12deg] rounded-[50%] border-t-[8px] border-orange-400" />
-
       <div className="pointer-events-none absolute -right-32 bottom-8 h-64 w-64 rounded-full bg-orange-50" />
-
       <div className="pointer-events-none absolute -right-24 bottom-[330px] h-24 w-64 rotate-[45deg] rounded-[50%] border-t-[8px] border-orange-300" />
 
-      {/* Top right dots */}
       <div className="pointer-events-none absolute right-8 top-64 hidden h-24 w-20 opacity-60 sm:block">
         <div
           className="h-full w-full"
@@ -237,7 +234,6 @@ export default function MrForm() {
         />
       </div>
 
-      {/* Bottom left dots */}
       <div className="pointer-events-none absolute bottom-16 left-8 hidden h-24 w-20 opacity-60 sm:block">
         <div
           className="h-full w-full"
@@ -249,18 +245,10 @@ export default function MrForm() {
         />
       </div>
 
-      {/* -------------------------------- */}
-      {/* Main Card */}
-      {/* -------------------------------- */}
-
       <section className="relative z-10 mx-auto w-[85vw] max-w-[745px] rounded-[18px] bg-white px-3 py-3.5 shadow-[0_24px_70px_rgba(24,45,69,0.10),0_4px_20px_rgba(24,45,69,0.04)] sm:rounded-[28px] sm:px-10 sm:py-8 lg:px-[50px]">
-        {/* Logo */}
-
         <div className="mb-2.5 sm:mb-6">
           <Logo />
         </div>
-
-        {/* Header */}
 
         <div className="mb-4 text-center sm:mb-8">
           <h1 className="text-[22px] font-bold leading-[1.15] tracking-[-0.8px] text-[#11233d] sm:text-[36px] lg:text-[43px]">
@@ -274,11 +262,7 @@ export default function MrForm() {
           </p>
         </div>
 
-        {/* Form */}
-
         <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-6">
-          {/* Doctor Name */}
-
           <FormField
             icon={UserRound}
             label="Doctor Name"
@@ -298,8 +282,6 @@ export default function MrForm() {
             />
           </FormField>
 
-          {/* Speciality */}
-
           <FormField
             icon={Stethoscope}
             label="Speciality"
@@ -313,10 +295,11 @@ export default function MrForm() {
                 onChange={handleChange}
                 className={`h-10 w-full cursor-pointer appearance-none rounded-[9px] border bg-white px-3 pr-9 text-[13px] text-slate-800 outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:pr-12 sm:text-[16px] ${
                   formData.speciality ? "text-slate-800" : "text-slate-400"
-                } ${errors.speciality ? "border-red-400" : "border-slate-300"}`}
+                } ${
+                  errors.speciality ? "border-red-400" : "border-slate-300"
+                }`}
               >
                 <option value="">Select Speciality</option>
-
                 {SPECIALITIES.map((speciality) => (
                   <option key={speciality} value={speciality}>
                     {speciality}
@@ -329,8 +312,6 @@ export default function MrForm() {
               </div>
             </div>
           </FormField>
-
-          {/* Doctor Code */}
 
           <FormField
             icon={IdCard}
@@ -350,8 +331,6 @@ export default function MrForm() {
             />
           </FormField>
 
-          {/* Clinic / Hospital */}
-
           <FormField icon={Hospital} label="Clinic / Hospital Name">
             <input
               type="text"
@@ -362,8 +341,6 @@ export default function MrForm() {
               className="h-10 w-full rounded-[9px] border border-slate-300 bg-white px-3 text-[13px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px]"
             />
           </FormField>
-
-          {/* City */}
 
           <FormField
             icon={MapPin}
@@ -383,8 +360,6 @@ export default function MrForm() {
             />
           </FormField>
 
-          {/* Area */}
-
           <FormField icon={LocateFixed} label="Area / Locality">
             <input
               type="text"
@@ -395,8 +370,6 @@ export default function MrForm() {
               className="h-10 w-full rounded-[9px] border border-slate-300 bg-white px-3 text-[13px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-100 sm:h-14 sm:rounded-[13px] sm:px-5 sm:text-[16px]"
             />
           </FormField>
-
-          {/* Email */}
 
           <FormField icon={Mail} label="Email ID" error={errors.email}>
             <input
@@ -412,8 +385,6 @@ export default function MrForm() {
             />
           </FormField>
 
-          {/* Mobile */}
-
           <FormField
             icon={Phone}
             label="Mobile Number"
@@ -421,15 +392,10 @@ export default function MrForm() {
             error={errors.mobile}
           >
             <div className="grid grid-cols-[65px_minmax(0,1fr)] gap-2 sm:grid-cols-[120px_minmax(0,1fr)]">
-              {/* Country code */}
-
               <div className="flex h[50px] items-center justify-between rounded-[9px] border border-slate-300 bg-white px-2.5 text-[13px] text-slate-800 sm:h-14 sm:rounded-[13px] sm:px-4 sm:text-[16px]">
                 <span>+91</span>
-
                 <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
-
-              {/* Mobile number */}
 
               <input
                 type="tel"
@@ -445,8 +411,6 @@ export default function MrForm() {
               />
             </div>
           </FormField>
-
-          {/* Submit Button */}
 
           <button
             type="submit"
