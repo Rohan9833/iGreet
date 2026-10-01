@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { getDoctorByQRToken } from "../api/doctor.api";
 import { UserRound, ArrowRight, Heart, X, Send, Sparkles } from "lucide-react";
 
 /* -------------------------------------------------------
@@ -141,7 +143,15 @@ const TEMPLATES = [
 
 const TemplatePreview = ({ type }) => {
   if (type === "get-well") {
-    return (
+    if (loadingDoctor) {
+    return <main className="flex min-h-screen items-center justify-center bg-[#f6f9fc] text-[#10233f]">Loading doctor profile...</main>;
+  }
+
+  if (doctorError) {
+    return <main className="flex min-h-screen items-center justify-center bg-[#f6f9fc] px-5 text-center text-[#10233f]">{doctorError}</main>;
+  }
+
+  return (
       <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-[#fffaf4]">
         <Flower className="absolute -left-3 -top-3 h-14 w-14" />
         <Flower className="absolute left-5 top-1 h-8 w-8 opacity-80" />
@@ -188,10 +198,10 @@ const TemplatePreview = ({ type }) => {
 /* -------------------------------------------------------
    Popup form
 ------------------------------------------------------- */
-const TemplateModal = ({ template, onClose }) => {
+const TemplateModal = ({ template, onClose, doctorName }) => {
   const [form, setForm] = useState({
     patientName: "",
-    doctorName: "Dr. Rohan Mehta",
+    doctorName: doctorName || "",
     phone: "",
     message: template.defaultMessage,
   });
@@ -340,7 +350,37 @@ const TemplateModal = ({ template, onClose }) => {
    Main Page
 ------------------------------------------------------- */
 export default function Drcreate() {
+  const [searchParams] = useSearchParams();
+  const qrToken = searchParams.get("qrToken") || "";
+  const [doctor, setDoctor] = useState(null);
+  const [loadingDoctor, setLoadingDoctor] = useState(true);
+  const [doctorError, setDoctorError] = useState("");
   const [activeTemplate, setActiveTemplate] = useState(null);
+
+  useEffect(() => {
+    if (!qrToken) {
+      setDoctorError("No QR code was provided.");
+      setLoadingDoctor(false);
+      return;
+    }
+
+    const loadDoctor = async () => {
+      try {
+        const data = await getDoctorByQRToken(qrToken);
+        if (data.qr.status !== "assigned" || !data.doctor) {
+          throw new Error("This QR code is not assigned to a doctor.");
+        }
+        setDoctor(data.doctor);
+      } catch (error) {
+        console.error(error);
+        setDoctorError(error.message || "Unable to load doctor details.");
+      } finally {
+        setLoadingDoctor(false);
+      }
+    };
+
+    loadDoctor();
+  }, [qrToken]);
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#f6f9fc] font-sans">
@@ -362,7 +402,7 @@ export default function Drcreate() {
               className="flex h-9 items-center gap-1.5 rounded-full border border-orange-100 bg-[#fff5ec] px-3 text-[12px] font-semibold text-[#e96526] shadow-sm"
             >
               <Sparkles className="h-3.5 w-3.5" />
-              <span>120 Credits</span>
+              <span>{doctor?.credits ?? 0} Credits</span>
             </button>
 
             {/* <button
@@ -380,7 +420,7 @@ export default function Drcreate() {
             <p className="text-[18px] font-medium text-[#718198]">Welcome,</p>
             <div className="mt-1 flex items-center gap-1.5">
               <h1 className="whitespace-nowrap text-[26px] font-bold tracking-[-1px] text-[#10233f]">
-                Dr. Rohan Mehta
+                {doctor?.doctorName || "Doctor"}
               </h1>
               <span className="text-[24px]">👋</span>
             </div>
@@ -473,6 +513,7 @@ export default function Drcreate() {
         <TemplateModal
           key={activeTemplate.id}
           template={activeTemplate}
+          doctorName={doctor?.doctorName}
           onClose={() => setActiveTemplate(null)}
         />
       )}
