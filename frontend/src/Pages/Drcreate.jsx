@@ -566,7 +566,7 @@ const drawCenteredText = (context, text, x, y, maxWidth, fontSize, color) => {
   context.fillText(text, x, y);
 };
 
-const downloadGreetingCard = async (template, form) => {
+const renderGreetingCardBlob = async (template, form) => {
   const templateImage = await loadCardImage(template.image);
   const canvas = document.createElement("canvas");
   canvas.width = templateImage.naturalWidth;
@@ -614,13 +614,62 @@ const downloadGreetingCard = async (template, form) => {
   const centerX = canvas.width / 2;
 
   if (template.id === "teachers-day") {
-    drawCenteredText(context, form.receiverName, centerX, canvas.height * 0.655, canvas.width * 0.80, canvas.width * 0.016, "#f39a18");
-    drawCenteredText(context, form.senderName, centerX, canvas.height * 0.915, canvas.width * 0.80, canvas.width * 0.011, "#f39a18");
-  } else if (template.id === "independence-day" || template.id === "dussehra") {
-    drawCenteredText(context, form.receiverName, centerX, canvas.height * 0.458, canvas.width * 0.40, canvas.width * 0.0115, "#ffffff");
+    drawCenteredText(
+      context,
+      form.receiverName,
+      centerX,
+      canvas.height * 0.655,
+      canvas.width * 0.80,
+      canvas.width * 0.016,
+      "#f39a18",
+    );
+    drawCenteredText(
+      context,
+      form.senderName,
+      centerX,
+      canvas.height * 0.915,
+      canvas.width * 0.80,
+      canvas.width * 0.011,
+      "#f39a18",
+    );
+  } else if (
+    template.id === "independence-day" ||
+    template.id === "dussehra"
+  ) {
+    drawCenteredText(
+      context,
+      form.receiverName,
+      centerX,
+      canvas.height * 0.458,
+      canvas.width * 0.40,
+      canvas.width * 0.0115,
+      "#ffffff",
+    );
   } else if (template.id === "anniversary") {
-    drawCenteredText(context, form.receiverName, centerX, canvas.height * 0.90, canvas.width * 0.52, canvas.width * 0.0135, "#ef5f1f");
+    drawCenteredText(
+      context,
+      form.receiverName,
+      centerX,
+      canvas.height * 0.90,
+      canvas.width * 0.52,
+      canvas.width * 0.0135,
+      "#ef5f1f",
+    );
   }
+
+  const blob = await new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (value) => (value ? resolve(value) : reject(new Error("Unable to render the card."))),
+      "image/png",
+      1,
+    );
+  });
+
+  return { blob, canvas };
+};
+
+const downloadGreetingCard = async (template, form) => {
+  const { blob } = await renderGreetingCardBlob(template, form);
 
   const link = document.createElement("a");
   const safeName = (form.receiverName || "greeting-card")
@@ -630,10 +679,10 @@ const downloadGreetingCard = async (template, form) => {
     .toLowerCase();
 
   link.download = `${template.id}-${safeName || "card"}.png`;
-  link.href = canvas.toDataURL("image/png");
+  link.href = URL.createObjectURL(blob);
   link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 };
-
 const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => {
   const isTeachersDay = template.id === "teachers-day";
   const [form, setForm] = useState({
@@ -720,11 +769,14 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
     setGenerationError("");
 
     try {
+      const { blob: cardBlob } = await renderGreetingCardBlob(template, form);
+
       const data = await createDoctorGeneration({
         qrToken,
         template: template.id,
         receiverName: form.receiverName,
         senderName: isTeachersDay ? form.senderName : "",
+        cardBlob,
       });
 
       // Use the server's post-charge balance immediately.
