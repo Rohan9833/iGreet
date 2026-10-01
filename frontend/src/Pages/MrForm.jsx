@@ -79,7 +79,7 @@ const FormField = ({
   return (
     <div className="grid grid-cols-[24px_minmax(0,1fr)] gap-2 sm:grid-cols-[35px_minmax(0,1fr)] sm:gap-3">
       <div className="mt-6 flex h-5 w-5 items-center justify-center text-slate-600 sm:mt-8 sm:h-7 sm:w-7">
-        <Icon />
+        <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
       </div>
 
       <div className="min-w-0">
