@@ -27,7 +27,7 @@ const DoctorIllustration = () => (
     <div className="absolute right-[5px] top-[45px] h-[90px] w-[90px] rounded-full bg-[#ffe6d2] opacity-70" />
 
     <img
-      src="https://thumbs.wbm.im/pw/medium/3b21f74f5ebf5b1afbc7ee50c0a6dd1a.png"
+      src="/asd123.png"
       alt="Smiling doctor wearing a white coat and stethoscope"
       className="absolute bottom-[-12px] right-[-8px] h-[168px] w-[150px] object-contain object-bottom"
       loading="eager"
@@ -365,12 +365,12 @@ export default function Drcreate() {
               <span>120 Credits</span>
             </button>
 
-            <button
+            {/* <button
               type="button"
               className="flex h-10 w-10 items-center justify-center rounded-full bg-[#edf3f8] text-[#263b55]"
             >
               <UserRound className="h-5 w-5" />
-            </button>
+            </button> */}
           </div>
         </header>
 
