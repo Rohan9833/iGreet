@@ -23,7 +23,7 @@ export default function QRScan() {
         const qr = await getQRByToken(token);
 
         if (qr.status === "unassigned") {
-          navigate(`/register-doctor?qrToken=${encodeURIComponent(token)}`, {
+          navigate(`/mr-login?qrToken=${encodeURIComponent(token)}`, {
             replace: true,
           });
           return;
@@ -45,7 +45,8 @@ export default function QRScan() {
       } catch (requestError) {
         console.error("QR verification failed:", requestError);
         setError(
-          requestError.message || "Unable to verify this QR code. Please try again."
+          requestError.message ||
+            "Unable to verify this QR code. Please try again.",
         );
       }
     };
@@ -82,9 +83,7 @@ export default function QRScan() {
           Checking your QR code...
         </h1>
 
-        <p className="mt-1 text-sm text-slate-500">
-          Please wait a moment.
-        </p>
+        <p className="mt-1 text-sm text-slate-500">Please wait a moment.</p>
       </div>
     </main>
   );
