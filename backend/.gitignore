@@ -1,0 +1,375 @@
+# =========================================================
+# DEPENDENCIES
+# =========================================================
+
+node_modules/
+jspm_packages/
+bower_components/
+
+# Package manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =========================================================
+# ENVIRONMENT / SECRETS
+# =========================================================
+
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+
+# =========================================================
+# DATABASE / LOCAL DATA
+# =========================================================
+
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+
+*.sqlite-journal
+*.sqlite3-journal
+
+# MongoDB local files
+mongodb-data/
+mongo-data/
+
+# =========================================================
+# LOGS
+# =========================================================
+
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================================================
+# BUILD / PRODUCTION OUTPUT
+# =========================================================
+
+dist/
+dist-ssr/
+build/
+out/
+output/
+coverage/
+.next/
+.nuxt/
+.svelte-kit/
+.vercel/
+.netlify/
+.turbo/
+.cache/
+.parcel-cache/
+.vite/
+
+# =========================================================
+# REACT / VITE
+# =========================================================
+
+.vite/
+vite.config.*.timestamp-*
+
+# =========================================================
+# TYPESCRIPT
+# =========================================================
+
+*.tsbuildinfo
+
+# =========================================================
+# TESTING
+# =========================================================
+
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
+
+# =========================================================
+# TEMPORARY FILES
+# =========================================================
+
+tmp/
+temp/
+.tmp/
+.temp/
+
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# =========================================================
+# OPERATING SYSTEM FILES
+# =========================================================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+# =========================================================
+# EDITORS / IDE
+# =========================================================
+
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim
+*.swp
+*.swo
+*.swn
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# =========================================================
+# DEBUG / DEVELOPMENT
+# =========================================================
+
+.debug/
+debug/
+*.pid
+*.seed
+*.pid.lock
+
+# =========================================================
+# CERTIFICATES / PRIVATE KEYS / SECURITY FILES
+# =========================================================
+
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# SSH keys
+id_rsa
+id_rsa.pub
+id_dsa
+id_dsa.pub
+id_ecdsa
+id_ecdsa.pub
+id_ed25519
+id_ed25519.pub
+
+# =========================================================
+# CLOUD / DEPLOYMENT
+# =========================================================
+
+.vercel/
+.netlify/
+.serverless/
+.aws-sam/
+
+# =========================================================
+# DOCKER
+# =========================================================
+
+docker-compose.override.yml
+docker-compose.local.yml
+
+# =========================================================
+# GENERATED API / CODE FILES
+# =========================================================
+
+generated/
+generated-code/
+
+# =========================================================
+# UPLOADS / USER DATA
+# =========================================================
+
+uploads/
+upload/
+user-uploads/
+storage/
+public/uploads/
+
+# =========================================================
+# BACKUPS
+# =========================================================
+
+backup/
+backups/
+*.backup
+*.bak
+*.old
+*.orig
+
+# =========================================================
+# ARCHIVES
+# =========================================================
+
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+
+# =========================================================
+# LARGE MEDIA / GENERATED FILES
+# =========================================================
+
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+
+# Images generated locally
+*.psd
+*.ai
+*.sketch
+
+# =========================================================
+# CERTAIN LOCAL CONFIG FILES
+# =========================================================
+
+config.local.*
+*.local.json
+*.local.yaml
+*.local.yml
+
+# =========================================================
+# SECRET / TOKEN / CREDENTIAL FILES
+# =========================================================
+
+secrets/
+secret/
+credentials/
+private/
+keys/
+
+credentials.json
+service-account.json
+serviceAccount.json
+client_secret.json
+client-secret.json
+
+# Firebase
+firebase-adminsdk-*.json
+google-services.json
+GoogleService-Info.plist
+
+# =========================================================
+# CACHE
+# =========================================================
+
+.cache/
+.cache-loader/
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.npm/
+
+# =========================================================
+# PYTHON (IF USED)
+# =========================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+.venv/
+venv/
+env/
+ENV/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# =========================================================
+# JAVA / ANDROID (IF USED)
+# =========================================================
+
+.gradle/
+.idea/
+build/
+local.properties
+*.apk
+*.aab
+
+# =========================================================
+# REACT NATIVE / EXPO (IF USED)
+# =========================================================
+
+.expo/
+.expo-shared/
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.jks
+*.keystore
+
+# =========================================================
+# WORDPRESS / CMS (IF USED)
+# =========================================================
+
+wp-content/uploads/
+
+# =========================================================
+# OS / APPLICATION GENERATED FILES
+# =========================================================
+
+*.orig
+*.rej
+*.DS_Store
+
+# =========================================================
+# GIT
+# =========================================================
+
+# Git temporary files
+*.patch
+*.diff
+
+# =========================================================
+# LOCAL PROJECT NOTES
+# =========================================================
+
+notes/
+local/
+.local/
