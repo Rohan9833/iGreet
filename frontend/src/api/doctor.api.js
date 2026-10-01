@@ -5,6 +5,7 @@ const API_BASE_URL = (
 const API_HEADERS = {
   Accept: "application/json",
   "ngrok-skip-browser-warning": "true",
+  "Cache-Control": "no-cache",
 };
 
 const getMrAuthHeaders = () => {
@@ -44,7 +45,7 @@ export const registerDoctor = async (doctorData) => {
 
 export const getDoctorByQRToken = async (token) => {
   const response = await fetch(
-    `${API_BASE_URL}/api/doctors/by-qr/${encodeURIComponent(token)}`,
+    `${API_BASE_URL}/api/doctors/by-qr/${encodeURIComponent(token)}?t=${Date.now()}`,
     {
       method: "GET",
       headers: API_HEADERS,
