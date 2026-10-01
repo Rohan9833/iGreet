@@ -56,6 +56,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/qrcodes", express.static("storage/qrcodes"));
+app.use("/generations", express.static("storage/generations"));
 
 app.get("/", (req, res) => {
   res.json({
