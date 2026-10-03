@@ -109,7 +109,7 @@ const TEMPLATES = [
     title: "Anniversary",
     image: "/anniversary.png",
     fields: ["receiverName", "image"],
-  },\n  {
+  },  {
     id: "nash-doctor-intro",
     title: "Doctor Introduction Video",
     type: "video",
