@@ -62,5 +62,3 @@ const DussehraCard = ({
     </div>
   );
 };
-
-export default DussehraCard;
