@@ -75,6 +75,42 @@ const getKidneyTemplate = async () => {
   };
 };
 
+const previewKidneyVideo = async (req, res, next) => {
+  try {
+    await ensureKidneyAssets();
+
+    const frameFiles = await fsp.readdir(
+      path.join(KIDNEY_ROOT, "frames"),
+    );
+
+    const firstFrame = frameFiles
+      .filter((file) => /^frame_\d{4}\.jpg$/i.test(file))
+      .sort((a, b) => a.localeCompare(b))[0];
+
+    if (!firstFrame) {
+      return res.status(503).json({
+        success: false,
+        message: "The Kidney Day preview frame is unavailable.",
+      });
+    }
+
+    res.setHeader("Cache-Control", "public, max-age=3600");
+
+    return res.sendFile(
+      path.join(KIDNEY_ROOT, "frames", firstFrame),
+    );
+  } catch (error) {
+    if (error.code === "KIDNEY_ASSETS_MISSING") {
+      return res.status(503).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    return next(error);
+  }
+};
+
 const generateKidneyVideo = async (req, res, next) => {
   let chargedDoctorId = null;
   let inputImagePath = null;
@@ -284,4 +320,5 @@ module.exports = {
   KIDNEY_TEMPLATE,
   getKidneyTemplate,
   generateKidneyVideo,
+  previewKidneyVideo,
 };
