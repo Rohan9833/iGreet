@@ -3,6 +3,7 @@ const multer = require("multer");
 
 const {
   listVideoTemplates,
+  previewNashVideo,
   generateNashVideo,
 } = require("../controllers/doctorVideo.controller");
 
@@ -27,6 +28,7 @@ const videoImageUpload = multer({
 });
 
 router.get("/templates", listVideoTemplates);
+router.get("/templates/nash/preview", previewNashVideo);
 router.post(
   "/templates/nash/generate",
   videoImageUpload.single("input_image"),
