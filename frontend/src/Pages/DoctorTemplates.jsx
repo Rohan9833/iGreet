@@ -7,6 +7,7 @@ import {
   getNashVideoPreviewUrl,
 } from "../api/doctor.api";
 import NashVideoPreview from "../Components/NashVideoPreview";
+import DoctorMediaImage from "../Components/DoctorMediaImage";
 
 const TEMPLATES = [
   {
@@ -209,21 +210,16 @@ export default function DoctorTemplates() {
                       {template.type === "video" ? (
                         <div className="relative flex aspect-[1448/2048] w-full items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950">
                           {template.id === "epilepsy-doctor-intro" ? (
-                            <video
+                            <NashVideoPreview
                               src={getEpilepsyVideoPreviewUrl()}
                               autoPlay
-                              loop
                               muted
+                              loop
                               playsInline
-                              preload="auto"
-                              controls={false}
                               className="h-full w-full object-cover"
-                              onCanPlay={(event) => {
-                                event.currentTarget.play().catch(() => {});
-                              }}
                             />
                           ) : template.id === "kidney-doctor-intro" ? (
-                            <img
+                            <DoctorMediaImage
                               src={getKidneyVideoPreviewUrl()}
                               alt={template.title}
                               className="h-full w-full object-cover"
