@@ -222,8 +222,7 @@ export default function DoctorGenerations() {
               {generations.map((generation) => {
                 const receiverName =
                   generation.metadata?.receiverName || "Personalized card";
-                const resolvedImage =
-                  generationImageUrls[generation._id] || generation.outputUrl;
+                const resolvedImage = generationImageUrls[generation._id];
                 const loadingImage = imageLoading[generation._id];
 
                 return (
