@@ -111,7 +111,21 @@ export default function DoctorTemplates() {
                 <div className="relative overflow-hidden bg-slate-50">
                   {template.type === "video" ? (
                     <div className="relative flex aspect-[1448/2048] w-full items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 transition duration-300 group-hover:scale-[1.02]">
-                      {template.previewType === "image" ? (
+                      {template.id === "epilepsy-doctor-intro" ? (
+                        <video
+                          src={template.preview}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          preload="auto"
+                          controls={false}
+                          className="h-full w-full object-cover"
+                          onCanPlay={(event) => {
+                            event.currentTarget.play().catch(() => {});
+                          }}
+                        />
+                      ) : template.previewType === "image" ? (
                         <img
                           src={template.preview}
                           alt={template.title}
@@ -120,17 +134,15 @@ export default function DoctorTemplates() {
                       ) : template.previewType === "video" ? (
                         <video
                           src={template.preview}
-                          preload="auto"
+                          autoPlay
+                          loop
                           muted
                           playsInline
+                          preload="auto"
                           controls={false}
                           className="h-full w-full object-cover"
-                          onLoadedData={(event) => {
-                            try {
-                              event.currentTarget.currentTime = 0;
-                            } catch {
-                              // First decoded frame is sufficient for the preview.
-                            }
+                          onCanPlay={(event) => {
+                            event.currentTarget.play().catch(() => {});
                           }}
                         />
                       ) : template.preview ? (
