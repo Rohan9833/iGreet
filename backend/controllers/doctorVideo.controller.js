@@ -25,10 +25,98 @@ const VIDEO_STORAGE_ROOT = path.join(
 const NASH_BROWSER_PREVIEW = "nash-browser-preview.mp4";
 let browserPreviewPromise = null;
 
-const getFfmpegCommand = () =>
-  process.env.FFMPEG_BIN || (process.platform === "win32" ? "ffmpeg.exe" : "ffmpeg");
+const getFfmpegCommand = async () => {
+  if (process.env.FFMPEG_BIN) {
+    return process.env.FFMPEG_BIN;
+  }
 
-const ensureBrowserCompatiblePreview = async () => {
+  if (process.platform !== "win32") {
+    return "ffmpeg";
+  }
+
+  // Prefer PATH first. If Node was started before the user's PATH was
+  // updated, also look in the standard WinGet FFmpeg installation.
+  return new Promise((resolve) => {
+    const probe = spawn("where.exe", ["ffmpeg.exe"], {
+      windowsHide: true,
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+
+    let output = "";
+
+    probe.stdout.on("data", (chunk) => {
+      output += chunk.toString();
+    });
+
+    probe.on("error", () => resolve("ffmpeg.exe"));
+
+    probe.on("close", async (code) => {
+      if (code === 0 && output.trim()) {
+        resolve(output.trim().split(/\r?\n/)[0]);
+        return;
+      }
+
+      const localAppData = process.env.LOCALAPPDATA;
+
+      if (!localAppData) {
+        resolve("ffmpeg.exe");
+        return;
+      }
+
+      const wingetPackages = path.join(
+        localAppData,
+        "Microsoft",
+        "WinGet",
+        "Packages",
+      );
+
+      try {
+        const entries = await fsp.readdir(wingetPackages, { withFileTypes: true });
+        const ffmpegPackage = entries.find(
+          (entry) =>
+            entry.isDirectory() &&
+            entry.name.toLowerCase().startsWith("gyan.ffmpeg"),
+        );
+
+        if (!ffmpegPackage) {
+          resolve("ffmpeg.exe");
+          return;
+        }
+
+        const packageRoot = path.join(wingetPackages, ffmpegPackage.name);
+        const versions = await fsp.readdir(packageRoot, { withFileTypes: true });
+        const versionRoot = versions.find(
+          (entry) =>
+            entry.isDirectory() &&
+            entry.name.toLowerCase().startsWith("ffmpeg-"),
+        );
+
+        if (!versionRoot) {
+          resolve("ffmpeg.exe");
+          return;
+        }
+
+        const candidate = path.join(
+          packageRoot,
+          versionRoot.name,
+          "bin",
+          "ffmpeg.exe",
+        );
+
+        try {
+          await fsp.access(candidate);
+          resolve(candidate);
+        } catch {
+          resolve("ffmpeg.exe");
+        }
+      } catch {
+        resolve("ffmpeg.exe");
+      }
+    });
+  });
+};
+
+const ensureBrowserCompatiblePreview = async () =>
   const sourcePath = path.join(NASH_ROOT, "nash.mp4");
   const previewPath = path.join(NASH_ROOT, NASH_BROWSER_PREVIEW);
 
@@ -50,9 +138,13 @@ const ensureBrowserCompatiblePreview = async () => {
   }
 
   browserPreviewPromise = new Promise((resolve, reject) => {
-    const ffmpeg = spawn(
-      getFfmpegCommand(),
-      [
+    getFfmpegCommand()
+      .then((ffmpegCommand) => {
+        console.log("Nash preview FFmpeg:", ffmpegCommand);
+
+        const ffmpeg = spawn(
+          ffmpegCommand,
+          [
         "-y",
         "-i",
         sourcePath,
@@ -90,32 +182,37 @@ const ensureBrowserCompatiblePreview = async () => {
       reject(error);
     });
 
-    ffmpeg.on("close", async (code) => {
-      if (code !== 0) {
+        ffmpeg.on("close", async (code) => {
+          if (code !== 0) {
+            browserPreviewPromise = null;
+            const error = new Error(
+              stderr.trim() || `FFmpeg exited with code ${code} while preparing the Nash preview.`,
+            );
+            error.code = "NASH_PREVIEW_TRANSCODE_FAILED";
+            reject(error);
+            return;
+          }
+
+          try {
+            const stats = await fsp.stat(previewPath);
+
+            if (!stats.isFile() || stats.size === 0) {
+              throw new Error("FFmpeg created an empty Nash preview.");
+            }
+
+            const result = previewPath;
+            browserPreviewPromise = null;
+            resolve(result);
+          } catch (error) {
+            browserPreviewPromise = null;
+            reject(error);
+          }
+        });
+      })
+      .catch((error) => {
         browserPreviewPromise = null;
-        const error = new Error(
-          stderr.trim() || `FFmpeg exited with code ${code} while preparing the Nash preview.`,
-        );
-        error.code = "NASH_PREVIEW_TRANSCODE_FAILED";
         reject(error);
-        return;
-      }
-
-      try {
-        const stats = await fsp.stat(previewPath);
-
-        if (!stats.isFile() || stats.size === 0) {
-          throw new Error("FFmpeg created an empty Nash preview.");
-        }
-
-        const result = previewPath;
-        browserPreviewPromise = null;
-        resolve(result);
-      } catch (error) {
-        browserPreviewPromise = null;
-        reject(error);
-      }
-    });
+      });
   });
 
   return browserPreviewPromise;
