@@ -136,20 +136,29 @@ export const getDoctorGenerationsByQRToken = async (token) => {
           ? generation.outputUrl
           : `${API_BASE_URL}${generation.outputUrl}`
         : "",
+      previewUrl: generation._id
+        ? `${API_BASE_URL}/api/doctors/generations/file/${encodeURIComponent(generation._id)}`
+        : "",
+      downloadUrl: generation._id
+        ? `${API_BASE_URL}/api/doctors/generations/download/${encodeURIComponent(generation._id)}`
+        : "",
     })),
   };
 };
 
-export const fetchGenerationBlobUrl = async (outputUrl) => {
-  if (!outputUrl) {
+export const fetchGenerationBlobUrl = async (fileUrl) => {
+  if (!fileUrl) {
     throw new Error("Generated file URL is missing.");
   }
 
-  const response = await fetch(outputUrl, {
-    method: "GET",
-    headers: API_HEADERS,
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${fileUrl}${fileUrl.includes("?") ? "&" : "?"}ngrok-skip-browser-warning=true`,
+    {
+      method: "GET",
+      headers: API_HEADERS,
+      cache: "no-store",
+    },
+  );
 
   if (!response.ok) {
     throw new Error(`Unable to load generated file (HTTP ${response.status}).`);
@@ -164,8 +173,8 @@ export const fetchGenerationBlobUrl = async (outputUrl) => {
   return URL.createObjectURL(blob);
 };
 
-export const downloadDoctorGeneration = async (outputUrl, filename) => {
-  const blobUrl = await fetchGenerationBlobUrl(outputUrl);
+export const downloadDoctorGeneration = async (fileUrl, filename) => {
+  const blobUrl = await fetchGenerationBlobUrl(fileUrl);
 
   try {
     const anchor = document.createElement("a");
