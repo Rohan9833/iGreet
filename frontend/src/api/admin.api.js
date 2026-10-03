@@ -166,12 +166,28 @@ export const getAdminDoctorDetails = async (id) => {
   return data;
 };
 
-export const getAdminMRs = async (search = "") => {
-  const query = search ? `?search=${encodeURIComponent(search)}` : "";
-  const data = await request(`/api/admin/mrs${query}`);
-  return data.mrs || [];
-};
+export const getAdminMRs = async (search = "", page = 1, limit = 25) => {
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+  });
 
+  if (search?.trim()) {
+    params.set("search", search.trim());
+  }
+
+  const data = await request(`/api/admin/mrs?${params.toString()}`);
+
+  return {
+    mrs: Array.isArray(data.mrs) ? data.mrs : [],
+    pagination: data.pagination || {
+      page,
+      limit,
+      total: data.count || 0,
+      totalPages: Math.ceil((data.count || 0) / limit),
+    },
+  };
+};
 export const getAdminGenerations = async (search = "") => {
   const query = search ? `?search=${encodeURIComponent(search)}` : "";
   const data = await request(`/api/admin/generations${query}`);
