@@ -1124,7 +1124,7 @@ export default function Drcreate() {
                       />
                     ) : t.id === "kidney-doctor-intro" ? (
                       <img
-                        src={getKidneyVideoPreviewUrl()}
+                        src={`${getKidneyVideoPreviewUrl()}?frame=51`}
                         alt={t.title}
                         className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
                       />
