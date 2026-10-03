@@ -218,7 +218,7 @@ const generateNashVideo = async (req, res, next) => {
       ? extension.toLowerCase()
       : ".jpg";
 
-    const generationId = new crypto.randomUUID();
+    const generationId = crypto.randomUUID();
     inputImagePath = path.join(
       inputDirectory,
       `${generationId}${safeExtension}`,
