@@ -5,6 +5,7 @@ const fs = require("fs");
 const fsp = require("fs/promises");
 const path = require("path");
 const crypto = require("crypto");
+const { spawn } = require("child_process");
 
 const {
   REQUIRED_ASSETS,
@@ -20,6 +21,105 @@ const VIDEO_STORAGE_ROOT = path.join(
   "storage",
   "generations",
 );
+
+const NASH_BROWSER_PREVIEW = "nash-browser-preview.mp4";
+let browserPreviewPromise = null;
+
+const getFfmpegCommand = () =>
+  process.env.FFMPEG_BIN || (process.platform === "win32" ? "ffmpeg.exe" : "ffmpeg");
+
+const ensureBrowserCompatiblePreview = async () => {
+  const sourcePath = path.join(NASH_ROOT, "nash.mp4");
+  const previewPath = path.join(NASH_ROOT, NASH_BROWSER_PREVIEW);
+
+  try {
+    const [sourceStats, previewStats] = await Promise.all([
+      fsp.stat(sourcePath),
+      fsp.stat(previewPath),
+    ]);
+
+    if (previewStats.size > 0 && previewStats.mtimeMs >= sourceStats.mtimeMs) {
+      return previewPath;
+    }
+  } catch {
+    // Preview does not exist yet; create it below.
+  }
+
+  if (browserPreviewPromise) {
+    return browserPreviewPromise;
+  }
+
+  browserPreviewPromise = new Promise((resolve, reject) => {
+    const ffmpeg = spawn(
+      getFfmpegCommand(),
+      [
+        "-y",
+        "-i",
+        sourcePath,
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "-preset",
+        "veryfast",
+        "-movflags",
+        "+faststart",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "128k",
+        previewPath,
+      ],
+      {
+        cwd: NASH_ROOT,
+        shell: false,
+        windowsHide: true,
+        stdio: ["ignore", "ignore", "pipe"],
+      },
+    );
+
+    let stderr = "";
+
+    ffmpeg.stderr.on("data", (chunk) => {
+      stderr += chunk.toString();
+    });
+
+    ffmpeg.on("error", (error) => {
+      browserPreviewPromise = null;
+      error.code = error.code || "FFMPEG_SPAWN_FAILED";
+      reject(error);
+    });
+
+    ffmpeg.on("close", async (code) => {
+      if (code !== 0) {
+        browserPreviewPromise = null;
+        const error = new Error(
+          stderr.trim() || `FFmpeg exited with code ${code} while preparing the Nash preview.`,
+        );
+        error.code = "NASH_PREVIEW_TRANSCODE_FAILED";
+        reject(error);
+        return;
+      }
+
+      try {
+        const stats = await fsp.stat(previewPath);
+
+        if (!stats.isFile() || stats.size === 0) {
+          throw new Error("FFmpeg created an empty Nash preview.");
+        }
+
+        const result = previewPath;
+        browserPreviewPromise = null;
+        resolve(result);
+      } catch (error) {
+        browserPreviewPromise = null;
+        reject(error);
+      }
+    });
+  });
+
+  return browserPreviewPromise;
+};
 
 const NASH_TEMPLATE = {
   id: "nash-doctor-intro",
@@ -73,14 +173,14 @@ const previewNashVideo = async (req, res, next) => {
   try {
     await ensureNashAssets();
 
-    const previewPath = path.join(NASH_ROOT, "nash.mp4");
-
-    // Express/sendFile handles normal requests, HEAD requests and HTTP
-    // byte ranges for HTML5 <video> clients.
     if (req.method === "OPTIONS") {
       return res.sendStatus(204);
     }
 
+    const previewPath = await ensureBrowserCompatiblePreview();
+
+    // Express/sendFile handles normal requests, HEAD requests and HTTP
+    // byte ranges for HTML5 <video> clients.
     return res.sendFile(previewPath, {
       acceptRanges: true,
       cacheControl: true,
@@ -97,7 +197,12 @@ const previewNashVideo = async (req, res, next) => {
       });
     }
 
-    return next(error);
+    console.error("Nash preview failed:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "The Nash video preview could not be prepared.",
+    });
   }
 };
 const listVideoTemplates = async (req, res, next) => {
