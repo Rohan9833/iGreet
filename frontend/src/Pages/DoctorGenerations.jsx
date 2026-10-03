@@ -239,9 +239,9 @@ export default function DoctorGenerations() {
                       setSelectedGeneration(generation);
                       resolveGenerationImage(generation);
                     }}
-                    className="flex w-full flex-col gap-4 rounded-[20px] border border-slate-100 bg-slate-50 p-4 text-left transition hover:border-orange-100 hover:bg-[#fffaf5] sm:flex-row sm:items-center"
+                    className="flex w-full items-center gap-4 rounded-[22px] border border-slate-100 bg-slate-50 p-3 text-left transition hover:border-orange-100 hover:bg-[#fffaf5] sm:gap-5 sm:p-4"
                   >
-                    <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[14px] bg-white shadow-sm">
+                    <div className="relative h-[108px] w-[92px] shrink-0 overflow-hidden rounded-[16px] bg-white shadow-sm sm:h-[120px] sm:w-[104px]">
                       {isVideoGeneration(generation) ? (
                         <div className="relative h-full w-full bg-slate-950">
                           {resolvedImage ? (
@@ -284,28 +284,33 @@ export default function DoctorGenerations() {
                       )}
                     </div>
 
-                    <div className="min-w-0 flex-1">
-                      <h2 className="truncate text-[16px] font-bold">
-                        {titleFromTemplate(generation.template)}
-                      </h2>
-                      <p className="mt-1 text-[13px] text-[#52627a]">
-                        For <span className="font-semibold">{receiverName}</span>
-                      </p>
-                      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[#718198]">
-                        <span className="inline-flex items-center gap-1">
-                          <CalendarDays className="h-3.5 w-3.5" />
-                          {formatDate(generation.createdAt)}
-                        </span>
-                        <span className="inline-flex items-center gap-1">
-                          <Coins className="h-3.5 w-3.5" />
-                          {generation.creditsUsed} credits
+                    <div className="min-w-0 flex-1 self-stretch py-1 sm:py-2">
+                      <div className="flex h-full flex-col justify-between">
+                        <div className="min-w-0">
+                          <h2 className="truncate text-[17px] font-bold leading-tight text-[#10233f] sm:text-[18px]">
+                            {titleFromTemplate(generation.template)}
+                          </h2>
+                          <p className="mt-2 truncate text-[13px] text-[#52627a]">
+                            For <span className="font-semibold">{receiverName}</span>
+                          </p>
+
+                          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-[#718198]">
+                            <span className="inline-flex items-center gap-1">
+                              <CalendarDays className="h-3.5 w-3.5 shrink-0" />
+                              {formatDate(generation.createdAt)}
+                            </span>
+                            <span className="inline-flex items-center gap-1">
+                              <Coins className="h-3.5 w-3.5 shrink-0" />
+                              {generation.creditsUsed} credits
+                            </span>
+                          </div>
+                        </div>
+
+                        <span className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-bold capitalize text-emerald-600">
+                          {generation.status}
                         </span>
                       </div>
                     </div>
-
-                    <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-bold capitalize text-emerald-600">
-                      {generation.status}
-                    </span>
                   </button>
                 );
               })}
