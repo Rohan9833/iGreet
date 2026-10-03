@@ -68,6 +68,28 @@ const getNashTemplate = async () => {
   };
 };
 
+const previewNashVideo = async (req, res, next) => {
+  try {
+    await ensureNashAssets();
+
+    const previewPath = path.join(NASH_ROOT, "nash.mp4");
+
+    res.setHeader("Content-Type", "video/mp4");
+    res.setHeader("Cache-Control", "public, max-age=3600");
+
+    return res.sendFile(previewPath);
+  } catch (error) {
+    if (error.code === "NASH_ASSETS_MISSING") {
+      return res.status(503).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    return next(error);
+  }
+};
+
 const listVideoTemplates = async (req, res, next) => {
   try {
     const template = await getNashTemplate();
