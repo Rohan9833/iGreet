@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Film, ImagePlus, Send, X } from "lucide-react";
-import { generateNashVideo, getDoctorVideoTemplate, API_BASE_URL } from "../api/doctor.api";
+import {
+  generateNashVideo,
+  getDoctorVideoTemplate,
+  getNashVideoPreviewUrl,
+  API_BASE_URL,
+} from "../api/doctor.api";
 import NashVideoPreview from "./NashVideoPreview";
 import NashImageCropper from "./NashImageCropper";
 
@@ -223,7 +228,7 @@ export default function NashVideoModal({
         ) : (
           <form onSubmit={handleSubmit} className="mt-5">
             <NashVideoPreview
-              src={`${API_BASE_URL}/api/doctor-videos/templates/nash/preview`}
+              src={getNashVideoPreviewUrl()}
               autoPlay
               muted
               loop
