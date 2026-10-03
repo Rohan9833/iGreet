@@ -9,6 +9,8 @@ import {
   getKidneyVideoPreviewUrl,
 } from "../api/doctor.api";
 import DoctorVideoImageCropper from "./DoctorVideoImageCropper";
+import NashVideoPreview from "./NashVideoPreview";
+import DoctorMediaImage from "./DoctorMediaImage";
 
 const GENERATION_COST = 20;
 
@@ -246,25 +248,19 @@ export default function DoctorVideoModal({
           <form onSubmit={handleSubmit} className="mt-5">
             <div className="mb-5 overflow-hidden rounded-2xl bg-slate-950">
               {templateId === "epilepsy-doctor-intro" ? (
-                <video
-                  key={getEpilepsyVideoPreviewUrl()}
+                <NashVideoPreview
                   src={getEpilepsyVideoPreviewUrl()}
                   autoPlay
-                  loop
                   muted
+                  loop
                   playsInline
-                  preload="auto"
-                  controls={false}
-                  className="aspect-[9/16] w-full object-cover"
-                  onCanPlay={(event) => {
-                    event.currentTarget.play().catch(() => {});
-                  }}
+                  className="block aspect-[9/16] w-full object-cover bg-slate-950"
                 />
               ) : (
-                <img
+                <DoctorMediaImage
                   src={getKidneyVideoPreviewUrl()}
                   alt="Kidney Day video first frame"
-                  className="aspect-[9/16] w-full object-cover"
+                  className="block aspect-[9/16] w-full object-cover bg-slate-950"
                 />
               )}
             </div>
