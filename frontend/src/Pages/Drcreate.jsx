@@ -9,6 +9,7 @@ import DussehraCard from "../Components/cards/DussehraCard";
 import AnniversaryCard from "../Components/cards/AnniversaryCard";
 import NashVideoModal from "../Components/NashVideoModal";
 import NashVideoPreview from "../Components/NashVideoPreview";
+import DoctorVideoModal from "../Components/DoctorVideoModal";
 
 /* -------------------------------------------------------
    Logo
@@ -115,6 +116,18 @@ const TEMPLATES = [
     type: "video",
     preview: `${API_BASE_URL}/api/doctor-videos/templates/nash/preview?ngrok-skip-browser-warning=true`,
     fields: ["name", "qualification", "specialization", "hospital", "image"],
+  },
+  {
+    id: "kidney-doctor-intro",
+    title: "Kidney Day Doctor Video",
+    type: "video",
+    fields: ["name", "speciality", "hospital", "city", "image"],
+  },
+  {
+    id: "epilepsy-doctor-intro",
+    title: "Epilepsy Doctor Video",
+    type: "video",
+    fields: ["name", "speciality", "hospital", "city", "image"],
   },
 ];
 
@@ -1145,8 +1158,62 @@ export default function Drcreate() {
       )}
 
       {/* Popup */}
-      {activeTemplate?.type === "video" ? (
+      {activeTemplate?.id === "nash-doctor-intro" ? (
         <NashVideoModal
+          qrToken={qrToken}
+          doctor={doctor}
+          onGenerated={(credits) =>
+            setDoctor((previous) =>
+              previous ? { ...previous, credits } : previous,
+            )
+          }
+          onGenerationStart={() => {
+            setVideoToast({
+              type: "loading",
+              title: "Creating your video",
+              message: "Please wait while your doctor introduction is being generated.",
+            });
+          }}
+          onGenerationComplete={(data, error) => {
+            if (error) {
+              setVideoToast({
+                type: "error",
+                title: "Video generation failed",
+                message: error.message || "Please try again.",
+              });
+
+              window.setTimeout(() => {
+                setVideoToast(null);
+              }, 4000);
+
+              return;
+            }
+
+            setVideoToast({
+              type: "success",
+              title: "Video generated",
+              message: "Your video is ready. View it in Generations.",
+            });
+
+            setActiveTemplate(null);
+            navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, {
+              replace: true,
+            });
+
+            window.setTimeout(() => {
+              setVideoToast(null);
+            }, 4000);
+          }}
+          onClose={() => {
+            setActiveTemplate(null);
+            navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, {
+              replace: true,
+            });
+          }}
+        />
+      ) : activeTemplate?.type === "video" ? (
+        <DoctorVideoModal
+          templateId={activeTemplate.id}
           qrToken={qrToken}
           doctor={doctor}
           onGenerated={(credits) =>
