@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarDays, Coins, Download, FileImage, Sparkles } from "lucide-react";
+import { ArrowLeft, CalendarDays, Coins, Download, FileImage, Film, Play, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -30,8 +30,13 @@ const fallbackTemplateImage = (template) => {
   if (template === "teachers-day") return "/teachersday.png";
   if (template === "independence-day") return "/independence.png";
   if (template === "dussehra") return "/dussehra.png";
-  return "/anniversary.png";
+  if (template === "anniversary") return "/anniversary.png";
+  return "";
 };
+
+const isVideoGeneration = (generation) =>
+  generation?.type === "greeting-video" ||
+  generation?.template === "nash-doctor-intro";
 
 export default function DoctorGenerations() {
   const navigate = useNavigate();
@@ -143,7 +148,8 @@ export default function DoctorGenerations() {
     if (!fileUrl) return;
 
     try {
-      const filename = `${generation.template || "generation"}-${generation._id || Date.now()}.png`;
+      const extension = isVideoGeneration(generation) ? "mp4" : "png";
+      const filename = `${generation.template || "generation"}-${generation._id || Date.now()}.${extension}`;
       await downloadDoctorGeneration(fileUrl, filename);
     } catch (downloadError) {
       console.error("Unable to download generated card:", downloadError);
@@ -176,7 +182,7 @@ export default function DoctorGenerations() {
               <p className="mt-1 text-[14px] text-[#718198]">
                 {doctor?.doctorName
                   ? `Cards created for Dr. ${doctor.doctorName}.`
-                  : "Your created cards appear here."}
+                  : "Your created cards and videos appear here."}
               </p>
             </div>
 
@@ -203,7 +209,7 @@ export default function DoctorGenerations() {
               </div>
               <h2 className="mt-4 text-[18px] font-bold">No generations yet</h2>
               <p className="mx-auto mt-1.5 max-w-[360px] text-[13px] leading-[1.5] text-[#718198]">
-                Your personalized cards will appear here after you create them.
+                Your personalized cards and videos will appear here after you create them.
               </p>
               <button
                 type="button"
@@ -214,7 +220,7 @@ export default function DoctorGenerations() {
                 }
                 className="mt-5 rounded-full bg-orange-500 px-5 py-2.5 text-[13px] font-semibold text-white"
               >
-                Create a personalized card
+                Create a personalized card or video
               </button>
             </div>
           ) : (
@@ -236,7 +242,27 @@ export default function DoctorGenerations() {
                     className="flex w-full flex-col gap-4 rounded-[20px] border border-slate-100 bg-slate-50 p-4 text-left transition hover:border-orange-100 hover:bg-[#fffaf5] sm:flex-row sm:items-center"
                   >
                     <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[14px] bg-white shadow-sm">
-                      {resolvedImage ? (
+                      {isVideoGeneration(generation) ? (
+                        <div className="relative h-full w-full bg-slate-950">
+                          {resolvedImage ? (
+                            <video
+                              src={resolvedImage}
+                              muted
+                              playsInline
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center">
+                              <Film className="h-5 w-5 text-white/80" />
+                            </div>
+                          )}
+                          <span className="absolute inset-0 flex items-center justify-center">
+                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-orange-500 shadow-sm">
+                              <Play className="ml-0.5 h-3.5 w-3.5 fill-current" />
+                            </span>
+                          </span>
+                        </div>
+                      ) : resolvedImage ? (
                         <img
                           src={resolvedImage}
                           alt={receiverName}
@@ -316,19 +342,28 @@ export default function DoctorGenerations() {
 
                 <div className="bg-slate-50 p-5">
                   {generationImageUrls[selectedGeneration._id] ? (
-                    <img
-                      src={generationImageUrls[selectedGeneration._id]}
-                      alt={
-                        selectedGeneration.metadata?.receiverName ||
-                        "Generated card"
-                      }
-                      onError={() => handleImageError(selectedGeneration)}
-                      className="mx-auto max-h-[65vh] w-auto max-w-full rounded-xl shadow-md"
-                    />
+                    isVideoGeneration(selectedGeneration) ? (
+                      <video
+                        src={generationImageUrls[selectedGeneration._id]}
+                        controls
+                        playsInline
+                        className="mx-auto max-h-[65vh] w-full rounded-xl bg-black shadow-md"
+                      />
+                    ) : (
+                      <img
+                        src={generationImageUrls[selectedGeneration._id]}
+                        alt={
+                          selectedGeneration.metadata?.receiverName ||
+                          "Generated card"
+                        }
+                        onError={() => handleImageError(selectedGeneration)}
+                        className="mx-auto max-h-[65vh] w-auto max-w-full rounded-xl shadow-md"
+                      />
+                    )
                   ) : (
                     <div className="flex h-64 items-center justify-center rounded-xl bg-white text-sm text-slate-500">
                       {imageLoading[selectedGeneration._id]
-                        ? "Loading generated card..."
+                        ? "Loading generated file..."
                         : "Generated file is unavailable."}
                     </div>
                   )}
