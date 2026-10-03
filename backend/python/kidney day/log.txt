@@ -1,0 +1,360 @@
+Frame Processing Failed for frame_0058.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_0103.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_0107.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0115.jpg: 
+Frame Processing Failed for frame_0161.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0162.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0151.jpg: 
+Frame Processing Failed for frame_0163.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0143.jpg: <built-in function cvtColor> returned a result with an exception set
+Frame Processing Failed for frame_0156.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0148.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0149.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0144.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0164.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0152.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0157.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0355.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0360.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0361.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0344.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0362.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0365.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0346.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0363.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0338.jpg: 
+Frame Processing Failed for frame_0364.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0370.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0351.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0347.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0352.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0353.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0348.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0339.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0354.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0375.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0367.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0380.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0381.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0371.jpg: 
+Frame Processing Failed for frame_0349.jpg: 
+Frame Processing Failed for frame_0357.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0368.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0358.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0359.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0369.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0382.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0383.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0395.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0376.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_0396.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0397.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0398.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0399.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0384.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0377.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0385.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_0378.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0379.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0689.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_0684.jpg: 
+Frame Processing Failed for frame_1071.jpg: <built-in function cvtColor> returned a result with an exception set
+Frame Processing Failed for frame_1054.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1072.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1080.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1081.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1082.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1083.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1084.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1073.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1085.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1062.jpg: <built-in function inRange> returned a result with an exception set
+Frame Processing Failed for frame_1058.jpg: <built-in function inRange> returned a result with an exception set
+Frame Processing Failed for frame_1090.jpg: <built-in function cvtColor> returned a result with an exception set
+Frame Processing Failed for frame_1063.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1059.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1091.jpg: <built-in function inRange> returned a result with an exception set
+Frame Processing Failed for frame_1086.jpg: 
+Frame Processing Failed for frame_1064.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1067.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1087.jpg: 
+Frame Processing Failed for frame_1092.jpg: 
+Frame Processing Failed for frame_1100.jpg: 
+Frame Processing Failed for frame_1068.jpg: 
+Frame Processing Failed for frame_1101.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1093.jpg: <built-in function inRange> returned a result with an exception set
+Frame Processing Failed for frame_0020.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0021.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0015.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0002.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0016.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0003.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0007.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0004.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0025.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0026.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0027.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0028.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0029.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0012.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0013.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0014.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0017.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0035.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0036.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0030.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0018.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0019.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0040.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0041.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0042.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0043.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0044.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0045.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0046.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0050.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0023.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0052.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0220.jpg: 
+Frame Processing Failed for frame_0204.jpg: 
+Frame Processing Failed for frame_0216.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_0230.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0217.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0269.jpg: 
+Frame Processing Failed for frame_0303.jpg: 
+Frame Processing Failed for frame_0335.jpg: 
+Frame Processing Failed for frame_0336.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0330.jpg: 
+Frame Processing Failed for frame_0322.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0340.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0338.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0339.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0331.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0345.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0346.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0347.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0348.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0349.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0350.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0351.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0352.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0318.jpg: <built-in function cvtColor> returned a result with an exception set
+Frame Processing Failed for frame_0371.jpg: 
+Frame Processing Failed for frame_0372.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0375.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_0367.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0385.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0380.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0381.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0368.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0390.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0391.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0392.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0376.jpg: 
+Frame Processing Failed for frame_0386.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0363.jpg: <built-in function cvtColor> returned a result with an exception set
+Frame Processing Failed for frame_0383.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0384.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0395.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0396.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0483.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0536.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0529.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0541.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2073600 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0537.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0550.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0569.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0578.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_0574.jpg: <built-in function cvtColor> returned a result with an exception set
+Frame Processing Failed for frame_0636.jpg: 
+Frame Processing Failed for frame_0664.jpg: 
+Frame Processing Failed for frame_0672.jpg: <built-in function cvtColor> returned a result with an exception set
+Frame Processing Failed for frame_0758.jpg: 
+Frame Processing Failed for frame_0767.jpg: 
+Frame Processing Failed for frame_0812.jpg: 
+Frame Processing Failed for frame_0826.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_0821.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_0962.jpg: <built-in function cvtColor> returned a result with an exception set
+Frame Processing Failed for frame_0971.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_0985.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1045.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1046.jpg: 
+Frame Processing Failed for frame_1034.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1061.jpg: 
+Frame Processing Failed for frame_1062.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1063.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1041.jpg: 
+Frame Processing Failed for frame_1070.jpg: 
+Frame Processing Failed for frame_1047.jpg: 
+Frame Processing Failed for frame_1065.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_1056.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1051.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1057.jpg: 
+Frame Processing Failed for frame_1073.jpg: 
+Frame Processing Failed for frame_1052.jpg: 
+Frame Processing Failed for frame_1043.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1075.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 2079604 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1186.jpg: 
+Frame Processing Failed for frame_1168.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_1190.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1195.jpg: 
+Frame Processing Failed for frame_1250.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_1246.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_1247.jpg: 
+Frame Processing Failed for frame_1234.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1248.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Frame Processing Failed for frame_1335.jpg: 
+Frame Processing Failed for frame_1389.jpg: 
+Frame Processing Failed for frame_1411.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1412.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1413.jpg: OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\core\src\alloc.cpp:73: error: (-4:Insufficient memory) Failed to allocate 6220800 bytes in function 'cv::OutOfMemoryError'
+
+Frame Processing Failed for frame_1420.jpg: <built-in function inRange> returned a result with an exception set
+Frame Processing Failed for frame_1402.jpg: Unable to allocate 5.93 MiB for an array with shape (1920, 1080, 3) and data type uint8
+Video creation failed: [WinError 3] The system cannot find the path specified: 'processed_frames_9d84bb1b-bf1b-11f1-9525-28d0434c5ea3'
+Unexpected Error: name 'audio_path' is not defined
