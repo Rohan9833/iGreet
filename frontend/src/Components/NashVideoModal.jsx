@@ -30,7 +30,6 @@ export default function NashVideoModal({
   const [imagePreview, setImagePreview] = useState("");
   const [cropFile, setCropFile] = useState(null);
   const [template, setTemplate] = useState(null);
-  const [loadingTemplate, setLoadingTemplate] = useState(true);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState("");
   const [generatedVideo, setGeneratedVideo] = useState("");
@@ -42,9 +41,6 @@ export default function NashVideoModal({
         setTemplate(data.templates?.[0] || null);
       } catch (loadError) {
         setError(loadError.message || "Unable to load the video template.");
-      } finally {
-        setLoadingTemplate(false);
-      }
     };
 
     loadTemplate();
