@@ -196,11 +196,7 @@ export default function NashVideoModal({
           </button>
         </div>
 
-        {loadingTemplate ? (
-          <div className="py-10 text-center text-[13px] text-[#718198]">
-            Loading video template...
-          </div>
-        ) : generatedVideo ? (
+        {generatedVideo ? (
           <div className="mt-5">
             <NashVideoPreview
               src={generatedVideo}
