@@ -3,7 +3,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { createDoctorGeneration, getDoctorByQRToken } from "../api/doctor.api";
 import { UserRound, ArrowRight, X, Send, Sparkles } from "lucide-react";
 import { toBlob } from "html-to-image";
+import TeachersDayCard from "../Components/cards/TeachersDayCard";
 import IndependenceDayCard from "../Components/cards/IndependenceDayCard";
+import DussehraCard from "../Components/cards/DussehraCard";
+import AnniversaryCard from "../Components/cards/AnniversaryCard";
 
 /* -------------------------------------------------------
    Logo
@@ -210,43 +213,32 @@ const FestivalCard = ({
   );
 };
 
-const TemplatePreview = ({ template, receiverName, senderName, imageUrl }) => {
-  if (template.id === "teachers-day") {
-    return (
-      <TeacherDayCard
-        receiverName={receiverName}
-        senderName={senderName}
-        imageUrl={imageUrl}
-      />
-    );
-  }
+const TemplatePreview = ({ template, width, receiverName, senderName, imageUrl }) => {
+  const common = {
+    width: width || undefined,
+    receiverName,
+    senderName,
+    imageUrl,
+  };
 
-  // IMPORTANT: use the real IndependenceDayCard component here.
-  // The old local FestivalCard had its own hard-coded percentages, so
-  // changing PHOTO/PILL in IndependenceDayCard had no effect on the
-  // Doctor page preview.
-  if (template.id === "independence-day") {
-    return (
-      <IndependenceDayCard
-        receiverName={receiverName}
-        imageUrl={imageUrl}
-      />
-    );
+  switch (template.id) {
+    case "teachers-day":
+      return <TeachersDayCard {...common} />;
+    case "independence-day":
+      return <IndependenceDayCard {...common} />;
+    case "dussehra":
+      return <DussehraCard {...common} />;
+    case "anniversary":
+      return <AnniversaryCard {...common} />;
+    default:
+      return null;
   }
-
-  return (
-    <FestivalCard
-      template={template}
-      receiverName={receiverName}
-      imageUrl={imageUrl}
-    />
-  );
 };
 
 /* -------------------------------------------------------
    Image crop editor
 ------------------------------------------------------- */
-const CROP_SIZE = 320;
+const CROP_SIZE = 640;
 
 const CropEditor = ({ imageSrc, onCancel, onApply }) => {
   const canvasRef = useRef(null);
@@ -264,10 +256,7 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
       setPosition({ x: 0, y: 0 });
     };
 
-    img.onerror = () => {
-      setImage(null);
-    };
-
+    img.onerror = () => setImage(null);
     img.src = imageSrc;
 
     return () => {
@@ -277,30 +266,30 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
   }, [imageSrc]);
 
   const getLayout = () => {
-    if (!image) {
-      return null;
-    }
+    if (!image) return null;
 
     const baseScale = Math.max(
       CROP_SIZE / image.naturalWidth,
       CROP_SIZE / image.naturalHeight,
     );
-
     const scale = baseScale * zoom;
     const width = image.naturalWidth * scale;
     const height = image.naturalHeight * scale;
-
-    const maxX = Math.max(0, (width - CROP_SIZE) / 2);
-    const maxY = Math.max(0, (height - CROP_SIZE) / 2);
 
     return {
       scale,
       width,
       height,
-      maxX,
-      maxY,
-      x: Math.max(-maxX, Math.min(maxX, position.x)),
-      y: Math.max(-maxY, Math.min(maxY, position.y)),
+      maxX: Math.max(0, (width - CROP_SIZE) / 2),
+      maxY: Math.max(0, (height - CROP_SIZE) / 2),
+      x: Math.max(
+        -Math.max(0, (width - CROP_SIZE) / 2),
+        Math.min(Math.max(0, (width - CROP_SIZE) / 2), position.x),
+      ),
+      y: Math.max(
+        -Math.max(0, (height - CROP_SIZE) / 2),
+        Math.min(Math.max(0, (height - CROP_SIZE) / 2), position.y),
+      ),
     };
   };
 
@@ -308,9 +297,7 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
     const canvas = canvasRef.current;
     const layout = getLayout();
 
-    if (!canvas || !image || !layout) {
-      return;
-    }
+    if (!canvas || !image || !layout) return;
 
     canvas.width = CROP_SIZE;
     canvas.height = CROP_SIZE;
@@ -318,28 +305,18 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, CROP_SIZE, CROP_SIZE);
 
-    const left = (CROP_SIZE - layout.width) / 2 + layout.x;
-    const top = (CROP_SIZE - layout.height) / 2 + layout.y;
-
     context.drawImage(
       image,
-      left,
-      top,
+      (CROP_SIZE - layout.width) / 2 + layout.x,
+      (CROP_SIZE - layout.height) / 2 + layout.y,
       layout.width,
       layout.height,
     );
   }, [image, position, zoom]);
 
   const updatePosition = (x, y) => {
-    if (!image) {
-      return;
-    }
-
     const layout = getLayout();
-
-    if (!layout) {
-      return;
-    }
+    if (!layout) return;
 
     setPosition({
       x: Math.max(-layout.maxX, Math.min(layout.maxX, x)),
@@ -348,9 +325,7 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
   };
 
   const handlePointerDown = (event) => {
-    if (!image) {
-      return;
-    }
+    if (!image) return;
 
     event.currentTarget.setPointerCapture(event.pointerId);
 
@@ -359,40 +334,44 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
       startY: event.clientY,
       positionX: position.x,
       positionY: position.y,
+      renderedSize: event.currentTarget.getBoundingClientRect().width,
     };
   };
 
   const handlePointerMove = (event) => {
-    if (!dragRef.current) {
-      return;
-    }
+    if (!dragRef.current) return;
+
+    const factor =
+      CROP_SIZE / Math.max(1, dragRef.current.renderedSize);
 
     updatePosition(
-      dragRef.current.positionX + (event.clientX - dragRef.current.startX),
-      dragRef.current.positionY + (event.clientY - dragRef.current.startY),
+      dragRef.current.positionX +
+        (event.clientX - dragRef.current.startX) * factor,
+      dragRef.current.positionY +
+        (event.clientY - dragRef.current.startY) * factor,
     );
   };
 
-  const stopDragging = () => {
+  const stopDragging = (event) => {
+    if (
+      event?.currentTarget?.hasPointerCapture?.(event.pointerId)
+    ) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
     dragRef.current = null;
   };
 
   const handleApply = () => {
-    const canvas = canvasRef.current;
     const layout = getLayout();
+    if (!image || !layout) return;
 
-    if (!canvas || !image || !layout) {
-      return;
-    }
-
-    const sourceCropSize = Math.min(
-      image.naturalWidth,
-      image.naturalHeight,
-    ) / zoom;
+    // Always create a square crop. The card template decides whether
+    // that square is displayed as a circle or another shape.
+    const sourceCropSize =
+      Math.min(image.naturalWidth, image.naturalHeight) / zoom;
 
     const sourceCenterX =
       image.naturalWidth / 2 - layout.x / layout.scale;
-
     const sourceCenterY =
       image.naturalHeight / 2 - layout.y / layout.scale;
 
@@ -403,7 +382,6 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
         sourceCenterX - sourceCropSize / 2,
       ),
     );
-
     const sy = Math.max(
       0,
       Math.min(
@@ -412,13 +390,12 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
       ),
     );
 
-    const outputSize = Math.round(sourceCropSize);
+    const outputSize = Math.max(1, Math.round(sourceCropSize));
     const outputCanvas = document.createElement("canvas");
     outputCanvas.width = outputSize;
     outputCanvas.height = outputSize;
 
     const context = outputCanvas.getContext("2d");
-
     context.drawImage(
       image,
       sx,
@@ -440,7 +417,7 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
       onClick={onCancel}
     >
       <div
-        className="w-full max-w-[430px] overflow-hidden rounded-[26px] bg-white shadow-2xl"
+        className="max-h-[92vh] w-full max-w-[430px] overflow-y-auto rounded-[26px] bg-white shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
@@ -456,7 +433,7 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
           <button
             type="button"
             onClick={onCancel}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600"
           >
             <X className="h-4 w-4" />
           </button>
@@ -464,12 +441,11 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
 
         <div className="bg-[#111827] px-5 py-5">
           <div
-            className="mx-auto h-[320px] w-[320px] max-w-full cursor-grab touch-none overflow-hidden rounded-full bg-slate-900 shadow-inner active:cursor-grabbing"
+            className="mx-auto aspect-square w-full max-w-[320px] cursor-grab touch-none overflow-hidden rounded-full bg-slate-900 shadow-inner active:cursor-grabbing"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={stopDragging}
             onPointerCancel={stopDragging}
-            onPointerLeave={stopDragging}
           >
             <canvas
               ref={canvasRef}
@@ -492,9 +468,9 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
               step="0.01"
               value={zoom}
               onChange={(event) => setZoom(Number(event.target.value))}
-              className="flex-1 accent-orange-500"
+              className="min-w-0 flex-1 accent-orange-500"
             />
-            <span className="w-10 text-right text-[12px] font-semibold text-slate-600">
+            <span className="w-10 shrink-0 text-right text-[12px] font-semibold text-slate-600">
               {zoom.toFixed(1)}x
             </span>
           </div>
@@ -507,7 +483,6 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
             >
               Cancel
             </button>
-
             <button
               type="button"
               onClick={handleApply}
@@ -544,6 +519,7 @@ const renderGreetingCardBlob = async (template, form, width = 800) => {
       root.render(
         <TemplatePreview
           template={template}
+          width={width}
           receiverName={form.receiverName}
           senderName={form.senderName}
           imageUrl={form.imageUrl}
