@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
+const path = require("path");
 const multer = require("multer");
 
 const qrRoutes = require("./routes/qr.routes");
@@ -61,8 +62,41 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/qrcodes", express.static("storage/qrcodes"));
-app.use("/generations", express.static("storage/generations"));
+app.get("/qrcodes/download/:filename", (req, res) => {
+  const filename = path.basename(req.params.filename);
+
+  const filePath = path.join(
+    __dirname,
+    "storage",
+    "qrcodes",
+    filename,
+  );
+
+  res.download(filePath, filename, (error) => {
+    if (!error) return;
+
+    if (!res.headersSent) {
+      console.error("QR download failed:", error);
+
+      return res.status(404).json({
+        success: false,
+        message: "QR code file not found.",
+      });
+    }
+  });
+});
+
+app.use(
+  "/qrcodes",
+  express.static(path.join(__dirname, "storage", "qrcodes")),
+);
+
+app.use(
+  "/generations",
+  express.static(
+    path.join(__dirname, "storage", "generations"),
+  ),
+);
 
 app.get("/", (req, res) => {
   res.json({
