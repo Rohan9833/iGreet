@@ -1,7 +1,8 @@
 const Doctor = require("../models/Doctor");
 const QR = require("../models/QR");
 const Generation = require("../models/Generation");
-const fs = require("fs/promises");
+const fs = require("fs");
+const fsp = require("fs/promises");
 const path = require("path");
 const crypto = require("crypto");
 
@@ -54,7 +55,7 @@ const getNashTemplate = async () => {
 
   for (const filename of REQUIRED_ASSETS) {
     try {
-      await fs.access(path.join(NASH_ROOT, filename));
+      await fsp.access(path.join(NASH_ROOT, filename));
     } catch {
       missingAssets.push(filename);
     }
@@ -74,10 +75,69 @@ const previewNashVideo = async (req, res, next) => {
 
     const previewPath = path.join(NASH_ROOT, "nash.mp4");
 
+    // The video is fetched from the public backend by the local Vite app.
+    // Explicitly expose the response to browser media/fetch clients.
+    const requestOrigin = req.headers.origin;
+    if (requestOrigin) {
+      res.setHeader("Access-Control-Allow-Origin", requestOrigin);
+      res.setHeader("Vary", "Origin");
+    } else {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+    }
+
+    const origin = req.headers.origin;
+    res.setHeader("Access-Control-Allow-Origin", origin || "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Range, Content-Type, Accept, Cache-Control");
+    res.setHeader("Access-Control-Expose-Headers", "Accept-Ranges, Content-Length, Content-Range");
+    res.setHeader("Vary", "Origin");
+
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(204);
+    }
+
+    const stats = await fsp.stat(previewPath);
+    const fileSize = stats.size;
+    const range = req.headers.range;
+
+    res.setHeader("Accept-Ranges", "bytes");
     res.setHeader("Content-Type", "video/mp4");
     res.setHeader("Cache-Control", "public, max-age=3600");
 
-    return res.sendFile(previewPath);
+    if (!range) {
+      res.setHeader("Content-Length", fileSize);
+      return fs.createReadStream(previewPath).pipe(res);
+    }
+
+    const match = /^bytes=(\\d*)-(\\d*)$/.exec(range);
+    if (!match) {
+      res.setHeader("Content-Range", `bytes */${fileSize}`);
+      return res.status(416).end();
+    }
+
+    const start = match[1] ? Number(match[1]) : Math.max(fileSize - Number(match[2]), 0);
+    const end = match[2] ? Number(match[2]) : fileSize - 1;
+
+    if (
+      Number.isNaN(start) ||
+      Number.isNaN(end) ||
+      start < 0 ||
+      end < start ||
+      start >= fileSize
+    ) {
+      res.setHeader("Content-Range", `bytes */${fileSize}`);
+      return res.status(416).end();
+    }
+
+    const safeEnd = Math.min(end, fileSize - 1);
+
+    res.status(206);
+    res.setHeader("Content-Range", `bytes ${start}-${safeEnd}/${fileSize}`);
+    res.setHeader("Content-Length", safeEnd - start + 1);
+
+    return fs
+      .createReadStream(previewPath, { start, end: safeEnd })
+      .pipe(res);
   } catch (error) {
     if (error.code === "NASH_ASSETS_MISSING") {
       return res.status(503).json({
@@ -210,8 +270,8 @@ const generateNashVideo = async (req, res, next) => {
       String(doctor._id),
     );
 
-    await fs.mkdir(inputDirectory, { recursive: true });
-    await fs.mkdir(outputDirectory, { recursive: true });
+    await fsp.mkdir(inputDirectory, { recursive: true });
+    await fsp.mkdir(outputDirectory, { recursive: true });
 
     const extension = path.extname(req.file.originalname || "") || ".jpg";
     const safeExtension = /^\.[a-z0-9]+$/i.test(extension)
@@ -227,7 +287,7 @@ const generateNashVideo = async (req, res, next) => {
     const outputFilename = `${Date.now()}-${generationId}.mp4`;
     outputVideoPath = path.join(outputDirectory, outputFilename);
 
-    await fs.writeFile(inputImagePath, req.file.buffer);
+    await fsp.writeFile(inputImagePath, req.file.buffer);
 
     await runNashVideo({
       name: name.trim(),
@@ -255,7 +315,7 @@ const generateNashVideo = async (req, res, next) => {
         specialization: specialization.trim(),
         hospital: hospital.trim(),
         mimeType: "video/mp4",
-        fileSize: (await fs.stat(outputVideoPath)).size,
+        fileSize: (await fsp.stat(outputVideoPath)).size,
         source: "python",
       },
     });
@@ -275,11 +335,11 @@ const generateNashVideo = async (req, res, next) => {
     });
   } catch (error) {
     if (outputVideoPath) {
-      await fs.rm(outputVideoPath, { force: true }).catch(() => {});
+      await fsp.rm(outputVideoPath, { force: true }).catch(() => {});
     }
 
     if (inputImagePath) {
-      await fs.rm(inputImagePath, { force: true }).catch(() => {});
+      await fsp.rm(inputImagePath, { force: true }).catch(() => {});
     }
 
     if (chargedDoctorId) {
