@@ -1,4 +1,4 @@
-const API_BASE_URL = (
+export const API_BASE_URL = (
   import.meta.env.VITE_API_URL || "https://duplex-slate-kilobyte.ngrok-free.dev"
 ).replace(/\/$/, "");
 
@@ -186,4 +186,77 @@ export const downloadDoctorGeneration = async (fileUrl, filename) => {
   } finally {
     window.setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
   }
+};
+
+
+export const getDoctorVideoTemplate = async () => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/doctor-videos/templates?t=${Date.now()}`,
+    {
+      method: "GET",
+      headers: API_HEADERS,
+    },
+  );
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("The server returned an invalid response.");
+  }
+
+  if (!response.ok || !data?.success) {
+    throw new Error(data?.message || "Unable to load video templates.");
+  }
+
+  return data;
+};
+
+export const generateNashVideo = async ({
+  qrToken,
+  name,
+  qualification,
+  specialization,
+  hospital,
+  inputImage,
+}) => {
+  const formData = new FormData();
+
+  formData.append("qrToken", qrToken);
+  formData.append("name", name);
+  formData.append("qualification", qualification);
+  formData.append("specialization", specialization);
+  formData.append("hospital", hospital);
+
+  if (inputImage) {
+    formData.append("input_image", inputImage, inputImage.name || "doctor-photo.jpg");
+  }
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/doctor-videos/templates/nash/generate`,
+    {
+      method: "POST",
+      headers: API_HEADERS,
+      body: formData,
+    },
+  );
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("The server returned an invalid response.");
+  }
+
+  if (!response.ok || !data?.success) {
+    const error = new Error(
+      data?.message || "Unable to create the doctor introduction video.",
+    );
+    error.status = response.status;
+    error.credits = data?.credits;
+    error.requiredCredits = data?.requiredCredits;
+    throw error;
+  }
+
+  return data;
 };
