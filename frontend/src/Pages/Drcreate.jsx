@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { createDoctorGeneration, getDoctorByQRToken } from "../api/doctor.api";
 import { UserRound, ArrowRight, X, Send, Sparkles } from "lucide-react";
 import { toBlob } from "html-to-image";
+import IndependenceDayCard from "../Components/cards/IndependenceDayCard";
 
 /* -------------------------------------------------------
    Logo
@@ -177,7 +178,9 @@ const FestivalCard = ({
   receiverName = "",
   imageUrl = "",
 }) => {
-  const layout = FESTIVAL_LAYOUTS[template.id] || FESTIVAL_LAYOUTS["independence-day"];
+  const layout =
+    FESTIVAL_LAYOUTS[template.id] ||
+    FESTIVAL_LAYOUTS["independence-day"];
 
   return (
     <div
@@ -213,6 +216,19 @@ const TemplatePreview = ({ template, receiverName, senderName, imageUrl }) => {
       <TeacherDayCard
         receiverName={receiverName}
         senderName={senderName}
+        imageUrl={imageUrl}
+      />
+    );
+  }
+
+  // IMPORTANT: use the real IndependenceDayCard component here.
+  // The old local FestivalCard had its own hard-coded percentages, so
+  // changing PHOTO/PILL in IndependenceDayCard had no effect on the
+  // Doctor page preview.
+  if (template.id === "independence-day") {
+    return (
+      <IndependenceDayCard
+        receiverName={receiverName}
         imageUrl={imageUrl}
       />
     );
