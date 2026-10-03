@@ -3,40 +3,99 @@ const getAdminAuthHeaders = () => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-const API_BASE_URL = (
-  import.meta.env.VITE_API_URL || "https://duplex-slate-kilobyte.ngrok-free.dev"
-).replace(/\/$/, "");
+const getApiBaseUrl = () => {
+  const configuredUrl = import.meta.env.VITE_API_URL?.trim();
+
+  if (configuredUrl) {
+    return configuredUrl.replace(/\/$/, "");
+  }
+
+  if (typeof window !== "undefined") {
+    const { protocol, hostname } = window.location;
+    return `${protocol}//${hostname}:5000`;
+  }
+
+  return "http://localhost:5000";
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 const API_HEADERS = {
   Accept: "application/json",
-  "ngrok-skip-browser-warning": "true",
+  ...(API_BASE_URL.includes("ngrok")
+    ? { "ngrok-skip-browser-warning": "true" }
+    : {}),
 };
 
 const request = async (path, options = {}) => {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers: { ...API_HEADERS, ...(getAdminAuthHeaders()), ...(options.headers || {}) },
-  });
+  let response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
+      headers: {
+        ...API_HEADERS,
+        ...getAdminAuthHeaders(),
+        ...(options.headers || {}),
+      },
+    });
+  } catch {
+    throw new Error(
+      `Unable to connect to the backend at ${API_BASE_URL}. Make sure the backend is running.`,
+    );
+  }
 
   let data = null;
+
   try {
     data = await response.json();
   } catch {
-    throw new Error("The server returned an invalid response.");
+    throw new Error(
+      `The backend returned an invalid response for ${path} (HTTP ${response.status}).`,
+    );
   }
 
   if (!response.ok || data?.success === false) {
-    throw new Error(data?.message || "Unable to load admin data.");
+    throw new Error(
+      data?.message || `Request failed with HTTP ${response.status}.`,
+    );
   }
 
   return data;
+};
+
+const getFileNameFromUrl = (imageUrl) => {
+  if (!imageUrl) return "";
+
+  try {
+    const url = new URL(imageUrl);
+    return decodeURIComponent(url.pathname.split("/").pop() || "");
+  } catch {
+    return imageUrl.split("/").pop() || "";
+  }
+};
+
+export const getQrImageUrl = (imageUrl) => {
+  const fileName = getFileNameFromUrl(imageUrl);
+
+  if (!fileName) return "";
+
+  return `${API_BASE_URL}/qrcodes/${encodeURIComponent(fileName)}`;
+};
+
+export const getQrDownloadUrl = (imageUrl) => {
+  const fileName = getFileNameFromUrl(imageUrl);
+
+  if (!fileName) return "";
+
+  return `${API_BASE_URL}/qrcodes/download/${encodeURIComponent(fileName)}`;
 };
 
 export const getAdminDashboard = async () => request("/api/admin/dashboard");
 
 export const getAdminQRCodes = async () => {
   const data = await request("/api/qr");
-  return data.qrCodes || [];
+  return Array.isArray(data.qrCodes) ? data.qrCodes : [];
 };
 
 export const generateAdminQRCodes = async (quantity) => {
@@ -45,7 +104,8 @@ export const generateAdminQRCodes = async (quantity) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ quantity: Number(quantity) }),
   });
-  return data.qrCodes || [];
+
+  return Array.isArray(data.qrCodes) ? data.qrCodes : [];
 };
 
 export const unassignAdminQR = async (id) =>
