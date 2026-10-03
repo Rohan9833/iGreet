@@ -85,6 +85,37 @@ const getEpilepsyTemplate = async () => {
   };
 };
 
+const previewEpilepsyVideo = async (req, res, next) => {
+  try {
+    await ensureEpilepsyAssets();
+
+    const videoPath = path.join(
+      __dirname,
+      "..",
+      "python",
+      "Epilepsy-video",
+      "input.mp4",
+    );
+
+    res.setHeader("Cache-Control", "public, max-age=3600");
+
+    return res.sendFile(videoPath, {
+      acceptRanges: true,
+      cacheControl: true,
+      dotfiles: "deny",
+    });
+  } catch (error) {
+    if (error.code === "EPILEPSY_ASSETS_MISSING") {
+      return res.status(503).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    return next(error);
+  }
+};
+
 const generateEpilepsyVideo = async (req, res, next) => {
   let chargedDoctorId = null;
   let inputImagePath = null;
@@ -295,4 +326,5 @@ module.exports = {
   EPILEPSY_TEMPLATE,
   getEpilepsyTemplate,
   generateEpilepsyVideo,
+  previewEpilepsyVideo,
 };
