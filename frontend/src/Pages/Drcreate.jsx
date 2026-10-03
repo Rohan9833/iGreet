@@ -17,6 +17,7 @@ import AnniversaryCard from "../Components/cards/AnniversaryCard";
 import NashVideoModal from "../Components/NashVideoModal";
 import NashVideoPreview from "../Components/NashVideoPreview";
 import DoctorVideoModal from "../Components/DoctorVideoModal";
+import DoctorMediaImage from "../Components/DoctorMediaImage";
 
 /* -------------------------------------------------------
    Logo
@@ -1110,21 +1111,16 @@ export default function Drcreate() {
                 <div className="relative overflow-hidden">
                   {t.type === "video" ? (
                     t.id === "epilepsy-doctor-intro" ? (
-                      <video
+                      <NashVideoPreview
                         src={getEpilepsyVideoPreviewUrl()}
                         autoPlay
-                        loop
                         muted
+                        loop
                         playsInline
-                        preload="auto"
-                        controls={false}
                         className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
-                        onCanPlay={(event) => {
-                          event.currentTarget.play().catch(() => {});
-                        }}
                       />
                     ) : t.id === "kidney-doctor-intro" ? (
-                      <img
+                      <DoctorMediaImage
                         src={getKidneyVideoPreviewUrl()}
                         alt={t.title}
                         className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
