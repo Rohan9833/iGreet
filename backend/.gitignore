@@ -142,6 +142,8 @@ Desktop.ini
 
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
 !.vscode/launch.json
 
 .idea/
@@ -154,7 +156,7 @@ Desktop.ini
 *.swo
 *.swn
 
-# Sublime
+# Sublime Text
 *.sublime-workspace
 *.sublime-project
 
@@ -169,7 +171,7 @@ debug/
 *.pid.lock
 
 # =========================================================
-# CERTIFICATES / PRIVATE KEYS / SECURITY
+# CERTIFICATES / PRIVATE KEYS / SECURITY FILES
 # =========================================================
 
 *.pem
@@ -302,7 +304,7 @@ GoogleService-Info.plist
 .cache-loader/
 .eslintcache
 .stylelintcache
-.rpt2_cache
+.rpt2_cache/
 .npm/
 
 # =========================================================
