@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2, Play } from "lucide-react";
 
 export default function NashVideoPreview({
@@ -10,22 +10,15 @@ export default function NashVideoPreview({
   muted = true,
   playsInline = true,
 }) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(Boolean(src));
   const [failed, setFailed] = useState(false);
 
-  const videoSrc = useMemo(() => {
-    if (!src) return "";
-
-    const separator = src.includes("?") ? "&" : "?";
-    return `${src}${separator}ngrok-skip-browser-warning=true`;
+  useEffect(() => {
+    setLoading(Boolean(src));
+    setFailed(false);
   }, [src]);
 
-  useEffect(() => {
-    setLoading(Boolean(videoSrc));
-    setFailed(false);
-  }, [videoSrc]);
-
-  if (!videoSrc || failed) {
+  if (!src || failed) {
     return (
       <div
         className={`flex items-center justify-center bg-slate-950 ${className}`}
@@ -47,8 +40,8 @@ export default function NashVideoPreview({
       )}
 
       <video
-        key={videoSrc}
-        src={videoSrc}
+        key={src}
+        src={src}
         controls={controls}
         autoPlay={autoPlay}
         loop={loop}
@@ -58,7 +51,8 @@ export default function NashVideoPreview({
         className="block h-full w-full object-cover"
         onLoadedData={() => setLoading(false)}
         onCanPlay={() => setLoading(false)}
-        onError={() => {
+        onError={(event) => {
+          console.error("Video failed:", src, event.currentTarget.error);
           setLoading(false);
           setFailed(true);
         }}
