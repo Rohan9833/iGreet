@@ -41,6 +41,7 @@ export default function NashVideoModal({
         setTemplate(data.templates?.[0] || null);
       } catch (loadError) {
         setError(loadError.message || "Unable to load the video template.");
+      }
     };
 
     loadTemplate();
