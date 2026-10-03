@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight, CheckCircle2, Film, Sparkles } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { API_BASE_URL } from "../api/doctor.api";
+import { getNashVideoPreviewUrl } from "../api/doctor.api";
 import NashVideoPreview from "../Components/NashVideoPreview";
 
 const TEMPLATES = [
@@ -32,7 +32,7 @@ const TEMPLATES = [
     id: "nash-doctor-intro",
     title: "Doctor Introduction Video",
     type: "video",
-    preview: `${API_BASE_URL}/api/doctor-videos/templates/nash/preview?ngrok-skip-browser-warning=true`,
+    preview: getNashVideoPreviewUrl(),
     description: "Create a personalized doctor introduction video with your photo and details.",
   },
 ];
