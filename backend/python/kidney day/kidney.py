@@ -5,6 +5,8 @@ import os
 import uuid
 from PIL import Image, ImageDraw, ImageFont
 import argparse
+import subprocess
+import sys
 from moviepy.editor import TextClip
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
@@ -21,6 +23,31 @@ def log_error(message):
         log_file.write(message + "\n")
 
 # Cleanup Function
+def resolve_font_path():
+    candidates = [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "Lato-Heavy.ttf"),
+        "/usr/share/fonts/truetype/lato/Lato-Heavy.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "C:/Windows/Fonts/arialbd.ttf",
+    ]
+
+    for candidate in candidates:
+        if os.path.isfile(candidate):
+            return candidate
+
+    return None
+
+
+FONT_PATH = resolve_font_path()
+
+
+def load_font(size):
+    if FONT_PATH:
+        return ImageFont.truetype(FONT_PATH, size)
+
+    return ImageFont.load_default()
+
+
 def clean_up_temp_folder(temp_folder):
     try:
         for root, dirs, files in os.walk(temp_folder, topdown=False):
@@ -83,7 +110,7 @@ def replace_contour_with_image(frame, overlay_image, frame_number,text1,text2,te
         frame[y:y+h, x:x+w] = overlay_resized
 
     text_lines = [text1,text2,text3,text4]
-    font_path = ["Lato-Heavy.ttf", "Lato-Heavy.ttf", "Lato-Heavy.ttf","Lato-Heavy.ttf"]
+    font_path = [FONT_PATH, FONT_PATH, FONT_PATH, FONT_PATH]
     font_sizes = [70, 48, 48,48]
     if 19 <= frame_number <= 1415:
         frame = draw_text_on_frame(frame, frame_number, text_lines,font_path,font_sizes)
@@ -145,7 +172,7 @@ def draw_text_on_frame(frame, frame_number, text_lines, font_paths, base_font_si
     
     # Calculate max width before setting positions
     max_text_width = max([
-        ImageDraw.Draw(Image.new("RGB", (1, 1))).textbbox((0, 0), text, font=ImageFont.truetype(font_paths[i], int(base_font_sizes[i] * (1 - 0.3 * progress))), anchor="lt")[2] 
+        ImageDraw.Draw(Image.new("RGB", (1, 1))).textbbox((0, 0), text, font=load_font(int(base_font_sizes[i] * (1 - 0.3 * progress))), anchor="lt")[2] 
         for i, text in enumerate(text_lines)
     ])
 
@@ -164,7 +191,7 @@ def draw_text_on_frame(frame, frame_number, text_lines, font_paths, base_font_si
             continue  # Skip this line until its frame appears
 
         font_size = int(base_font_sizes[i] * (1 - 0.35 * progress))
-        font = ImageFont.truetype(font_paths[i], font_size)
+        font = load_font(font_size)
         
 
 
@@ -208,7 +235,26 @@ def create_video_from_frames(output_folder, audio_path, video_output_path):
             print("No frames to process.")
             return
  
-        os.system(f"ffmpeg -y -framerate 24 -i {output_folder}/frame_%04d.jpg -i {audio_path} -c:v libx264 -pix_fmt yuv420p -c:a aac {video_output_path}")
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-y",
+                "-framerate",
+                "24",
+                "-i",
+                os.path.join(output_folder, "frame_%04d.jpg"),
+                "-i",
+                audio_path,
+                "-c:v",
+                "libx264",
+                "-pix_fmt",
+                "yuv420p",
+                "-c:a",
+                "aac",
+                video_output_path,
+            ],
+            check=True,
+        )
         print(f"Video created successfully: {video_output_path}")
     except Exception as e:
         log_error(f"Video creation failed: {e}")
@@ -217,8 +263,9 @@ def create_video_from_frames(output_folder, audio_path, video_output_path):
 
 if __name__ == "__main__":
     try:
-        frames_folder = "frames"
-        audio_path = "audio.mp3"
+        template_root = os.path.dirname(os.path.abspath(__file__))
+        frames_folder = os.path.join(template_root, "frames")
+        audio_path = os.path.join(template_root, "kidney-audio.mp3")
         # Create a temporary folder for storing intermediate frames
         uuid_dir = str(uuid.uuid1())
         temp_folder = f"processed_frames_{uuid_dir}"
