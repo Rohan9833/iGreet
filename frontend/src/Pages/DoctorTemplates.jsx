@@ -1,6 +1,10 @@
 import { ArrowLeft, ArrowRight, CheckCircle2, Film, Sparkles } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getNashVideoPreviewUrl } from "../api/doctor.api";
+import {
+  getEpilepsyVideoPreviewUrl,
+  getKidneyVideoPreviewUrl,
+  getNashVideoPreviewUrl,
+} from "../api/doctor.api";
 import NashVideoPreview from "../Components/NashVideoPreview";
 
 const TEMPLATES = [
@@ -39,12 +43,16 @@ const TEMPLATES = [
     id: "kidney-doctor-intro",
     title: "Kidney Day Doctor Video",
     type: "video",
+    preview: getKidneyVideoPreviewUrl(),
+    previewType: "image",
     description: "Create a personalized Kidney Day doctor introduction video.",
   },
   {
     id: "epilepsy-doctor-intro",
     title: "Epilepsy Doctor Video",
     type: "video",
+    preview: getEpilepsyVideoPreviewUrl(),
+    previewType: "video",
     description: "Create a personalized Epilepsy doctor introduction video.",
   },
 ];
@@ -103,7 +111,29 @@ export default function DoctorTemplates() {
                 <div className="relative overflow-hidden bg-slate-50">
                   {template.type === "video" ? (
                     <div className="relative flex aspect-[1448/2048] w-full items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 transition duration-300 group-hover:scale-[1.02]">
-                      {template.preview ? (
+                      {template.previewType === "image" ? (
+                        <img
+                          src={template.preview}
+                          alt={template.title}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : template.previewType === "video" ? (
+                        <video
+                          src={template.preview}
+                          preload="auto"
+                          muted
+                          playsInline
+                          controls={false}
+                          className="h-full w-full object-cover"
+                          onLoadedData={(event) => {
+                            try {
+                              event.currentTarget.currentTime = 0;
+                            } catch {
+                              // First decoded frame is sufficient for the preview.
+                            }
+                          }}
+                        />
+                      ) : template.preview ? (
                         <NashVideoPreview
                           src={template.preview}
                           autoPlay
