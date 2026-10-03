@@ -14,6 +14,10 @@ const {
   runNashVideo,
 } = require("../services/nashVideo.service");
 
+const {
+  getKidneyTemplate,
+} = require("./kidneyVideo.controller");
+
 const VIDEO_CREDIT_COST = Number(process.env.NASH_VIDEO_CREDIT_COST || 20);
 const VIDEO_STORAGE_ROOT = path.join(
   __dirname,
@@ -304,11 +308,14 @@ const previewNashVideo = async (req, res, next) => {
 };
 const listVideoTemplates = async (req, res, next) => {
   try {
-    const template = await getNashTemplate();
+    const [nashTemplate, kidneyTemplate] = await Promise.all([
+      getNashTemplate(),
+      getKidneyTemplate(),
+    ]);
 
     return res.json({
       success: true,
-      templates: [template],
+      templates: [nashTemplate, kidneyTemplate],
     });
   } catch (error) {
     return next(error);
