@@ -13,6 +13,7 @@ export default function AdminMRs() {
     total: 0,
     totalPages: 0,
   });
+  const [jumpPage, setJumpPage] = useState("1");
   const [loading, setLoading] = useState(true);
 
   const load = async (value = search, nextPage = 1) => {
@@ -22,6 +23,7 @@ export default function AdminMRs() {
       const result = await getAdminMRs(value, nextPage, PAGE_SIZE);
       setMrs(result.mrs);
       setPagination(result.pagination);
+      setJumpPage(String(result.pagination.page));
     } catch (error) {
       setMrs([]);
       setPagination({
@@ -30,6 +32,7 @@ export default function AdminMRs() {
         total: 0,
         totalPages: 0,
       });
+      setJumpPage(String(nextPage));
       alert(error.message);
     } finally {
       setLoading(false);
@@ -47,6 +50,23 @@ export default function AdminMRs() {
   const goToPage = (page) => {
     if (loading || page < 1 || page > pagination.totalPages) return;
     load(search, page);
+  };
+
+  const handlePageJump = (event) => {
+    if (event.key !== "Enter" || loading) return;
+
+    const requestedPage = Number.parseInt(jumpPage, 10);
+
+    if (
+      !Number.isInteger(requestedPage) ||
+      requestedPage < 1 ||
+      requestedPage > pagination.totalPages
+    ) {
+      setJumpPage(String(pagination.page));
+      return;
+    }
+
+    goToPage(requestedPage);
   };
 
   const firstItem =
@@ -172,9 +192,27 @@ export default function AdminMRs() {
                 Previous
               </button>
 
-              <span className="min-w-[90px] text-center text-xs font-bold text-slate-600">
-                Page {pagination.page} of {pagination.totalPages}
-              </span>
+              <div className="flex h-9 items-center gap-1 rounded-lg border border-slate-200 bg-white px-2 text-xs font-bold text-slate-600">
+                <span>Page</span>
+                <input
+                  type="number"
+                  min="1"
+                  max={Math.max(pagination.totalPages, 1)}
+                  value={jumpPage}
+                  onChange={(event) => setJumpPage(event.target.value)}
+                  onKeyDown={handlePageJump}
+                  onBlur={() => {
+                    if (!jumpPage || Number(jumpPage) !== pagination.page) {
+                      setJumpPage(String(pagination.page));
+                    }
+                  }}
+                  disabled={loading}
+                  aria-label="Go to page"
+                  title="Enter a page number and press Enter"
+                  className="h-7 w-12 rounded-md border border-slate-200 bg-slate-50 px-1 text-center text-xs font-bold text-slate-700 outline-none focus:border-orange-400 focus:bg-white focus:ring-2 focus:ring-orange-50 disabled:cursor-not-allowed disabled:opacity-50"
+                />
+                <span>of {pagination.totalPages}</span>
+              </div>
 
               <button
                 type="button"
@@ -182,7 +220,6 @@ export default function AdminMRs() {
                 disabled={loading || pagination.page >= pagination.totalPages}
                 className="inline-flex h-9 items-center gap-1 rounded-lg border border-slate-200 px-3 text-xs font-bold text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
               >
-                <ChevronLeft className="hidden" />
                 Next
                 <ChevronRight className="h-4 w-4" />
               </button>
