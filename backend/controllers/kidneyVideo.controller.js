@@ -83,21 +83,25 @@ const previewKidneyVideo = async (req, res, next) => {
       path.join(KIDNEY_ROOT, "frames"),
     );
 
-    const firstFrame = frameFiles
+    const orderedFrames = frameFiles
       .filter((file) => /^frame_\d{4}\.jpg$/i.test(file))
-      .sort((a, b) => a.localeCompare(b))[0];
+      .sort((a, b) => a.localeCompare(b));
 
-    if (!firstFrame) {
+    // Use the 51st rendered frame for the Kidney Day preview.
+    // Array index 50 is the 51st frame.
+    const previewFrame = orderedFrames[50];
+
+    if (!previewFrame) {
       return res.status(503).json({
         success: false,
-        message: "The Kidney Day preview frame is unavailable.",
+        message: "The Kidney Day 51st preview frame is unavailable.",
       });
     }
 
     res.setHeader("Cache-Control", "public, max-age=3600");
 
     return res.sendFile(
-      path.join(KIDNEY_ROOT, "frames", firstFrame),
+      path.join(KIDNEY_ROOT, "frames", previewFrame),
     );
   } catch (error) {
     if (error.code === "KIDNEY_ASSETS_MISSING") {
