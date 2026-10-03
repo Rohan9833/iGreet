@@ -2,8 +2,41 @@ export const API_BASE_URL = (
   import.meta.env.VITE_API_URL || "https://duplex-slate-kilobyte.ngrok-free.dev"
 ).replace(/\/$/, "");
 
+/**
+ * Add ngrok's browser-warning bypass only to media URLs served through ngrok.
+ * Localhost/LAN URLs are returned unchanged.
+ */
+export const buildMediaUrl = (url) => {
+  if (!url) return url;
+
+  try {
+    const parsed = new URL(url, window.location.origin);
+    const hostname = parsed.hostname.toLowerCase();
+
+    const isNgrok =
+      hostname === "ngrok.io" ||
+      hostname.endsWith(".ngrok.io") ||
+      hostname === "ngrok.app" ||
+      hostname.endsWith(".ngrok.app") ||
+      hostname === "ngrok-free.app" ||
+      hostname.endsWith(".ngrok-free.app") ||
+      hostname === "ngrok-free.dev" ||
+      hostname.endsWith(".ngrok-free.dev");
+
+    if (!isNgrok) return url;
+
+    parsed.searchParams.set("ngrok-skip-browser-warning", "true");
+
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+};
+
 export const getNashVideoPreviewUrl = () =>
-  `${API_BASE_URL}/api/doctor-videos/templates/nash/preview`;
+  buildMediaUrl(
+    `${API_BASE_URL}/api/doctor-videos/templates/nash/preview`,
+  );
 
 export const API_HEADERS = {
   Accept: "application/json",
@@ -154,14 +187,11 @@ export const fetchGenerationBlobUrl = async (fileUrl) => {
     throw new Error("Generated file URL is missing.");
   }
 
-  const response = await fetch(
-    `${fileUrl}${fileUrl.includes("?") ? "&" : "?"}ngrok-skip-browser-warning=true`,
-    {
-      method: "GET",
-      headers: API_HEADERS,
-      cache: "no-store",
-    },
-  );
+  const response = await fetch(buildMediaUrl(fileUrl), {
+    method: "GET",
+    headers: API_HEADERS,
+    cache: "no-store",
+  });
 
   if (!response.ok) {
     throw new Error(`Unable to load generated file (HTTP ${response.status}).`);
@@ -216,10 +246,14 @@ export const getDoctorVideoTemplate = async () => {
 };
 
 export const getKidneyVideoPreviewUrl = () =>
-  `${API_BASE_URL}/api/doctor-videos/templates/kidney/preview`;
+  buildMediaUrl(
+    `${API_BASE_URL}/api/doctor-videos/templates/kidney/preview`,
+  );
 
 export const getEpilepsyVideoPreviewUrl = () =>
-  `${API_BASE_URL}/api/doctor-videos/templates/epilepsy/preview`;
+  buildMediaUrl(
+    `${API_BASE_URL}/api/doctor-videos/templates/epilepsy/preview`,
+  );
 
 export const generateKidneyVideo = async ({
   qrToken,
