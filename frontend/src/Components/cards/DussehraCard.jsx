@@ -2,7 +2,7 @@ import React from "react";
 
 const BASE_WIDTH = 900;
 
-const AnniversaryCard = ({
+const DussehraCard = ({
   width = BASE_WIDTH,
   receiverName = "",
   imageUrl = "",
@@ -34,7 +34,7 @@ const AnniversaryCard = ({
             left: "25%",
             top: "2%",
             width: "51%",
-            height: "45%",
+            aspectRatio: "1 / 1",
             borderRadius: "50%",
             objectFit: "cover",
           }}
@@ -63,4 +63,4 @@ const AnniversaryCard = ({
   );
 };
 
-export default AnniversaryCard;
+export default DussehraCard;
