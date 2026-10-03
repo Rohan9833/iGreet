@@ -1102,10 +1102,24 @@ export default function Drcreate() {
               >
                 <div className="relative overflow-hidden">
                   {t.type === "video" ? (
-                    <NashVideoPreview
-                      src={t.preview}
-                      className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
-                    />
+                    t.preview ? (
+                      <NashVideoPreview
+                        src={t.preview}
+                        className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
+                      />
+                    ) : (
+                      <div className="flex aspect-[1448/2048] w-full items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 px-4 text-center text-white">
+                        <div>
+                          <Film className="mx-auto h-8 w-8 text-white/80" />
+                          <p className="mt-3 text-[13px] font-bold">
+                            {t.id === "kidney-doctor-intro" ? "Kidney Day" : "Epilepsy"}
+                          </p>
+                          <p className="mt-1 text-[10px] text-white/60">
+                            Doctor introduction video
+                          </p>
+                        </div>
+                      </div>
+                    )
                   ) : (
                     <img
                       src={t.image}
