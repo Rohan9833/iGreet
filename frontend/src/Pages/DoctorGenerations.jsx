@@ -65,7 +65,14 @@ export default function DoctorGenerations() {
         ]);
 
         setDoctor(doctorData.doctor);
-        setGenerations(generationData.generations || []);
+        const nextGenerations = generationData.generations || [];
+        setGenerations(nextGenerations);
+
+        // Load the actual files through the backend API so browser image
+        // requests do not depend on the static/ngrok image URL.
+        await Promise.all(
+          nextGenerations.map((generation) => resolveGenerationImage(generation)),
+        );
       } catch (loadError) {
         setError(loadError.message || "Unable to load generations.");
       } finally {
@@ -87,7 +94,9 @@ export default function DoctorGenerations() {
   }, []);
 
   const resolveGenerationImage = async (generation) => {
-    if (!generation?.outputUrl || generationImageUrls[generation._id]) {
+    const fileUrl = generation?.previewUrl || generation?.outputUrl;
+
+    if (!fileUrl || generationImageUrls[generation._id]) {
       return generationImageUrls[generation?._id] || "";
     }
 
@@ -101,7 +110,7 @@ export default function DoctorGenerations() {
     }));
 
     try {
-      const blobUrl = await fetchGenerationBlobUrl(generation.outputUrl);
+      const blobUrl = await fetchGenerationBlobUrl(fileUrl);
 
       setGenerationImageUrls((previous) => ({
         ...previous,
@@ -121,17 +130,21 @@ export default function DoctorGenerations() {
   };
 
   const handleImageError = (generation) => {
-    if (generation?.outputUrl && !generationImageUrls[generation._id]) {
+    if (
+      (generation?.previewUrl || generation?.outputUrl) &&
+      !generationImageUrls[generation._id]
+    ) {
       resolveGenerationImage(generation);
     }
   };
 
   const handleDownload = async (generation) => {
-    if (!generation?.outputUrl) return;
+    const fileUrl = generation?.downloadUrl || generation?.previewUrl || generation?.outputUrl;
+    if (!fileUrl) return;
 
     try {
       const filename = `${generation.template || "generation"}-${generation._id || Date.now()}.png`;
-      await downloadDoctorGeneration(generation.outputUrl, filename);
+      await downloadDoctorGeneration(fileUrl, filename);
     } catch (downloadError) {
       console.error("Unable to download generated card:", downloadError);
       window.alert("Unable to download the card. Please try again.");
@@ -217,7 +230,10 @@ export default function DoctorGenerations() {
                   <button
                     key={generation._id}
                     type="button"
-                    onClick={() => setSelectedGeneration(generation)}
+                    onClick={() => {
+                      setSelectedGeneration(generation);
+                      resolveGenerationImage(generation);
+                    }}
                     className="flex w-full flex-col gap-4 rounded-[20px] border border-slate-100 bg-slate-50 p-4 text-left transition hover:border-orange-100 hover:bg-[#fffaf5] sm:flex-row sm:items-center"
                   >
                     <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[14px] bg-white shadow-sm">
@@ -300,12 +316,9 @@ export default function DoctorGenerations() {
                 </div>
 
                 <div className="bg-slate-50 p-5">
-                  {selectedGeneration.outputUrl ? (
+                  {generationImageUrls[selectedGeneration._id] ? (
                     <img
-                      src={
-                        generationImageUrls[selectedGeneration._id] ||
-                        selectedGeneration.outputUrl
-                      }
+                      src={generationImageUrls[selectedGeneration._id]}
                       alt={
                         selectedGeneration.metadata?.receiverName ||
                         "Generated card"
@@ -315,7 +328,9 @@ export default function DoctorGenerations() {
                     />
                   ) : (
                     <div className="flex h-64 items-center justify-center rounded-xl bg-white text-sm text-slate-500">
-                      Generated file is unavailable.
+                      {imageLoading[selectedGeneration._id]
+                        ? "Loading generated card..."
+                        : "Generated file is unavailable."}
                     </div>
                   )}
                 </div>
@@ -325,7 +340,9 @@ export default function DoctorGenerations() {
                     Created {formatDate(selectedGeneration.createdAt)}
                   </div>
 
-                  {selectedGeneration.outputUrl && (
+                  {(selectedGeneration.downloadUrl ||
+                    selectedGeneration.previewUrl ||
+                    selectedGeneration.outputUrl) && (
                     <button
                       type="button"
                       onClick={() => handleDownload(selectedGeneration)}
