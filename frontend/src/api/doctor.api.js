@@ -2,7 +2,7 @@ const API_BASE_URL = (
   import.meta.env.VITE_API_URL || "https://duplex-slate-kilobyte.ngrok-free.dev"
 ).replace(/\/$/, "");
 
-const API_HEADERS = {
+export const API_HEADERS = {
   Accept: "application/json",
   "ngrok-skip-browser-warning": "true",
   "Cache-Control": "no-cache",
@@ -65,7 +65,6 @@ export const getDoctorByQRToken = async (token) => {
 
   return data;
 };
-
 
 export const createDoctorGeneration = async ({
   qrToken,
@@ -139,4 +138,43 @@ export const getDoctorGenerationsByQRToken = async (token) => {
         : "",
     })),
   };
+};
+
+export const fetchGenerationBlobUrl = async (outputUrl) => {
+  if (!outputUrl) {
+    throw new Error("Generated file URL is missing.");
+  }
+
+  const response = await fetch(outputUrl, {
+    method: "GET",
+    headers: API_HEADERS,
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Unable to load generated file (HTTP ${response.status}).`);
+  }
+
+  const blob = await response.blob();
+
+  if (!blob.size) {
+    throw new Error("Generated file is empty.");
+  }
+
+  return URL.createObjectURL(blob);
+};
+
+export const downloadDoctorGeneration = async (outputUrl, filename) => {
+  const blobUrl = await fetchGenerationBlobUrl(outputUrl);
+
+  try {
+    const anchor = document.createElement("a");
+    anchor.href = blobUrl;
+    anchor.download = filename || "igreet-generation.png";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+  } finally {
+    window.setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+  }
 };
