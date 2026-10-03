@@ -34,7 +34,7 @@ const AnniversaryCard = ({
             left: "25%",
             top: "2%",
             width: "51%",
-            height: "42%",
+            height: "45%",
             borderRadius: "50%",
             objectFit: "cover",
           }}
