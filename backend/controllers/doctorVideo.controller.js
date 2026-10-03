@@ -316,5 +316,6 @@ const generateNashVideo = async (req, res, next) => {
 
 module.exports = {
   listVideoTemplates,
+  previewNashVideo,
   generateNashVideo,
 };
