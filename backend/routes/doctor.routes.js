@@ -5,6 +5,8 @@ const {
   getDoctorByQRToken,
   createGeneration,
   getDoctorGenerationsByQRToken,
+  getGenerationFile,
+  downloadGenerationFile,
 } = require("../controllers/doctor.controller");
 const { requireMrAuth } = require("../middleware/mrAuth");
 
@@ -25,5 +27,10 @@ router.post("/register", requireMrAuth, registerDoctor);
 router.get("/by-qr/:token", getDoctorByQRToken);
 router.post("/generate", generationUpload.single("card"), createGeneration);
 router.get("/generations/by-qr/:token", getDoctorGenerationsByQRToken);
+router.get("/generations/file/:generationId", getGenerationFile);
+router.get(
+  "/generations/download/:generationId",
+  downloadGenerationFile,
+);
 
 module.exports = router;
