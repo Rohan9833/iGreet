@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { createDoctorGeneration, getDoctorByQRToken, API_BASE_URL } from "../api/doctor.api";
-import { UserRound, ArrowRight, X, Send, Sparkles, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { UserRound, ArrowRight, X, Send, Sparkles, Loader2, CheckCircle2, AlertCircle, Film } from "lucide-react";
 import { toBlob } from "html-to-image";
 import TeachersDayCard from "../Components/cards/TeachersDayCard";
 import IndependenceDayCard from "../Components/cards/IndependenceDayCard";
