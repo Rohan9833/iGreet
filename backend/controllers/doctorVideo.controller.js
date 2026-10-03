@@ -116,7 +116,7 @@ const getFfmpegCommand = async () => {
   });
 };
 
-const ensureBrowserCompatiblePreview = async () =>
+const ensureBrowserCompatiblePreview = async () => {
   const sourcePath = path.join(NASH_ROOT, "nash.mp4");
   const previewPath = path.join(NASH_ROOT, NASH_BROWSER_PREVIEW);
 
