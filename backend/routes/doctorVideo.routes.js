@@ -9,10 +9,12 @@ const {
 
 const {
   generateKidneyVideo,
+  previewKidneyVideo,
 } = require("../controllers/kidneyVideo.controller");
 
 const {
   generateEpilepsyVideo,
+  previewEpilepsyVideo,
 } = require("../controllers/epilepsyVideo.controller");
 
 const router = express.Router();
@@ -37,6 +39,8 @@ const videoImageUpload = multer({
 
 router.get("/templates", listVideoTemplates);
 router.get("/templates/nash/preview", previewNashVideo);
+router.get("/templates/kidney/preview", previewKidneyVideo);
+router.get("/templates/epilepsy/preview", previewEpilepsyVideo);
 
 router.post(
   "/templates/nash/generate",
