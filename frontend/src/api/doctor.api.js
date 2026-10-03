@@ -215,6 +215,112 @@ export const getDoctorVideoTemplate = async () => {
   return data;
 };
 
+export const generateKidneyVideo = async ({
+  qrToken,
+  name,
+  speciality,
+  hospital,
+  city,
+  inputImage,
+}) => {
+  const formData = new FormData();
+
+  formData.append("qrToken", qrToken);
+  formData.append("name", name);
+  formData.append("speciality", speciality);
+  formData.append("hospital", hospital);
+  formData.append("city", city);
+
+  if (inputImage) {
+    formData.append(
+      "input_image",
+      inputImage,
+      inputImage.name || "doctor-photo-kidney.jpg",
+    );
+  }
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/doctor-videos/templates/kidney/generate`,
+    {
+      method: "POST",
+      headers: API_HEADERS,
+      body: formData,
+    },
+  );
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("The server returned an invalid response.");
+  }
+
+  if (!response.ok || !data?.success) {
+    const error = new Error(
+      data?.message || "Unable to create the Kidney Day doctor video.",
+    );
+    error.status = response.status;
+    error.credits = data?.credits;
+    error.requiredCredits = data?.requiredCredits;
+    throw error;
+  }
+
+  return data;
+};
+
+export const generateEpilepsyVideo = async ({
+  qrToken,
+  name,
+  speciality,
+  hospital,
+  city,
+  inputImage,
+}) => {
+  const formData = new FormData();
+
+  formData.append("qrToken", qrToken);
+  formData.append("name", name);
+  formData.append("speciality", speciality);
+  formData.append("hospital", hospital);
+  formData.append("city", city);
+
+  if (inputImage) {
+    formData.append(
+      "input_image",
+      inputImage,
+      inputImage.name || "doctor-photo-epilepsy.jpg",
+    );
+  }
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/doctor-videos/templates/epilepsy/generate`,
+    {
+      method: "POST",
+      headers: API_HEADERS,
+      body: formData,
+    },
+  );
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("The server returned an invalid response.");
+  }
+
+  if (!response.ok || !data?.success) {
+    const error = new Error(
+      data?.message || "Unable to create the Epilepsy doctor video.",
+    );
+    error.status = response.status;
+    error.credits = data?.credits;
+    error.requiredCredits = data?.requiredCredits;
+    throw error;
+  }
+
+  return data;
+};
+
 export const generateNashVideo = async ({
   qrToken,
   name,
