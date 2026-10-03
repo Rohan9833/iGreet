@@ -2,6 +2,9 @@ export const API_BASE_URL = (
   import.meta.env.VITE_API_URL || "https://duplex-slate-kilobyte.ngrok-free.dev"
 ).replace(/\/$/, "");
 
+export const getNashVideoPreviewUrl = () =>
+  `${API_BASE_URL}/api/doctor-videos/templates/nash/preview`;
+
 export const API_HEADERS = {
   Accept: "application/json",
   "ngrok-skip-browser-warning": "true",
