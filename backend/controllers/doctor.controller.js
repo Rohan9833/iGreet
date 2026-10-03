@@ -6,6 +6,7 @@ const fs = require("fs/promises");
 const path = require("path");
 
 const GENERATION_CREDIT_COST = 20;
+const GENERATIONS_STORAGE_ROOT = path.join(__dirname, "..", "storage", "generations");
 
 const registerDoctor = async (req, res, next) => {
   try {
@@ -157,7 +158,6 @@ const getDoctorByQRToken = async (req, res, next) => {
   }
 };
 
-
 const createGeneration = async (req, res, next) => {
   let storedFilePath = null;
   let chargedDoctorId = null;
@@ -241,8 +241,10 @@ const createGeneration = async (req, res, next) => {
 
     chargedDoctorId = doctor._id;
 
-    const generationsRoot = path.resolve("storage", "generations");
-    const doctorDirectory = path.join(generationsRoot, String(doctor._id));
+    const doctorDirectory = path.join(
+      GENERATIONS_STORAGE_ROOT,
+      String(doctor._id),
+    );
 
     await fs.mkdir(doctorDirectory, { recursive: true });
 
@@ -339,4 +341,9 @@ const getDoctorGenerationsByQRToken = async (req, res, next) => {
   }
 };
 
-module.exports = { registerDoctor, getDoctorByQRToken, createGeneration, getDoctorGenerationsByQRToken };
+module.exports = {
+  registerDoctor,
+  getDoctorByQRToken,
+  createGeneration,
+  getDoctorGenerationsByQRToken,
+};
