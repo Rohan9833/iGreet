@@ -181,11 +181,11 @@ const previewNashVideo = async (req, res, next) => {
 
     // Express/sendFile handles normal requests, HEAD requests and HTTP
     // byte ranges for HTML5 <video> clients.
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
     return res.sendFile(previewPath, {
       acceptRanges: true,
-      cacheControl: true,
-      maxAge: "1h",
-      immutable: false,
+      cacheControl: false,
       dotfiles: "deny",
       lastModified: true,
     });
