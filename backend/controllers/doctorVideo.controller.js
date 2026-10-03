@@ -109,7 +109,7 @@ const previewNashVideo = async (req, res, next) => {
       return fs.createReadStream(previewPath).pipe(res);
     }
 
-    const match = /^bytes=(\\d*)-(\\d*)$/.exec(range);
+    const match = /^bytes=(\d*)-(\d*)$/.exec(range);
     if (!match) {
       res.setHeader("Content-Range", `bytes */${fileSize}`);
       return res.status(416).end();
