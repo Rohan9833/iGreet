@@ -9,8 +9,8 @@ const REQUIRED_ASSETS = [
   "nash.py",
   "nash.mp4",
   "nashban.png",
-  "ANEKLATIN_CONDENSED-BOLD.TTF",
-  "POPPINS-MEDIUM.TTF",
+  "AnekLatin[wdth,wght].ttf",
+  "Poppins-Medium.ttf",
 ];
 
 const getPythonCommand = () =>
