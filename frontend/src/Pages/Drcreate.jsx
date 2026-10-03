@@ -843,7 +843,7 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
                     name="receiverName"
                     value={form.receiverName}
                     onChange={handleChange}
-                    placeholder="e.g. HARSH"
+                    placeholder="Receiver Name"
                     className={inputCls}
                   />
                 </div>
@@ -858,7 +858,7 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
                       name="senderName"
                       value={form.senderName}
                       onChange={handleChange}
-                      placeholder="e.g. ROHAN CHANDRAJEET PAL"
+                      placeholder="Sender Name"
                       className={inputCls}
                     />
                   </div>
