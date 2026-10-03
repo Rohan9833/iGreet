@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight, CheckCircle2, CircleDashed, CreditCard, QrCode, Stethoscope, UsersRound } from "lucide-react";
 import { Link } from "react-router-dom";
-import { getAdminDashboard } from "../../api/admin.api";
+import { getAdminDashboard, getQrImageUrl } from "../../api/admin.api";
 
 const StatCard = ({ label, value, helper, icon: Icon, iconClass }) => (
   <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_30px_rgba(24,45,69,0.04)]">
@@ -56,7 +56,19 @@ export default function AdminDashboard() {
             {data?.recentQRCodes?.map((qr) => (
               <div key={qr._id} className="flex items-center justify-between gap-4 px-5 py-4">
                 <div className="flex min-w-0 items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-50"><QrCode className="h-4 w-4 text-slate-500" /></div>
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-1">
+                    {getQrImageUrl(qr.imageFileName || qr.imageUrl) ? (
+                      <img
+                        src={getQrImageUrl(qr.imageFileName || qr.imageUrl)}
+                        alt={`QR code ${qr.code}`}
+                        className="h-full w-full object-contain"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-slate-50">
+                        <QrCode className="h-4 w-4 text-slate-400" />
+                      </div>
+                    )}
+                  </div>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-bold text-slate-700">{qr.code}</p>
                     <p className="truncate text-xs text-slate-400">{qr.doctor?.doctorName || "Not assigned"}</p>
