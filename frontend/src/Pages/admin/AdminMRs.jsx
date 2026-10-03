@@ -83,9 +83,9 @@ export default function AdminMRs() {
     <div className="space-y-6">
       <div>
         <h2 className="text-lg font-bold text-[#11233d]">MR network</h2>
-        <p className="mt-1 text-sm text-slate-400">
+        {/* <p className="mt-1 text-sm text-slate-400">
           TLM → SLM → FLM → MR hierarchy.
-        </p>
+        </p> */}
       </div>
 
       <div className="flex gap-3">
