@@ -113,7 +113,7 @@ export default function DoctorTemplates() {
                     <div className="relative flex aspect-[1448/2048] w-full items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 transition duration-300 group-hover:scale-[1.02]">
                       {template.id === "epilepsy-doctor-intro" ? (
                         <video
-                          src={template.preview}
+                          src={getEpilepsyVideoPreviewUrl()}
                           autoPlay
                           loop
                           muted
@@ -125,25 +125,11 @@ export default function DoctorTemplates() {
                             event.currentTarget.play().catch(() => {});
                           }}
                         />
-                      ) : template.previewType === "image" ? (
+                      ) : template.id === "kidney-doctor-intro" ? (
                         <img
-                          src={template.preview}
+                          src={getKidneyVideoPreviewUrl()}
                           alt={template.title}
                           className="h-full w-full object-cover"
-                        />
-                      ) : template.previewType === "video" ? (
-                        <video
-                          src={template.preview}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          preload="auto"
-                          controls={false}
-                          className="h-full w-full object-cover"
-                          onCanPlay={(event) => {
-                            event.currentTarget.play().catch(() => {});
-                          }}
                         />
                       ) : template.preview ? (
                         <NashVideoPreview
@@ -160,10 +146,10 @@ export default function DoctorTemplates() {
                             <Film className="h-7 w-7" />
                           </span>
                           <span className="mt-3 text-sm font-bold">
-                            {template.id === "kidney-doctor-intro" ? "Kidney Day" : "Epilepsy"}
+                            Doctor introduction video
                           </span>
                           <span className="mt-1 text-[10px] text-white/60">
-                            Doctor introduction video
+                            Preview unavailable
                           </span>
                         </div>
                       )}
