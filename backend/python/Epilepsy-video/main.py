@@ -1,3 +1,13 @@
+import os
+if os.name == "nt":
+    IMAGEMAGICK_BINARY = r"C:\Program Files\ImageMagick-7.1.2-Q16-HDRI\magick.exe"
+
+    if not os.path.exists(IMAGEMAGICK_BINARY):
+        raise FileNotFoundError(
+            f"ImageMagick not found: {IMAGEMAGICK_BINARY}"
+        )
+
+    os.environ["IMAGEMAGICK_BINARY"] = IMAGEMAGICK_BINARY
 from moviepy.editor import (
     VideoFileClip,
     ImageClip,
@@ -9,7 +19,6 @@ import moviepy.video.fx.all as vfx
 from PIL import Image, ImageDraw
 import numpy as np
 import argparse
-import os
 
 
 def remove_grey_background(clip, color=(160, 160, 160), thr=100, s=5):
