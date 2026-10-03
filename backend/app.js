@@ -99,12 +99,7 @@ app.use(
   ),
 );
 
-app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "iGreet backend is running",
-  });
-});
+
 
 app.use("/api/qr", qrRoutes);
 app.use("/api/doctors", doctorRoutes);
@@ -114,4 +109,12 @@ app.use("/api/mr-auth", mrAuthRoutes);
 app.use("/api/admin-auth", adminAuthRoutes);
 app.use("/api/admin", adminRoutes);
 
+
+
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "iGreet backend is running",
+  });
+});
 module.exports = app;
