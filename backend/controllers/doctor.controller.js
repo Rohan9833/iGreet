@@ -307,6 +307,96 @@ const createGeneration = async (req, res, next) => {
   }
 };
 
+const getGenerationFile = async (req, res, next) => {
+  try {
+    const generation = await Generation.findById(req.params.generationId).select(
+      "doctor outputUrl metadata",
+    );
+
+    if (!generation) {
+      return res.status(404).json({
+        success: false,
+        message: "Generation not found.",
+      });
+    }
+
+    const relativeOutput = String(generation.outputUrl || "").replace(/^\/+/, "");
+
+    if (!relativeOutput.startsWith("generations/")) {
+      return res.status(404).json({
+        success: false,
+        message: "Generated file is unavailable.",
+      });
+    }
+
+    const filePath = path.join(
+      GENERATIONS_STORAGE_ROOT,
+      relativeOutput.slice("generations/".length),
+    );
+
+    if (!(await fs.access(filePath).then(() => true).catch(() => false))) {
+      return res.status(404).json({
+        success: false,
+        message: "Generated file is no longer available on the server.",
+      });
+    }
+
+    res.setHeader(
+      "Content-Type",
+      generation.metadata?.mimeType || "image/png",
+    );
+    res.setHeader("Cache-Control", "private, max-age=3600");
+
+    return res.sendFile(filePath);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const downloadGenerationFile = async (req, res, next) => {
+  try {
+    const generation = await Generation.findById(req.params.generationId).select(
+      "outputUrl template",
+    );
+
+    if (!generation) {
+      return res.status(404).json({
+        success: false,
+        message: "Generation not found.",
+      });
+    }
+
+    const relativeOutput = String(generation.outputUrl || "").replace(/^\/+/, "");
+
+    if (!relativeOutput.startsWith("generations/")) {
+      return res.status(404).json({
+        success: false,
+        message: "Generated file is unavailable.",
+      });
+    }
+
+    const filePath = path.join(
+      GENERATIONS_STORAGE_ROOT,
+      relativeOutput.slice("generations/".length),
+    );
+
+    if (!(await fs.access(filePath).then(() => true).catch(() => false))) {
+      return res.status(404).json({
+        success: false,
+        message: "Generated file is no longer available on the server.",
+      });
+    }
+
+    const safeTemplate = String(generation.template || "generation")
+      .replace(/[^a-z0-9-_]+/gi, "-")
+      .replace(/^-+|-+$/g, "") || "generation";
+
+    return res.download(filePath, `${safeTemplate}-${generation._id}.png`);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 const getDoctorGenerationsByQRToken = async (req, res, next) => {
   try {
     const qr = await QR.findOne({ token: req.params.token });
@@ -346,4 +436,6 @@ module.exports = {
   getDoctorByQRToken,
   createGeneration,
   getDoctorGenerationsByQRToken,
+  getGenerationFile,
+  downloadGenerationFile,
 };
