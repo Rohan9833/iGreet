@@ -762,6 +762,7 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
               <div className="mx-auto w-full max-w-[260px] overflow-hidden rounded-xl border border-slate-100 shadow-sm">
                 <TemplatePreview
                   template={template}
+                  width={260}
                   receiverName={form.receiverName}
                   senderName={form.senderName}
                   imageUrl={form.imageUrl}
@@ -796,6 +797,7 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
               <div className="mx-auto mb-5 w-[180px] overflow-hidden rounded-xl border border-orange-100 shadow-sm">
                 <TemplatePreview
                   template={template}
+                  width={180}
                   receiverName={form.receiverName}
                   senderName={form.senderName}
                   imageUrl={form.imageUrl}
