@@ -1,6 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { Download, Filter, Plus, QrCode, Search, X } from "lucide-react";
-import { generateAdminQRCodes, getAdminQRCodes, unassignAdminQR } from "../../api/admin.api";
+
+import {
+  generateAdminQRCodes,
+  getAdminQRCodes,
+  getQrDownloadUrl,
+  getQrImageUrl,
+  unassignAdminQR,
+} from "../../api/admin.api";
 
 const statusStyles = {
   assigned: "bg-emerald-50 text-emerald-600",
@@ -14,11 +21,43 @@ export default function AdminQRCodes() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [showGenerate, setShowGenerate] = useState(false);
+  const [selectedQr, setSelectedQr] = useState(null);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
+  const [error, setError] = useState("");
+
+  const loadQRCodes = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const data = await getAdminQRCodes();
+      setQrs(data);
+    } catch (requestError) {
+      console.error("Failed to load admin QR codes:", requestError);
+      setQrs([]);
+      setError(requestError.message || "Unable to load QR codes.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    getAdminQRCodes().then(setQrs).catch(console.error).finally(() => setLoading(false));
+    loadQRCodes();
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setSelectedQr(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   const filtered = useMemo(() => {
@@ -29,29 +68,46 @@ export default function AdminQRCodes() {
         qr.token?.toLowerCase().includes(search.toLowerCase());
 
       const matchesStatus = status === "all" || qr.status === status;
+
       return matchesSearch && matchesStatus;
     });
   }, [qrs, search, status]);
 
   const downloadQr = (qr) => {
-    if (!qr.imageUrl) return;
+    const downloadUrl = getQrDownloadUrl(qr.imageUrl);
+
+    if (!downloadUrl) return;
+
     const link = document.createElement("a");
-    link.href = qr.imageUrl;
+    link.href = downloadUrl;
     link.download = `${qr.code || "igreet-qr"}.png`;
-    link.target = "_blank";
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
+  };
+
+  const openQrPreview = (qr) => {
+    if (!qr.imageUrl) return;
+    setSelectedQr(qr);
   };
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h2 className="text-lg font-bold text-[#11233d]">QR inventory</h2>
+          <h2 className="text-lg font-bold text-[#11233d]">
+            QR inventory
+          </h2>
+
           <p className="mt-1 text-sm text-slate-400">
-            {qrs.length} QR codes in your current inventory
+            {loading
+              ? "Loading QR codes..."
+              : `${qrs.length} QR codes in your current inventory`}
           </p>
         </div>
+
         <button
+          type="button"
           onClick={() => setShowGenerate(true)}
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(249,115,22,0.18)] hover:bg-orange-400"
         >
@@ -60,9 +116,31 @@ export default function AdminQRCodes() {
         </button>
       </div>
 
+      {error && (
+        <div className="flex flex-col gap-3 rounded-2xl border border-red-100 bg-red-50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-bold text-red-600">
+              Unable to load QR codes
+            </p>
+            <p className="mt-1 text-xs text-red-500">
+              {error}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={loadQRCodes}
+            className="rounded-lg border border-red-200 bg-white px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-100"
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
       <div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 md:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -70,8 +148,10 @@ export default function AdminQRCodes() {
             className="h-11 w-full rounded-xl border border-slate-200 pl-10 pr-4 text-sm outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-50"
           />
         </div>
+
         <div className="relative">
           <Filter className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
@@ -98,65 +178,146 @@ export default function AdminQRCodes() {
                 <th className="px-5 py-4 text-right">Action</th>
               </tr>
             </thead>
+
             <tbody className="divide-y divide-slate-100">
-              {!loading && filtered.length === 0 && (
+              {!loading && !error && filtered.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="px-5 py-16 text-center text-sm text-slate-400">
+                  <td
+                    colSpan="6"
+                    className="px-5 py-16 text-center text-sm text-slate-400"
+                  >
                     No QR codes match your filters.
                   </td>
                 </tr>
               )}
-              {filtered.map((qr) => (
-                <tr key={qr.id} className="hover:bg-slate-50/60">
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-50">
-                        <QrCode className="h-5 w-5 text-slate-500" />
+
+              {filtered.map((qr) => {
+                const imageUrl = getQrImageUrl(qr.imageUrl);
+
+                return (
+                  <tr
+                    key={qr.id}
+                    className="hover:bg-slate-50/60"
+                  >
+                    <td className="px-5 py-4">
+                      <div className="flex items-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => openQrPreview(qr)}
+                          disabled={!imageUrl}
+                          title="Click to view QR"
+                          className="group flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-sm transition hover:border-orange-300 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          {imageUrl ? (
+                            <img
+                              src={imageUrl}
+                              alt={`${qr.code || "QR"} QR code`}
+                              className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-105"
+                            />
+                          ) : (
+                            <QrCode className="h-6 w-6 text-slate-400" />
+                          )}
+                        </button>
+
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-slate-700">
+                            {qr.code}
+                          </p>
+
+                          <p className="mt-0.5 max-w-[220px] truncate text-[11px] text-slate-400">
+                            {qr.token}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-bold text-slate-700">{qr.code}</p>
-                        <p className="mt-0.5 max-w-[220px] truncate text-[11px] text-slate-400">{qr.token}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-5 py-4">
-                    <span className={["rounded-full px-2.5 py-1 text-[11px] font-bold capitalize", statusStyles[qr.status] || statusStyles.unassigned].join(" ")}>
-                      {qr.status === "unassigned" ? "Available" : qr.status}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4 text-sm text-slate-600">
-                    {qr.doctor?.doctorName || "—"}
-                  </td>
-                  <td className="px-5 py-4 text-sm text-slate-600">{qr.assignedByMr?.mrName || qr.assignedByMr?.mrId || "—"}</td>
-                  <td className="px-5 py-4 text-sm text-slate-500">{qr.assignedAt ? new Date(qr.assignedAt).toLocaleDateString() : "—"}</td>
-                  <td className="px-5 py-4 text-right">
-                    <button
-                      onClick={() => downloadQr(qr)}
-                      disabled={!qr.imageUrl}
-                      className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-40"
-                    >
-                      <Download className="h-3.5 w-3.5" />
-                      PNG
-                    </button>
-                    {qr.status === "assigned" && (
-                      <button
-                        onClick={async () => {
-                          if (!window.confirm(`Unassign ${qr.code} from ${qr.doctor?.doctorName || "this doctor"}?`)) return;
-                          try {
-                            await unassignAdminQR(qr.id);
-                            setQrs((current) => current.map((item) => item.id === qr.id ? { ...item, status: "unassigned", doctor: null, assignedByMr: null, assignedAt: null } : item));
-                          } catch (error) {
-                            alert(error.message || "Unable to unassign QR.");
-                          }
-                        }}
-                        className="ml-2 inline-flex items-center rounded-lg border border-red-100 px-3 py-2 text-xs font-bold text-red-500 hover:bg-red-50"
+                    </td>
+
+                    <td className="px-5 py-4">
+                      <span
+                        className={[
+                          "rounded-full px-2.5 py-1 text-[11px] font-bold capitalize",
+                          statusStyles[qr.status] ||
+                            statusStyles.unassigned,
+                        ].join(" ")}
                       >
-                        Unassign
+                        {qr.status === "unassigned"
+                          ? "Available"
+                          : qr.status}
+                      </span>
+                    </td>
+
+                    <td className="px-5 py-4 text-sm text-slate-600">
+                      {qr.doctor?.doctorName || "—"}
+                    </td>
+
+                    <td className="px-5 py-4 text-sm text-slate-600">
+                      {qr.assignedByMr?.mrName ||
+                        qr.assignedByMr?.mrId ||
+                        "—"}
+                    </td>
+
+                    <td className="px-5 py-4 text-sm text-slate-500">
+                      {qr.assignedAt
+                        ? new Date(
+                            qr.assignedAt,
+                          ).toLocaleDateString()
+                        : "—"}
+                    </td>
+
+                    <td className="px-5 py-4 text-right">
+                      <button
+                        type="button"
+                        onClick={() => downloadQr(qr)}
+                        disabled={!qr.imageUrl}
+                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        <Download className="h-3.5 w-3.5" />
+                        PNG
                       </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
+
+                      {qr.status === "assigned" && (
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            if (
+                              !window.confirm(
+                                `Unassign ${qr.code} from ${qr.doctor?.doctorName || "this doctor"}?`,
+                              )
+                            ) {
+                              return;
+                            }
+
+                            try {
+                              await unassignAdminQR(qr.id);
+
+                              setQrs((current) =>
+                                current.map((item) =>
+                                  item.id === qr.id
+                                    ? {
+                                        ...item,
+                                        status: "unassigned",
+                                        doctor: null,
+                                        assignedByMr: null,
+                                        assignedAt: null,
+                                      }
+                                    : item,
+                                ),
+                              );
+                            } catch (requestError) {
+                              alert(
+                                requestError.message ||
+                                  "Unable to unassign QR.",
+                              );
+                            }
+                          }}
+                          className="ml-2 inline-flex items-center rounded-lg border border-red-100 px-3 py-2 text-xs font-bold text-red-500 hover:bg-red-50"
+                        >
+                          Unassign
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -167,16 +328,27 @@ export default function AdminQRCodes() {
           <div className="w-full max-w-[430px] rounded-2xl bg-white p-6 shadow-2xl">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-lg font-bold text-[#11233d]">Generate QR codes</h3>
-                <p className="mt-1 text-sm text-slate-400">Create a new batch for distribution.</p>
+                <h3 className="text-lg font-bold text-[#11233d]">
+                  Generate QR codes
+                </h3>
+
+                <p className="mt-1 text-sm text-slate-400">
+                  Create a new batch for distribution.
+                </p>
               </div>
-              <button onClick={() => setShowGenerate(false)} className="rounded-lg p-2 text-slate-400 hover:bg-slate-50">
+
+              <button
+                type="button"
+                onClick={() => setShowGenerate(false)}
+                className="rounded-lg p-2 text-slate-400 hover:bg-slate-50"
+              >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             <label className="mt-6 block text-sm font-semibold text-slate-700">
               Quantity
+
               <input
                 type="number"
                 min="1"
@@ -188,9 +360,16 @@ export default function AdminQRCodes() {
             </label>
 
             <button
+              type="button"
+              disabled={generating}
               onClick={async () => {
                 const count = Number(quantity);
-                if (!Number.isInteger(count) || count < 1 || count > 1000) {
+
+                if (
+                  !Number.isInteger(count) ||
+                  count < 1 ||
+                  count > 1000
+                ) {
                   alert("Enter a quantity between 1 and 1000.");
                   return;
                 }
@@ -198,20 +377,49 @@ export default function AdminQRCodes() {
                 setGenerating(true);
 
                 try {
-                  const created = await generateAdminQRCodes(count);
-                  setQrs((current) => [...created, ...current]);
+                  const created =
+                    await generateAdminQRCodes(count);
+
+                  setQrs((current) => [
+                    ...created,
+                    ...current,
+                  ]);
+
                   setShowGenerate(false);
-                } catch (error) {
-                  alert(error.message || "Unable to generate QR codes.");
+                } catch (requestError) {
+                  alert(
+                    requestError.message ||
+                      "Unable to generate QR codes.",
+                  );
                 } finally {
                   setGenerating(false);
                 }
               }}
-              className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-500 text-sm font-bold text-white hover:bg-orange-400"
+              className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-500 text-sm font-bold text-white hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <QrCode className="h-4 w-4" />
-              {generating ? "Generating..." : `Generate ${quantity || 0} QR codes`}
+              {generating
+                ? "Generating..."
+                : `Generate ${quantity || 0} QR codes`}
             </button>
+          </div>
+        </div>
+      )}
+
+      {selectedQr && (
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/75 p-5 backdrop-blur-sm"
+          onClick={() => setSelectedQr(null)}
+        >
+          <div
+            className="flex max-h-[90vh] w-full max-w-[620px] items-center justify-center rounded-3xl bg-white p-8 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img
+              src={getQrImageUrl(selectedQr.imageUrl)}
+              alt={`${selectedQr.code || "QR"} QR code`}
+              className="max-h-[78vh] w-full max-w-[520px] object-contain"
+            />
           </div>
         </div>
       )}
