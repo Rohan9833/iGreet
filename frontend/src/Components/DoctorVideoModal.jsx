@@ -249,17 +249,15 @@ export default function DoctorVideoModal({
                 <video
                   key={getEpilepsyVideoPreviewUrl()}
                   src={getEpilepsyVideoPreviewUrl()}
-                  preload="auto"
+                  autoPlay
+                  loop
                   muted
                   playsInline
+                  preload="auto"
                   controls={false}
                   className="aspect-[9/16] w-full object-cover"
-                  onLoadedData={(event) => {
-                    try {
-                      event.currentTarget.currentTime = 0;
-                    } catch {
-                      // The first decoded frame is already enough for the preview.
-                    }
+                  onCanPlay={(event) => {
+                    event.currentTarget.play().catch(() => {});
                   }}
                 />
               ) : (
