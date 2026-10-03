@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { createDoctorGeneration, getDoctorByQRToken, API_BASE_URL } from "../api/doctor.api";
+import {
+  createDoctorGeneration,
+  getDoctorByQRToken,
+  getEpilepsyVideoPreviewUrl,
+  getKidneyVideoPreviewUrl,
+  API_BASE_URL,
+} from "../api/doctor.api";
 import { UserRound, ArrowRight, X, Send, Sparkles, Loader2, CheckCircle2, AlertCircle, Film } from "lucide-react";
 import { toBlob } from "html-to-image";
 import TeachersDayCard from "../Components/cards/TeachersDayCard";
@@ -1102,9 +1108,33 @@ export default function Drcreate() {
               >
                 <div className="relative overflow-hidden">
                   {t.type === "video" ? (
-                    t.preview ? (
+                    t.id === "epilepsy-doctor-intro" ? (
+                      <video
+                        src={getEpilepsyVideoPreviewUrl()}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        controls={false}
+                        className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
+                        onCanPlay={(event) => {
+                          event.currentTarget.play().catch(() => {});
+                        }}
+                      />
+                    ) : t.id === "kidney-doctor-intro" ? (
+                      <img
+                        src={getKidneyVideoPreviewUrl()}
+                        alt={t.title}
+                        className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
+                      />
+                    ) : t.preview ? (
                       <NashVideoPreview
                         src={t.preview}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
                         className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
                       />
                     ) : (
@@ -1112,10 +1142,10 @@ export default function Drcreate() {
                         <div>
                           <Film className="mx-auto h-8 w-8 text-white/80" />
                           <p className="mt-3 text-[13px] font-bold">
-                            {t.id === "kidney-doctor-intro" ? "Kidney Day" : "Epilepsy"}
+                            Doctor introduction video
                           </p>
                           <p className="mt-1 text-[10px] text-white/60">
-                            Doctor introduction video
+                            Preview unavailable
                           </p>
                         </div>
                       </div>
