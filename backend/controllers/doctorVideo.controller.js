@@ -18,6 +18,10 @@ const {
   getKidneyTemplate,
 } = require("./kidneyVideo.controller");
 
+const {
+  getEpilepsyTemplate,
+} = require("./epilepsyVideo.controller");
+
 const VIDEO_CREDIT_COST = Number(process.env.NASH_VIDEO_CREDIT_COST || 20);
 const VIDEO_STORAGE_ROOT = path.join(
   __dirname,
@@ -38,8 +42,6 @@ const getFfmpegCommand = async () => {
     return "ffmpeg";
   }
 
-  // Prefer PATH first. If Node was started before the user's PATH was
-  // updated, also look in the standard WinGet FFmpeg installation.
   return new Promise((resolve) => {
     const probe = spawn("where.exe", ["ffmpeg.exe"], {
       windowsHide: true,
@@ -75,7 +77,10 @@ const getFfmpegCommand = async () => {
       );
 
       try {
-        const entries = await fsp.readdir(wingetPackages, { withFileTypes: true });
+        const entries = await fsp.readdir(wingetPackages, {
+          withFileTypes: true,
+        });
+
         const ffmpegPackage = entries.find(
           (entry) =>
             entry.isDirectory() &&
@@ -87,8 +92,15 @@ const getFfmpegCommand = async () => {
           return;
         }
 
-        const packageRoot = path.join(wingetPackages, ffmpegPackage.name);
-        const versions = await fsp.readdir(packageRoot, { withFileTypes: true });
+        const packageRoot = path.join(
+          wingetPackages,
+          ffmpegPackage.name,
+        );
+
+        const versions = await fsp.readdir(packageRoot, {
+          withFileTypes: true,
+        });
+
         const versionRoot = versions.find(
           (entry) =>
             entry.isDirectory() &&
@@ -149,48 +161,49 @@ const ensureBrowserCompatiblePreview = async () => {
         const ffmpeg = spawn(
           ffmpegCommand,
           [
-        "-y",
-        "-i",
-        sourcePath,
-        "-c:v",
-        "libx264",
-        "-pix_fmt",
-        "yuv420p",
-        "-preset",
-        "veryfast",
-        "-movflags",
-        "+faststart",
-        "-c:a",
-        "aac",
-        "-b:a",
-        "128k",
-        previewPath,
-      ],
-      {
-        cwd: NASH_ROOT,
-        shell: false,
-        windowsHide: true,
-        stdio: ["ignore", "ignore", "pipe"],
-      },
-    );
+            "-y",
+            "-i",
+            sourcePath,
+            "-c:v",
+            "libx264",
+            "-pix_fmt",
+            "yuv420p",
+            "-preset",
+            "veryfast",
+            "-movflags",
+            "+faststart",
+            "-c:a",
+            "aac",
+            "-b:a",
+            "128k",
+            previewPath,
+          ],
+          {
+            cwd: NASH_ROOT,
+            shell: false,
+            windowsHide: true,
+            stdio: ["ignore", "ignore", "pipe"],
+          },
+        );
 
-    let stderr = "";
+        let stderr = "";
 
-    ffmpeg.stderr.on("data", (chunk) => {
-      stderr += chunk.toString();
-    });
+        ffmpeg.stderr.on("data", (chunk) => {
+          stderr += chunk.toString();
+        });
 
-    ffmpeg.on("error", (error) => {
-      browserPreviewPromise = null;
-      error.code = error.code || "FFMPEG_SPAWN_FAILED";
-      reject(error);
-    });
+        ffmpeg.on("error", (error) => {
+          browserPreviewPromise = null;
+          error.code = error.code || "FFMPEG_SPAWN_FAILED";
+          reject(error);
+        });
 
         ffmpeg.on("close", async (code) => {
           if (code !== 0) {
             browserPreviewPromise = null;
             const error = new Error(
-              stderr.trim() || `FFmpeg exited with code ${code} while preparing the Nash preview.`,
+              stderr.trim() ||
+                `FFmpeg exited with code ${code} while preparing the Nash preview.`,
             );
             error.code = "NASH_PREVIEW_TRANSCODE_FAILED";
             reject(error);
@@ -280,10 +293,9 @@ const previewNashVideo = async (req, res, next) => {
 
     const previewPath = await ensureBrowserCompatiblePreview();
 
-    // Express/sendFile handles normal requests, HEAD requests and HTTP
-    // byte ranges for HTML5 <video> clients.
     res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
     res.setHeader("Pragma", "no-cache");
+
     return res.sendFile(previewPath, {
       acceptRanges: true,
       cacheControl: false,
@@ -306,16 +318,23 @@ const previewNashVideo = async (req, res, next) => {
     });
   }
 };
+
 const listVideoTemplates = async (req, res, next) => {
   try {
-    const [nashTemplate, kidneyTemplate] = await Promise.all([
-      getNashTemplate(),
-      getKidneyTemplate(),
-    ]);
+    const [nashTemplate, kidneyTemplate, epilepsyTemplate] =
+      await Promise.all([
+        getNashTemplate(),
+        getKidneyTemplate(),
+        getEpilepsyTemplate(),
+      ]);
 
     return res.json({
       success: true,
-      templates: [nashTemplate, kidneyTemplate],
+      templates: [
+        nashTemplate,
+        kidneyTemplate,
+        epilepsyTemplate,
+      ],
     });
   } catch (error) {
     return next(error);
