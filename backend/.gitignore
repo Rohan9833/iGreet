@@ -8,7 +8,6 @@ bower_components/
 
 # Package manager logs
 npm-debug.log*
-yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
@@ -39,11 +38,8 @@ lerna-debug.log*
 *.sqlite3
 *.db
 *.db3
-
 *.sqlite-journal
 *.sqlite3-journal
-
-# MongoDB local files
 mongodb-data/
 mongo-data/
 
@@ -77,25 +73,13 @@ coverage/
 .cache/
 .parcel-cache/
 .vite/
-
-# =========================================================
-# REACT / VITE
-# =========================================================
-
-.vite/
 vite.config.*.timestamp-*
 
 # =========================================================
-# TYPESCRIPT
+# TYPESCRIPT / TESTING
 # =========================================================
 
 *.tsbuildinfo
-
-# =========================================================
-# TESTING
-# =========================================================
-
-coverage/
 .nyc_output/
 playwright-report/
 test-results/
@@ -109,30 +93,25 @@ tmp/
 temp/
 .tmp/
 .temp/
-
 *.tmp
 *.temp
 *.swp
 *.swo
+*.swn
 
 # =========================================================
 # OPERATING SYSTEM FILES
 # =========================================================
 
-# Windows
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
 Desktop.ini
-
-# macOS
 .DS_Store
 .AppleDouble
 .LSOverride
 ._*
-
-# Linux
 *~
 .directory
 
@@ -144,19 +123,10 @@ Desktop.ini
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/tasks.json
-!.vscode/launch.json
-
 .idea/
 *.iml
 *.ipr
 *.iws
-
-# Vim
-*.swp
-*.swo
-*.swn
-
-# Sublime Text
 *.sublime-workspace
 *.sublime-project
 
@@ -171,7 +141,7 @@ debug/
 *.pid.lock
 
 # =========================================================
-# CERTIFICATES / PRIVATE KEYS / SECURITY FILES
+# CERTIFICATES / PRIVATE KEYS / SECURITY
 # =========================================================
 
 *.pem
@@ -182,8 +152,6 @@ debug/
 *.pfx
 *.jks
 *.keystore
-
-# SSH keys
 id_rsa
 id_rsa.pub
 id_dsa
@@ -192,6 +160,19 @@ id_ecdsa
 id_ecdsa.pub
 id_ed25519
 id_ed25519.pub
+secrets/
+secret/
+credentials/
+private/
+keys/
+credentials.json
+service-account.json
+serviceAccount.json
+client_secret.json
+client-secret.json
+firebase-adminsdk-*.json
+google-services.json
+Google-Info.plist
 
 # =========================================================
 # CLOUD / DEPLOYMENT
@@ -258,7 +239,9 @@ backups/
 *.mkv
 *.webm
 
-# Images generated locally
+# Nash template media is source content, not generated output.
+!python/Nash/nash.mp4
+
 *.psd
 *.ai
 *.sketch
@@ -273,67 +256,31 @@ config.local.*
 *.local.yml
 
 # =========================================================
-# SECRET / TOKEN / CREDENTIAL FILES
-# =========================================================
-
-secrets/
-secret/
-credentials/
-private/
-keys/
-
-credentials.json
-service-account.json
-serviceAccount.json
-client_secret.json
-client-secret.json
-
-# Firebase
-firebase-adminsdk-*.json
-google-services.json
-GoogleService-Info.plist
-
-# =========================================================
-# CACHE
-# =========================================================
-
-.cache/
-.cache-loader/
-.eslintcache
-.stylelintcache
-.rpt2_cache/
-.npm/
-
-# =========================================================
-# PYTHON (IF USED)
+# PYTHON
 # =========================================================
 
 __pycache__/
 *.py[cod]
 *$py.class
-
 .venv/
 venv/
 env/
 ENV/
-
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 
 # =========================================================
-# JAVA / ANDROID (IF USED)
+# JAVA / ANDROID
 # =========================================================
 
 .gradle/
-.idea/
-build/
 local.properties
 *.apk
 *.aab
 
 # =========================================================
-# REACT NATIVE / EXPO (IF USED)
+# REACT NATIVE / EXPO
 # =========================================================
 
 .expo/
@@ -345,24 +292,15 @@ yarn-error.*
 *.keystore
 
 # =========================================================
-# WORDPRESS / CMS (IF USED)
+# WORDPRESS / CMS
 # =========================================================
 
 wp-content/uploads/
 
 # =========================================================
-# OS / APPLICATION GENERATED FILES
-# =========================================================
-
-*.orig
-*.rej
-*.DS_Store
-
-# =========================================================
 # GIT
 # =========================================================
 
-# Git temporary files
 *.patch
 *.diff
 
