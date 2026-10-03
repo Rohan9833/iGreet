@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { createDoctorGeneration, getDoctorByQRToken } from "../api/doctor.api";
-import { UserRound, ArrowRight, X, Send, Sparkles } from "lucide-react";
+import { createDoctorGeneration, getDoctorByQRToken, API_BASE_URL } from "../api/doctor.api";
+import { UserRound, ArrowRight, X, Send, Sparkles, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { toBlob } from "html-to-image";
 import TeachersDayCard from "../Components/cards/TeachersDayCard";
 import IndependenceDayCard from "../Components/cards/IndependenceDayCard";
 import DussehraCard from "../Components/cards/DussehraCard";
 import AnniversaryCard from "../Components/cards/AnniversaryCard";
+import NashVideoModal from "../Components/NashVideoModal";
+import NashVideoPreview from "../Components/NashVideoPreview";
 
 /* -------------------------------------------------------
    Logo
@@ -107,6 +109,12 @@ const TEMPLATES = [
     title: "Anniversary",
     image: "/anniversary.png",
     fields: ["receiverName", "image"],
+  },\n  {
+    id: "nash-doctor-intro",
+    title: "Doctor Introduction Video",
+    type: "video",
+    preview: `${API_BASE_URL}/api/doctor-videos/templates/nash/preview?ngrok-skip-browser-warning=true`,
+    fields: ["name", "qualification", "specialization", "hospital", "image"],
   },
 ];
 
@@ -910,6 +918,7 @@ export default function Drcreate() {
   const [loadingDoctor, setLoadingDoctor] = useState(true);
   const [doctorError, setDoctorError] = useState("");
   const [activeTemplate, setActiveTemplate] = useState(null);
+  const [videoToast, setVideoToast] = useState(null);
 
   useEffect(() => {
     if (!qrToken) {
@@ -1079,12 +1088,19 @@ export default function Drcreate() {
                 className="group overflow-hidden rounded-[14px] border border-orange-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
               >
                 <div className="relative overflow-hidden">
-                  <img
-                    src={t.image}
-                    alt={t.title}
-                    className="block aspect-[1448/2048] w-full object-cover"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/45 to-transparent px-3 pb-3 pt-10">
+                  {t.type === "video" ? (
+                    <NashVideoPreview
+                      src={t.preview}
+                      className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
+                    />
+                  ) : (
+                    <img
+                      src={t.image}
+                      alt={t.title}
+                      className="block aspect-[1448/2048] w-full object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-3 pb-3 pt-10">
                     <span className="text-[13px] font-bold text-white">
                       {t.title}
                     </span>
@@ -1096,8 +1112,93 @@ export default function Drcreate() {
         </section>
       </section>
 
+      {/* Video generation toast */}
+      {videoToast && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-4 z-[120] flex justify-center px-4 sm:bottom-6">
+          <div className="pointer-events-auto flex w-full max-w-[390px] items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3.5 shadow-[0_12px_40px_rgba(16,35,63,0.18)]">
+            {videoToast.type === "loading" && (
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-500">
+                <Loader2 className="h-4 w-4 animate-spin" />
+              </span>
+            )}
+            {videoToast.type === "success" && (
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                <CheckCircle2 className="h-4 w-4" />
+              </span>
+            )}
+            {videoToast.type === "error" && (
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-500">
+                <AlertCircle className="h-4 w-4" />
+              </span>
+            )}
+
+            <div className="min-w-0">
+              <p className="text-[13px] font-bold text-[#10233f]">
+                {videoToast.title}
+              </p>
+              <p className="mt-0.5 text-[11px] leading-4 text-[#718198]">
+                {videoToast.message}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Popup */}
-      {activeTemplate && (
+      {activeTemplate?.type === "video" ? (
+        <NashVideoModal
+          qrToken={qrToken}
+          doctor={doctor}
+          onGenerated={(credits) =>
+            setDoctor((previous) =>
+              previous ? { ...previous, credits } : previous,
+            )
+          }
+          onGenerationStart={() => {
+            setVideoToast({
+              type: "loading",
+              title: "Creating your video",
+              message: "Please wait while your doctor introduction is being generated.",
+            });
+          }}
+          onGenerationComplete={(data, error) => {
+            if (error) {
+              setVideoToast({
+                type: "error",
+                title: "Video generation failed",
+                message: error.message || "Please try again.",
+              });
+
+              window.setTimeout(() => {
+                setVideoToast(null);
+              }, 4000);
+
+              return;
+            }
+
+            setVideoToast({
+              type: "success",
+              title: "Video generated",
+              message: "Your video is ready. View it in Generations.",
+            });
+
+            setActiveTemplate(null);
+            navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, {
+              replace: true,
+            });
+
+            window.setTimeout(() => {
+              setVideoToast(null);
+            }, 4000);
+          }}
+          onClose={() => {
+            setActiveTemplate(null);
+            navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, {
+              replace: true,
+            });
+          }}
+        />
+      ) : activeTemplate ? (
         <TemplateModal
           key={activeTemplate.id}
           template={activeTemplate}
@@ -1110,10 +1211,12 @@ export default function Drcreate() {
           }
           onClose={() => {
             setActiveTemplate(null);
-            navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, { replace: true });
+            navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, {
+              replace: true,
+            });
           }}
         />
-      )}
+      ) : null}
     </main>
   );
 }
