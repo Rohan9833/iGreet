@@ -1,5 +1,5 @@
 import { ArrowLeft, CalendarDays, Coins, Download, FileImage, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   downloadDoctorGeneration,
@@ -44,6 +44,11 @@ export default function DoctorGenerations() {
   const [selectedGeneration, setSelectedGeneration] = useState(null);
   const [generationImageUrls, setGenerationImageUrls] = useState({});
   const [imageLoading, setImageLoading] = useState({});
+  const generationImageUrlsRef = useRef({});
+
+  useEffect(() => {
+    generationImageUrlsRef.current = generationImageUrls;
+  }, [generationImageUrls]);
 
   useEffect(() => {
     if (!qrToken) {
@@ -73,13 +78,13 @@ export default function DoctorGenerations() {
 
   useEffect(() => {
     return () => {
-      Object.values(generationImageUrls).forEach((url) => {
+      Object.values(generationImageUrlsRef.current).forEach((url) => {
         if (url?.startsWith("blob:")) {
           URL.revokeObjectURL(url);
         }
       });
     };
-  }, [generationImageUrls]);
+  }, []);
 
   const resolveGenerationImage = async (generation) => {
     if (!generation?.outputUrl || generationImageUrls[generation._id]) {
