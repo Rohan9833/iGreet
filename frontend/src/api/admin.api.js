@@ -3,7 +3,42 @@ const getAdminAuthHeaders = () => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
+const isLocalHost = (hostname) => {
+  if (!hostname) return false;
+
+  if (
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
+    hostname === "::1"
+  ) {
+    return true;
+  }
+
+  if (hostname.startsWith("10.")) return true;
+  if (hostname.startsWith("192.168.")) return true;
+
+  const parts = hostname.split(".");
+
+  if (parts.length === 4 && parts[0] === "172") {
+    const secondPart = Number(parts[1]);
+    return secondPart >= 16 && secondPart <= 31;
+  }
+
+  return false;
+};
+
 const getApiBaseUrl = () => {
+  if (typeof window !== "undefined") {
+    const { protocol, hostname } = window.location;
+
+    // During local Vite development, talk directly to the local backend.
+    // This avoids routing browser API calls through an ngrok tunnel and
+    // prevents the ngrok browser-warning/CORS layer from breaking requests.
+    if (import.meta.env.DEV && isLocalHost(hostname)) {
+      return `${protocol}//${hostname}:5000`;
+    }
+  }
+
   const configuredUrl = import.meta.env.VITE_API_URL?.trim();
 
   if (configuredUrl) {
