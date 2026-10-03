@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 const BASE_WIDTH = 900;
 
 // Blank template ke circle ke andar photo (900px base ke hisaab se)
-const PHOTO = { left: 225, top: 44, size: 450 };
+const PHOTO = { left: 225, top: 44, size: 600 };
 
 // Blue name pill
 const PILL = { left: 213, top: 519, width: 475, height: 57 };
