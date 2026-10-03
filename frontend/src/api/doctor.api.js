@@ -215,6 +215,12 @@ export const getDoctorVideoTemplate = async () => {
   return data;
 };
 
+export const getKidneyVideoPreviewUrl = () =>
+  `${API_BASE_URL}/api/doctor-videos/templates/kidney/preview`;
+
+export const getEpilepsyVideoPreviewUrl = () =>
+  `${API_BASE_URL}/api/doctor-videos/templates/epilepsy/preview`;
+
 export const generateKidneyVideo = async ({
   qrToken,
   name,
