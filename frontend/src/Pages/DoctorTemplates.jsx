@@ -35,6 +35,18 @@ const TEMPLATES = [
     preview: getNashVideoPreviewUrl(),
     description: "Create a personalized doctor introduction video with your photo and details.",
   },
+  {
+    id: "kidney-doctor-intro",
+    title: "Kidney Day Doctor Video",
+    type: "video",
+    description: "Create a personalized Kidney Day doctor introduction video.",
+  },
+  {
+    id: "epilepsy-doctor-intro",
+    title: "Epilepsy Doctor Video",
+    type: "video",
+    description: "Create a personalized Epilepsy doctor introduction video.",
+  },
 ];
 
 export default function DoctorTemplates() {
@@ -90,15 +102,29 @@ export default function DoctorTemplates() {
               >
                 <div className="relative overflow-hidden bg-slate-50">
                   {template.type === "video" ? (
-                    <div className="relative">
-                      <NashVideoPreview
-                        src={template.preview}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="aspect-[1448/2048] w-full object-cover bg-slate-950 transition duration-300 group-hover:scale-[1.02]"
-                      />
+                    <div className="relative flex aspect-[1448/2048] w-full items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 transition duration-300 group-hover:scale-[1.02]">
+                      {template.preview ? (
+                        <NashVideoPreview
+                          src={template.preview}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex flex-col items-center justify-center px-5 text-center text-white">
+                          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
+                            <Film className="h-7 w-7" />
+                          </span>
+                          <span className="mt-3 text-sm font-bold">
+                            {template.id === "kidney-doctor-intro" ? "Kidney Day" : "Epilepsy"}
+                          </span>
+                          <span className="mt-1 text-[10px] text-white/60">
+                            Doctor introduction video
+                          </span>
+                        </div>
+                      )}
                       <div className="absolute inset-0 flex items-center justify-center bg-black/10">
                         <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-orange-500 shadow-lg">
                           <Film className="h-5 w-5" />
