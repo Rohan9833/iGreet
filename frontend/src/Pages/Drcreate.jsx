@@ -5,6 +5,7 @@ import {
   getDoctorByQRToken,
   getEpilepsyVideoPreviewUrl,
   getKidneyVideoPreviewUrl,
+  getNashVideoPreviewUrl,
   API_BASE_URL,
 } from "../api/doctor.api";
 import { UserRound, ArrowRight, X, Send, Sparkles, Loader2, CheckCircle2, AlertCircle, Film } from "lucide-react";
@@ -120,7 +121,7 @@ const TEMPLATES = [
     id: "nash-doctor-intro",
     title: "Doctor Introduction Video",
     type: "video",
-    preview: `${API_BASE_URL}/api/doctor-videos/templates/nash/preview?ngrok-skip-browser-warning=true`,
+    preview: getNashVideoPreviewUrl(),
     fields: ["name", "qualification", "specialization", "hospital", "image"],
   },
   {
@@ -1124,7 +1125,7 @@ export default function Drcreate() {
                       />
                     ) : t.id === "kidney-doctor-intro" ? (
                       <img
-                        src={`${getKidneyVideoPreviewUrl()}?frame=51`}
+                        src={getKidneyVideoPreviewUrl()}
                         alt={t.title}
                         className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
                       />
