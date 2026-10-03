@@ -75,69 +75,20 @@ const previewNashVideo = async (req, res, next) => {
 
     const previewPath = path.join(NASH_ROOT, "nash.mp4");
 
-    // The video is fetched from the public backend by the local Vite app.
-    // Explicitly expose the response to browser media/fetch clients.
-    const requestOrigin = req.headers.origin;
-    if (requestOrigin) {
-      res.setHeader("Access-Control-Allow-Origin", requestOrigin);
-      res.setHeader("Vary", "Origin");
-    } else {
-      res.setHeader("Access-Control-Allow-Origin", "*");
-    }
-
-    const origin = req.headers.origin;
-    res.setHeader("Access-Control-Allow-Origin", origin || "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Range, Content-Type, Accept, Cache-Control");
-    res.setHeader("Access-Control-Expose-Headers", "Accept-Ranges, Content-Length, Content-Range");
-    res.setHeader("Vary", "Origin");
-
+    // Express/sendFile handles normal requests, HEAD requests and HTTP
+    // byte ranges for HTML5 <video> clients.
     if (req.method === "OPTIONS") {
       return res.sendStatus(204);
     }
 
-    const stats = await fsp.stat(previewPath);
-    const fileSize = stats.size;
-    const range = req.headers.range;
-
-    res.setHeader("Accept-Ranges", "bytes");
-    res.setHeader("Content-Type", "video/mp4");
-    res.setHeader("Cache-Control", "public, max-age=3600");
-
-    if (!range) {
-      res.setHeader("Content-Length", fileSize);
-      return fs.createReadStream(previewPath).pipe(res);
-    }
-
-    const match = /^bytes=(\d*)-(\d*)$/.exec(range);
-    if (!match) {
-      res.setHeader("Content-Range", `bytes */${fileSize}`);
-      return res.status(416).end();
-    }
-
-    const start = match[1] ? Number(match[1]) : Math.max(fileSize - Number(match[2]), 0);
-    const end = match[2] ? Number(match[2]) : fileSize - 1;
-
-    if (
-      Number.isNaN(start) ||
-      Number.isNaN(end) ||
-      start < 0 ||
-      end < start ||
-      start >= fileSize
-    ) {
-      res.setHeader("Content-Range", `bytes */${fileSize}`);
-      return res.status(416).end();
-    }
-
-    const safeEnd = Math.min(end, fileSize - 1);
-
-    res.status(206);
-    res.setHeader("Content-Range", `bytes ${start}-${safeEnd}/${fileSize}`);
-    res.setHeader("Content-Length", safeEnd - start + 1);
-
-    return fs
-      .createReadStream(previewPath, { start, end: safeEnd })
-      .pipe(res);
+    return res.sendFile(previewPath, {
+      acceptRanges: true,
+      cacheControl: true,
+      maxAge: "1h",
+      immutable: false,
+      dotfiles: "deny",
+      lastModified: true,
+    });
   } catch (error) {
     if (error.code === "NASH_ASSETS_MISSING") {
       return res.status(503).json({
@@ -149,7 +100,6 @@ const previewNashVideo = async (req, res, next) => {
     return next(error);
   }
 };
-
 const listVideoTemplates = async (req, res, next) => {
   try {
     const template = await getNashTemplate();
