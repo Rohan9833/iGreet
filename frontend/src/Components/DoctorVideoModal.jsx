@@ -5,6 +5,8 @@ import {
   generateEpilepsyVideo,
   generateKidneyVideo,
   getDoctorVideoTemplate,
+  getEpilepsyVideoPreviewUrl,
+  getKidneyVideoPreviewUrl,
 } from "../api/doctor.api";
 import DoctorVideoImageCropper from "./DoctorVideoImageCropper";
 
@@ -149,6 +151,10 @@ export default function DoctorVideoModal({
     setError("");
     onGenerationStart?.();
 
+    // Close the form immediately. Generation continues in the background
+    // while the parent dashboard keeps the progress toast visible.
+    onClose?.();
+
     try {
       const payload = {
         qrToken,
@@ -238,16 +244,31 @@ export default function DoctorVideoModal({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-5">
-            <div className="mb-5 flex aspect-[9/16] w-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 p-6 text-center text-white">
-              <div>
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
-                  <Film className="h-7 w-7" />
-                </div>
-                <p className="mt-4 text-lg font-bold">{meta.shortTitle}</p>
-                <p className="mt-1 text-xs text-white/70">
-                  Personalized doctor introduction
-                </p>
-              </div>
+            <div className="mb-5 overflow-hidden rounded-2xl bg-slate-950">
+              {templateId === "epilepsy-doctor-intro" ? (
+                <video
+                  key={getEpilepsyVideoPreviewUrl()}
+                  src={getEpilepsyVideoPreviewUrl()}
+                  preload="auto"
+                  muted
+                  playsInline
+                  controls={false}
+                  className="aspect-[9/16] w-full object-cover"
+                  onLoadedData={(event) => {
+                    try {
+                      event.currentTarget.currentTime = 0;
+                    } catch {
+                      // The first decoded frame is already enough for the preview.
+                    }
+                  }}
+                />
+              ) : (
+                <img
+                  src={getKidneyVideoPreviewUrl()}
+                  alt="Kidney Day video first frame"
+                  className="aspect-[9/16] w-full object-cover"
+                />
+              )}
             </div>
 
             <div className="space-y-3">
@@ -303,11 +324,17 @@ export default function DoctorVideoModal({
                         </p>
                         <button
                           type="button"
-                          onClick={() => fileInputRef.current?.click()}
+                          onClick={() => {
+                            setImageFile(null);
+                            setImagePreview("");
+                            setCropFile(null);
+                            setError("");
+                            fileInputRef.current?.click();
+                          }}
                           disabled={creating}
                           className="mt-2 rounded-lg border border-orange-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-orange-600 transition hover:bg-orange-50 disabled:opacity-50"
                         >
-                          Crop Again
+                          Upload Again
                         </button>
                       </div>
                     </div>
