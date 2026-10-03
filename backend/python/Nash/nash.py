@@ -22,8 +22,8 @@ def draw_centered_text(draw, text, font, center_x, y_pos, line_spacing):
 
 def generate_banner(image_path, name, qualification, specialization, hospital, temp_dir):
     # Fonts
-    font_name = ImageFont.truetype("ANEKLATIN_CONDENSED-BOLD.TTF", size=65)
-    font_other = ImageFont.truetype("POPPINS-MEDIUM.TTF", size=26)
+    font_name = ImageFont.truetype("AnekLatin[wdth,wght].ttf", size=65)
+    font_other = ImageFont.truetype("Poppins-Medium.ttf", size=26)
 
     # Coordinates
     center_x = 250
@@ -46,11 +46,10 @@ def generate_banner(image_path, name, qualification, specialization, hospital, t
     # Paste person image
     image_width, image_height = bg_removed.size
     image_x = (banner_width - image_width) + 5
-    image_y =  banner_height - (image_height + 80)
+    image_y = banner_height - (image_height + 80)
     
     final_image.paste(bg_removed, (image_x, image_y), bg_removed)
     
-
     # Add text
     draw = ImageDraw.Draw(final_image)
     y += draw_centered_text(draw, name, font_name, center_x, y, line_spacing=20)
@@ -72,12 +71,11 @@ def overlay_banner_on_video(input_video_path, banner_path, output_path):
     ))
 
     final = CompositeVideoClip([video, banner_clip])
-    final.write_videofile(output_path, codec="libx264",  audio_codec="aac", fps=video.fps)
-    
+    final.write_videofile(output_path, codec="libx264", audio_codec="aac", fps=video.fps)
     
 def resize_if_needed(image, min_width=500, min_height=500):
     width, height = image.size
-    print("old height",width,"x",height)
+    print("old height", width, "x", height)
 
     # Check if resizing is needed
     if width >= min_width or height >= min_height:
@@ -88,9 +86,7 @@ def resize_if_needed(image, min_width=500, min_height=500):
     scale_h = min_height / height
     scale = min(scale_w, scale_h)
 
-    # Resize while keeping aspect ratio
     new_size = (int(width * scale), int(height * scale))
-    # new_h,new_w = new_size.size
     print("new_size", new_size)
     return image.resize(new_size, Image.LANCZOS)
 
@@ -132,7 +128,6 @@ def main():
         print(f"Error occurred: {e}")
 
     finally:
-        # Clean up
         if os.path.exists(temp_dir):
             shutil.rmtree(temp_dir)
             print(f"Cleaned up temp directory: {temp_dir}")
