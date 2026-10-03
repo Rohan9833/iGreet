@@ -45,10 +45,10 @@ export default function DoctorVideoModal({
 }) {
   const meta = getTemplateMeta(templateId);
   const [form, setForm] = useState({
-    name: doctor?.doctorName || "",
-    speciality: doctor?.speciality || "",
-    hospital: doctor?.clinicName || "",
-    city: doctor?.city || "",
+    name: "",
+    speciality: "",
+    hospital: "",
+    city: "",
   });
 
   const fileInputRef = useRef(null);
@@ -267,10 +267,10 @@ export default function DoctorVideoModal({
 
             <div className="space-y-3">
               {[
-                ["name", "Doctor Name", "e.g. Dr. Rohan Pal"],
-                ["speciality", "Speciality", "e.g. Neurologist"],
-                ["hospital", "Hospital / Clinic", "e.g. ABC Hospital"],
-                ["city", "City", "e.g. Mumbai"],
+                ["name", "Doctor Name", "Enter doctor name"],
+                ["speciality", "Speciality", "Enter speciality"],
+                ["hospital", "Hospital / Clinic", "Enter hospital or clinic"],
+                ["city", "City", "Enter city"],
               ].map(([name, label, placeholder]) => (
                 <div key={name}>
                   <label className="mb-1 block text-[12px] font-semibold text-[#52627a]">
