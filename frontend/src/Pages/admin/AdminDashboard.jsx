@@ -15,9 +15,24 @@ const StatCard = ({ label, value, helper, icon: Icon, iconClass }) => (
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+  const [selectedQr, setSelectedQr] = useState(null);
 
   useEffect(() => {
     getAdminDashboard().then(setData).catch((err) => setError(err.message));
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setSelectedQr(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   const stats = data?.stats;
@@ -53,32 +68,43 @@ export default function AdminDashboard() {
           </div>
           <div className="divide-y divide-slate-100">
             {!data?.recentQRCodes?.length && <div className="px-5 py-12 text-center text-sm text-slate-400">No QR codes have been generated yet.</div>}
-            {data?.recentQRCodes?.map((qr) => (
-              <div key={qr._id} className="flex items-center justify-between gap-4 px-5 py-4">
-                <div className="flex min-w-0 items-center gap-3">
-                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-1">
-                    {getQrImageUrl(qr.imageFileName || qr.imageUrl) ? (
-                      <img
-                        src={getQrImageUrl(qr.imageFileName || qr.imageUrl)}
-                        alt={`QR code ${qr.code}`}
-                        className="h-full w-full object-contain"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-slate-50">
-                        <QrCode className="h-4 w-4 text-slate-400" />
-                      </div>
-                    )}
+            {data?.recentQRCodes?.map((qr) => {
+              const imageUrl = getQrImageUrl(qr.imageFileName || qr.imageUrl);
+
+              return (
+                <div key={qr._id} className="flex items-center justify-between gap-4 px-5 py-4">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => imageUrl && setSelectedQr(qr)}
+                      disabled={!imageUrl}
+                      title="Click to view QR"
+                      className="group h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-1 shadow-sm transition hover:border-orange-300 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt={`QR code ${qr.code}`}
+                          className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-slate-50">
+                          <QrCode className="h-4 w-4 text-slate-400" />
+                        </div>
+                      )}
+                    </button>
+
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-bold text-slate-700">{qr.code}</p>
+                      <p className="truncate text-xs text-slate-400">{qr.doctor?.doctorName || "Not assigned"}</p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-bold text-slate-700">{qr.code}</p>
-                    <p className="truncate text-xs text-slate-400">{qr.doctor?.doctorName || "Not assigned"}</p>
-                  </div>
+                  <span className={qr.status === "assigned" ? "rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-600" : "rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-500"}>
+                    {qr.status === "unassigned" ? "Available" : qr.status}
+                  </span>
                 </div>
-                <span className={qr.status === "assigned" ? "rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-600" : "rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-500"}>
-                  {qr.status === "unassigned" ? "Available" : qr.status}
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -100,6 +126,24 @@ export default function AdminDashboard() {
           </div>
         </div>
       </section>
+
+      {selectedQr && (
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/75 p-5 backdrop-blur-sm"
+          onClick={() => setSelectedQr(null)}
+        >
+          <div
+            className="flex max-h-[90vh] w-full max-w-[620px] items-center justify-center rounded-3xl bg-white p-8 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img
+              src={getQrImageUrl(selectedQr.imageFileName || selectedQr.imageUrl)}
+              alt={`QR code ${selectedQr.code}`}
+              className="max-h-[78vh] w-full max-w-[520px] object-contain"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
