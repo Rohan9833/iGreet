@@ -1,7 +1,12 @@
-import { ArrowLeft, CalendarDays, Coins, FileImage, Sparkles } from "lucide-react";
+import { ArrowLeft, CalendarDays, Coins, Download, FileImage, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getDoctorByQRToken, getDoctorGenerationsByQRToken } from "../api/doctor.api";
+import {
+  downloadDoctorGeneration,
+  fetchGenerationBlobUrl,
+  getDoctorByQRToken,
+  getDoctorGenerationsByQRToken,
+} from "../api/doctor.api";
 
 const titleFromTemplate = (template = "") =>
   template
@@ -21,6 +26,13 @@ const formatDate = (value) => {
   }).format(new Date(value));
 };
 
+const fallbackTemplateImage = (template) => {
+  if (template === "teachers-day") return "/teachersday.png";
+  if (template === "independence-day") return "/independence.png";
+  if (template === "dussehra") return "/dussehra.png";
+  return "/anniversary.png";
+};
+
 export default function DoctorGenerations() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -30,6 +42,8 @@ export default function DoctorGenerations() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedGeneration, setSelectedGeneration] = useState(null);
+  const [generationImageUrls, setGenerationImageUrls] = useState({});
+  const [imageLoading, setImageLoading] = useState({});
 
   useEffect(() => {
     if (!qrToken) {
@@ -57,6 +71,68 @@ export default function DoctorGenerations() {
     load();
   }, [qrToken]);
 
+  useEffect(() => {
+    return () => {
+      Object.values(generationImageUrls).forEach((url) => {
+        if (url?.startsWith("blob:")) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+  }, [generationImageUrls]);
+
+  const resolveGenerationImage = async (generation) => {
+    if (!generation?.outputUrl || generationImageUrls[generation._id]) {
+      return generationImageUrls[generation?._id] || "";
+    }
+
+    if (imageLoading[generation._id]) {
+      return "";
+    }
+
+    setImageLoading((previous) => ({
+      ...previous,
+      [generation._id]: true,
+    }));
+
+    try {
+      const blobUrl = await fetchGenerationBlobUrl(generation.outputUrl);
+
+      setGenerationImageUrls((previous) => ({
+        ...previous,
+        [generation._id]: blobUrl,
+      }));
+
+      return blobUrl;
+    } catch (imageError) {
+      console.error("Unable to load generated card:", imageError);
+      return "";
+    } finally {
+      setImageLoading((previous) => ({
+        ...previous,
+        [generation._id]: false,
+      }));
+    }
+  };
+
+  const handleImageError = (generation) => {
+    if (generation?.outputUrl && !generationImageUrls[generation._id]) {
+      resolveGenerationImage(generation);
+    }
+  };
+
+  const handleDownload = async (generation) => {
+    if (!generation?.outputUrl) return;
+
+    try {
+      const filename = `${generation.template || "generation"}-${generation._id || Date.now()}.png`;
+      await downloadDoctorGeneration(generation.outputUrl, filename);
+    } catch (downloadError) {
+      console.error("Unable to download generated card:", downloadError);
+      window.alert("Unable to download the card. Please try again.");
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#f6f9fc] px-4 py-5 font-sans text-[#10233f] sm:px-6 sm:py-8">
       <section className="mx-auto w-full max-w-[900px]">
@@ -80,7 +156,9 @@ export default function DoctorGenerations() {
                 View Generations
               </h1>
               <p className="mt-1 text-[14px] text-[#718198]">
-                {doctor?.doctorName ? `Cards created for Dr. ${doctor.doctorName}.` : "Your created cards appear here."}
+                {doctor?.doctorName
+                  ? `Cards created for Dr. ${doctor.doctorName}.`
+                  : "Your created cards appear here."}
               </p>
             </div>
 
@@ -111,7 +189,11 @@ export default function DoctorGenerations() {
               </p>
               <button
                 type="button"
-                onClick={() => navigate(`/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`)}
+                onClick={() =>
+                  navigate(
+                    `/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`,
+                  )
+                }
                 className="mt-5 rounded-full bg-orange-500 px-5 py-2.5 text-[13px] font-semibold text-white"
               >
                 Create a personalized card
@@ -120,7 +202,12 @@ export default function DoctorGenerations() {
           ) : (
             <div className="mt-6 space-y-3">
               {generations.map((generation) => {
-                const receiverName = generation.metadata?.receiverName || "Personalized card";
+                const receiverName =
+                  generation.metadata?.receiverName || "Personalized card";
+                const resolvedImage =
+                  generationImageUrls[generation._id] || generation.outputUrl;
+                const loadingImage = imageLoading[generation._id];
+
                 return (
                   <button
                     key={generation._id}
@@ -128,27 +215,26 @@ export default function DoctorGenerations() {
                     onClick={() => setSelectedGeneration(generation)}
                     className="flex w-full flex-col gap-4 rounded-[20px] border border-slate-100 bg-slate-50 p-4 text-left transition hover:border-orange-100 hover:bg-[#fffaf5] sm:flex-row sm:items-center"
                   >
-                    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[14px] bg-white shadow-sm">
-                      {generation.outputUrl ? (
+                    <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[14px] bg-white shadow-sm">
+                      {resolvedImage ? (
                         <img
-                          src={generation.outputUrl}
+                          src={resolvedImage}
                           alt={receiverName}
+                          onError={() => handleImageError(generation)}
                           className="h-full w-full object-cover"
                         />
                       ) : (
                         <img
-                          src={
-                            generation.template === "teachers-day"
-                              ? "/teachersday.png"
-                              : generation.template === "independence-day"
-                                ? "/independence.png"
-                                : generation.template === "dussehra"
-                                  ? "/dussehra.png"
-                                  : "/anniversary.png"
-                          }
+                          src={fallbackTemplateImage(generation.template)}
                           alt={titleFromTemplate(generation.template)}
                           className="h-full w-full object-cover"
                         />
+                      )}
+
+                      {loadingImage && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-white/75 text-[9px] font-semibold text-slate-500">
+                          Loading...
+                        </div>
                       )}
                     </div>
 
@@ -195,7 +281,8 @@ export default function DoctorGenerations() {
                       {titleFromTemplate(selectedGeneration.template)}
                     </h2>
                     <p className="mt-0.5 text-[12px] text-[#718198]">
-                      {selectedGeneration.metadata?.receiverName || "Personalized card"}
+                      {selectedGeneration.metadata?.receiverName ||
+                        "Personalized card"}
                     </p>
                   </div>
                   <button
@@ -210,8 +297,15 @@ export default function DoctorGenerations() {
                 <div className="bg-slate-50 p-5">
                   {selectedGeneration.outputUrl ? (
                     <img
-                      src={selectedGeneration.outputUrl}
-                      alt={selectedGeneration.metadata?.receiverName || "Generated card"}
+                      src={
+                        generationImageUrls[selectedGeneration._id] ||
+                        selectedGeneration.outputUrl
+                      }
+                      alt={
+                        selectedGeneration.metadata?.receiverName ||
+                        "Generated card"
+                      }
+                      onError={() => handleImageError(selectedGeneration)}
                       className="mx-auto max-h-[65vh] w-auto max-w-full rounded-xl shadow-md"
                     />
                   ) : (
@@ -225,17 +319,16 @@ export default function DoctorGenerations() {
                   <div className="text-[11px] text-[#718198]">
                     Created {formatDate(selectedGeneration.createdAt)}
                   </div>
+
                   {selectedGeneration.outputUrl && (
-                    <a
-                      href={selectedGeneration.outputUrl}
-                      download
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(event) => event.stopPropagation()}
-                      className="rounded-full bg-orange-500 px-4 py-2 text-[12px] font-semibold text-white"
+                    <button
+                      type="button"
+                      onClick={() => handleDownload(selectedGeneration)}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-orange-500 px-4 py-2 text-[12px] font-semibold text-white transition hover:bg-orange-400"
                     >
+                      <Download className="h-3.5 w-3.5" />
                       Download Card
-                    </a>
+                    </button>
                   )}
                 </div>
               </div>
