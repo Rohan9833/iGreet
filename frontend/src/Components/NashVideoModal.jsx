@@ -20,10 +20,10 @@ export default function NashVideoModal({
   onClose,
 }) {
   const [form, setForm] = useState({
-    name: doctor?.doctorName || "",
+    name: "",
     qualification: "",
-    specialization: doctor?.speciality || "",
-    hospital: doctor?.clinicName || "",
+    specialization: "",
+    hospital: "",
   });
   const fileInputRef = useRef(null);
   const [imageFile, setImageFile] = useState(null);
@@ -239,7 +239,7 @@ export default function NashVideoModal({
                   name="name"
                   value={form.name}
                   onChange={handleChange}
-                  placeholder="e.g. Dr. Rohan Pal"
+                  placeholder="Enter doctor name"
                   className={inputClass}
                 />
               </div>
@@ -253,7 +253,7 @@ export default function NashVideoModal({
                   name="qualification"
                   value={form.qualification}
                   onChange={handleChange}
-                  placeholder="e.g. MBBS, MD"
+                  placeholder="Enter qualification"
                   className={inputClass}
                 />
               </div>
@@ -267,7 +267,7 @@ export default function NashVideoModal({
                   name="specialization"
                   value={form.specialization}
                   onChange={handleChange}
-                  placeholder="e.g. Cardiologist"
+                  placeholder="Enter specialization"
                   className={inputClass}
                 />
               </div>
@@ -281,7 +281,7 @@ export default function NashVideoModal({
                   name="hospital"
                   value={form.hospital}
                   onChange={handleChange}
-                  placeholder="e.g. ABC Hospital"
+                  placeholder="Enter hospital or clinic"
                   className={inputClass}
                 />
               </div>
