@@ -61,13 +61,62 @@ const getDoctorDetails = async (req, res, next) => {
 const listMRs = async (req, res, next) => {
   try {
     const search = String(req.query.search || "").trim();
+    const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
+    const limit = Math.min(
+      50,
+      Math.max(1, Number.parseInt(req.query.limit, 10) || 25),
+    );
+
     const filter = { role: "mr" };
-    if (search) filter.$or = [{ mrId: new RegExp(search, "i") }, { mrName: new RegExp(search, "i") }, { email: new RegExp(search, "i") }, { hq: new RegExp(search, "i") }, { region: new RegExp(search, "i") }, { zone: new RegExp(search, "i") }];
-    const mrs = await MR.find(filter).sort({ mrName: 1 }).select("mrId mrName email hq region zone businessUnit doj role flm doctors createdAt updatedAt").populate({ path: "flm", select: "flmId flmName hq zone region slm", populate: { path: "slm", select: "slmId slmName hq zone region tlm", populate: { path: "tlm", select: "tlmId tlmName hq zone" } } }).populate("doctors", "doctorName doctorCode speciality city status").lean();
-    return res.json({ success: true, count: mrs.length, mrs });
+
+    if (search) {
+      filter.$or = [
+        { mrId: new RegExp(search, "i") },
+        { mrName: new RegExp(search, "i") },
+        { email: new RegExp(search, "i") },
+        { hq: new RegExp(search, "i") },
+        { region: new RegExp(search, "i") },
+        { zone: new RegExp(search, "i") },
+      ];
+    }
+
+    const [total, mrs] = await Promise.all([
+      MR.countDocuments(filter),
+      MR.find(filter)
+        .sort({ mrName: 1, _id: 1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .select(
+          "mrId mrName email hq region zone businessUnit doj role flm doctors createdAt updatedAt",
+        )
+        .populate({
+          path: "flm",
+          select: "flmId flmName hq zone region slm",
+          populate: {
+            path: "slm",
+            select: "slmId slmName hq zone region tlm",
+            populate: {
+              path: "tlm",
+              select: "tlmId tlmName hq zone",
+            },
+          },
+        })
+        .lean(),
+    ]);
+
+    return res.json({
+      success: true,
+      count: total,
+      mrs,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (error) { next(error); }
 };
-
 const listGenerations = async (req, res, next) => {
   try {
     const search = String(req.query.search || "").trim();
