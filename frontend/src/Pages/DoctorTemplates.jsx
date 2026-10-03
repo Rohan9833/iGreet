@@ -1,5 +1,7 @@
-import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Film, Sparkles } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { API_BASE_URL } from "../api/doctor.api";
+import NashVideoPreview from "../Components/NashVideoPreview";
 
 const TEMPLATES = [
   {
@@ -25,6 +27,13 @@ const TEMPLATES = [
     title: "Anniversary",
     image: "/anniversary.png",
     description: "Create a thoughtful anniversary greeting in a few steps.",
+  },
+  {
+    id: "nash-doctor-intro",
+    title: "Doctor Introduction Video",
+    type: "video",
+    preview: `${API_BASE_URL}/api/doctor-videos/templates/nash/preview?ngrok-skip-browser-warning=true`,
+    description: "Create a personalized doctor introduction video with your photo and details.",
   },
 ];
 
@@ -80,11 +89,29 @@ export default function DoctorTemplates() {
                 className="group overflow-hidden rounded-[20px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
               >
                 <div className="relative overflow-hidden bg-slate-50">
-                  <img
-                    src={template.image}
-                    alt={template.title}
-                    className="aspect-[1448/2048] w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-                  />
+                  {template.type === "video" ? (
+                    <div className="relative">
+                      <NashVideoPreview
+                        src={template.preview}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="aspect-[1448/2048] w-full object-cover bg-slate-950 transition duration-300 group-hover:scale-[1.02]"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-orange-500 shadow-lg">
+                          <Film className="h-5 w-5" />
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <img
+                      src={template.image}
+                      alt={template.title}
+                      className="aspect-[1448/2048] w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                    />
+                  )}
                   <div className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-orange-500 shadow-sm">
                     <ArrowRight className="h-4 w-4" />
                   </div>
