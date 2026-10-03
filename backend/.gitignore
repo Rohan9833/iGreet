@@ -8,6 +8,7 @@ bower_components/
 
 # Package manager logs
 npm-debug.log*
+yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
@@ -38,8 +39,11 @@ lerna-debug.log*
 *.sqlite3
 *.db
 *.db3
+
 *.sqlite-journal
 *.sqlite3-journal
+
+# MongoDB local files
 mongodb-data/
 mongo-data/
 
@@ -73,13 +77,25 @@ coverage/
 .cache/
 .parcel-cache/
 .vite/
+
+# =========================================================
+# REACT / VITE
+# =========================================================
+
+.vite/
 vite.config.*.timestamp-*
 
 # =========================================================
-# TYPESCRIPT / TESTING
+# TYPESCRIPT
 # =========================================================
 
 *.tsbuildinfo
+
+# =========================================================
+# TESTING
+# =========================================================
+
+coverage/
 .nyc_output/
 playwright-report/
 test-results/
@@ -93,25 +109,30 @@ tmp/
 temp/
 .tmp/
 .temp/
+
 *.tmp
 *.temp
 *.swp
 *.swo
-*.swn
 
 # =========================================================
 # OPERATING SYSTEM FILES
 # =========================================================
 
+# Windows
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
 Desktop.ini
+
+# macOS
 .DS_Store
 .AppleDouble
 .LSOverride
 ._*
+
+# Linux
 *~
 .directory
 
@@ -121,12 +142,19 @@ Desktop.ini
 
 .vscode/*
 !.vscode/extensions.json
-!.vscode/settings.json
-!.vscode/tasks.json
+!.vscode/launch.json
+
 .idea/
 *.iml
 *.ipr
 *.iws
+
+# Vim
+*.swp
+*.swo
+*.swn
+
+# Sublime
 *.sublime-workspace
 *.sublime-project
 
@@ -152,6 +180,8 @@ debug/
 *.pfx
 *.jks
 *.keystore
+
+# SSH keys
 id_rsa
 id_rsa.pub
 id_dsa
@@ -160,19 +190,6 @@ id_ecdsa
 id_ecdsa.pub
 id_ed25519
 id_ed25519.pub
-secrets/
-secret/
-credentials/
-private/
-keys/
-credentials.json
-service-account.json
-serviceAccount.json
-client_secret.json
-client-secret.json
-firebase-adminsdk-*.json
-google-services.json
-Google-Info.plist
 
 # =========================================================
 # CLOUD / DEPLOYMENT
@@ -239,9 +256,10 @@ backups/
 *.mkv
 *.webm
 
-# Nash template media is source content, not generated output.
+# Nash template media is source content and must be tracked.
 !python/Nash/nash.mp4
 
+# Images generated locally
 *.psd
 *.ai
 *.sketch
@@ -256,31 +274,67 @@ config.local.*
 *.local.yml
 
 # =========================================================
-# PYTHON
+# SECRET / TOKEN / CREDENTIAL FILES
+# =========================================================
+
+secrets/
+secret/
+credentials/
+private/
+keys/
+
+credentials.json
+service-account.json
+serviceAccount.json
+client_secret.json
+client-secret.json
+
+# Firebase
+firebase-adminsdk-*.json
+google-services.json
+GoogleService-Info.plist
+
+# =========================================================
+# CACHE
+# =========================================================
+
+.cache/
+.cache-loader/
+.eslintcache
+.stylelintcache
+.rpt2_cache
+.npm/
+
+# =========================================================
+# PYTHON (IF USED)
 # =========================================================
 
 __pycache__/
 *.py[cod]
 *$py.class
+
 .venv/
 venv/
 env/
 ENV/
+
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 
 # =========================================================
-# JAVA / ANDROID
+# JAVA / ANDROID (IF USED)
 # =========================================================
 
 .gradle/
+.idea/
+build/
 local.properties
 *.apk
 *.aab
 
 # =========================================================
-# REACT NATIVE / EXPO
+# REACT NATIVE / EXPO (IF USED)
 # =========================================================
 
 .expo/
@@ -292,15 +346,24 @@ yarn-error.*
 *.keystore
 
 # =========================================================
-# WORDPRESS / CMS
+# WORDPRESS / CMS (IF USED)
 # =========================================================
 
 wp-content/uploads/
 
 # =========================================================
+# OS / APPLICATION GENERATED FILES
+# =========================================================
+
+*.orig
+*.rej
+*.DS_Store
+
+# =========================================================
 # GIT
 # =========================================================
 
+# Git temporary files
 *.patch
 *.diff
 
