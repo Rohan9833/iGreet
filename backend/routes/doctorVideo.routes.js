@@ -7,6 +7,10 @@ const {
   generateNashVideo,
 } = require("../controllers/doctorVideo.controller");
 
+const {
+  generateKidneyVideo,
+} = require("../controllers/kidneyVideo.controller");
+
 const router = express.Router();
 
 const videoImageUpload = multer({
@@ -33,6 +37,12 @@ router.post(
   "/templates/nash/generate",
   videoImageUpload.single("input_image"),
   generateNashVideo,
+);
+
+router.post(
+  "/templates/kidney/generate",
+  videoImageUpload.single("input_image"),
+  generateKidneyVideo,
 );
 
 module.exports = router;
