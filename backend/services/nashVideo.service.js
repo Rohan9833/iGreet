@@ -13,7 +13,9 @@ const REQUIRED_ASSETS = [
   "POPPINS-MEDIUM.TTF",
 ];
 
-const getPythonCommand = () => process.env.PYTHON_BIN || "python";
+const getPythonCommand = () =>
+  process.env.PYTHON_BIN ||
+  (process.platform === "win32" ? "python" : "python3");
 
 const ensureNashAssets = async () => {
   const missing = [];
