@@ -90,11 +90,11 @@ export default function DoctorTemplates() {
             };
           }
 
-          const rect = card.getBoundingClientRect();
-          const cardCenter = rect.left + rect.width / 2;
+          const cardWidth = card.offsetWidth;
+          const cardCenter = carouselRect.left + card.offsetLeft - carousel.scrollLeft + cardWidth / 2;
           const distance = cardCenter - carouselCenter;
           const normalizedDistance =
-            distance / Math.max(rect.width * 1.05, 1);
+            distance / Math.max(cardWidth * 1.05, 1);
           const curve = Math.max(-1.35, Math.min(1.35, normalizedDistance));
           const depth = Math.min(Math.abs(curve), 1);
 
