@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarDays, Coins, Download, FileImage, Film, Play, Sparkles } from "lucide-react";
+import { ArrowLeft, CalendarDays, ChevronDown, Coins, Download, Eye, FileImage, Film, Play, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
