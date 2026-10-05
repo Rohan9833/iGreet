@@ -99,28 +99,24 @@ const TEMPLATES = [
     id: "teachers-day",
     title: "Teachers Day",
     image: "/teachersday.png",
-    preview: "/teachersday.png",
     fields: ["receiverName", "senderName", "image"],
   },
   {
     id: "independence-day",
     title: "Independence Day",
     image: "/independence.png",
-    preview: "/independence.jpg",
     fields: ["receiverName", "image"],
   },
   {
     id: "dussehra",
     title: "Dussehra",
     image: "/dussehra.png",
-    preview: "/dussehra.jpg",
     fields: ["receiverName", "image"],
   },
   {
     id: "anniversary",
     title: "Anniversary",
     image: "/anniversary.png",
-    preview: "/anniversary.jpg",
     fields: ["receiverName", "image"],
   },  {
     id: "nash-doctor-intro",
@@ -973,7 +969,7 @@ const TemplateSelectionModal = ({ template, onContinue, onClose }) => {
             )
           ) : (
             <img
-              src={template.preview || template.image}
+              src={template.image}
               alt={template.title}
               className="block max-h-[430px] w-full object-contain"
             />
@@ -1206,7 +1202,7 @@ export default function Drcreate() {
                       </div>
                     )
                   ) : (
-                    <img src={t.preview || t.image} alt={t.title} className="block aspect-[4/5] w-full object-cover" />
+                    <img src={t.image} alt={t.title} className="block aspect-[4/5] w-full object-cover" />
                   )}
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-2.5 pb-2.5 pt-8">
                     <span className="text-[11px] font-bold leading-[1.2] text-white">{t.title}</span>
