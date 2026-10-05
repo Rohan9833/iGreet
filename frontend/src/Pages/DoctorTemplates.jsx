@@ -103,7 +103,7 @@ export default function DoctorTemplates() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f6f9fc] px-4 py-5 font-sans text-[#10233f] sm:px-6 sm:py-8">
+    <main className="min-h-screen bg-[#f6f9fc] px-4 py-5 font-sans text-[#10233f] sm:px-6 sm:py-8"><style>{`@keyframes templateSlideLeft{from{opacity:0;transform:translateX(28px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}@keyframes templateSlideRight{from{opacity:0;transform:translateX(-28px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}`}</style>
       <section className="mx-auto w-full max-w-[900px]">
         <button
           type="button"
@@ -168,7 +168,7 @@ export default function DoctorTemplates() {
             </div>
           </div>
 
-          <div className="mt-3 columns-2 gap-3 sm:columns-3 lg:columns-4">
+          <div className="relative mt-3 overflow-hidden"><div key={templateType} className={templateType === "video" ? "columns-2 gap-3 sm:columns-3 lg:columns-4 animate-[templateSlideLeft_320ms_cubic-bezier(0.22,1,0.36,1)]" : "columns-2 gap-3 sm:columns-3 lg:columns-4 animate-[templateSlideRight_320ms_cubic-bezier(0.22,1,0.36,1)]"}>
             {TEMPLATES.filter((template) =>
               templateType === "video"
                 ? template.type === "video"
@@ -194,6 +194,7 @@ export default function DoctorTemplates() {
                 </div>
               </button>
             ))}
+            </div>
           </div>
         </div>
       </section>
