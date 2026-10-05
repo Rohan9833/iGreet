@@ -1104,7 +1104,7 @@ export default function Drcreate() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#f6f9fc] font-sans">
+    <main className="relative min-h-screen overflow-hidden bg-[#f6f9fc] font-sans"><style>{`@keyframes templateSlideLeft{from{opacity:0;transform:translateX(28px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}@keyframes templateSlideRight{from{opacity:0;transform:translateX(-28px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}`}</style>
       {/* Background decorations */}
       <div className="pointer-events-none absolute -left-[110px] top-[60px] h-[280px] w-[280px] rounded-full bg-[#fff0e7]" />
       <div className="pointer-events-none absolute -left-[100px] top-[210px] h-[70px] w-[260px] -rotate-[14deg] rounded-[50%] border-t-[7px] border-orange-400" />
@@ -1260,7 +1260,7 @@ export default function Drcreate() {
           </div>
 
           {/* Compact template grid */}
-          <div className="mt-3 grid grid-cols-2 gap-3">
+          <div className="relative mt-3 overflow-hidden"><div key={templateType} className={templateType === "video" ? "grid grid-cols-2 gap-3 animate-[templateSlideLeft_320ms_cubic-bezier(0.22,1,0.36,1)]" : "grid grid-cols-2 gap-3 animate-[templateSlideRight_320ms_cubic-bezier(0.22,1,0.36,1)]"}>
             {TEMPLATES.filter((t) =>
               templateType === "video" ? t.type === "video" : t.type !== "video",
             ).map((t) => (
@@ -1285,6 +1285,7 @@ export default function Drcreate() {
                 </div>
               </button>
             ))}
+            </div>
           </div>
         </section>
       </section>
