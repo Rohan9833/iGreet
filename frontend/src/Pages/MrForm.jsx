@@ -64,7 +64,7 @@ const Logo = () => (
     </div>
 
     <div className="text-[26px] font-bold tracking-[-1.2px] text-slate-900 text-[22px] sm:text-[30px]">
-      <span className="text-orange-500"> i  </span>Greet
+      <span className="text-orange-500"> Medi  </span>Greetings
     </div>
   </div>
 );

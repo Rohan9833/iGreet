@@ -12,7 +12,7 @@ const Logo = () => (
       <span className="absolute left-3 top-6 h-4 w-4 rounded-[5px] bg-orange-500" />
     </div>
     <div className="text-[30px] font-bold tracking-[-1.2px] text-slate-900">
-      <span className="text-orange-500">i</span>Greet
+      <span className="text-orange-500">Medi</span>Greetings
     </div>
   </div>
 );

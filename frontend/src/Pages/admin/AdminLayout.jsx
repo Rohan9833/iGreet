@@ -67,7 +67,7 @@ export default function AdminLayout() { const adminUser = getAdminUser();
               <span className="rounded-[4px] bg-orange-500" />
             </div>
             <span className="text-[24px] font-bold tracking-[-1px]">
-              <span className="text-orange-500">i</span>Greet
+              <span className="text-orange-500">Medi</span>Greetings
             </span>
           </div>
 

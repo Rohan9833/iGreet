@@ -31,7 +31,7 @@ const MediQRLogo = () => (
       <span className="absolute left-[10px] top-[20px] h-[13px] w-[13px] rounded-[4px] bg-orange-500" />
     </div>
     <div className="text-[22px] font-bold tracking-[-0.8px] text-[#10233f]">
-      Medi<span className="text-orange-500">QR</span>
+      Medi<span className="text-orange-500">Greetings</span>
     </div>
   </div>
 );
@@ -1022,7 +1022,7 @@ export default function Drcreate() {
               <h1 className="whitespace-nowrap text-[26px] font-bold tracking-[-1px] text-[#10233f]">
                 {doctor?.doctorName || "Doctor"}
               </h1>
-              <span className="text-[24px]">👋</span>
+              {/* <span className="text-[24px]">👋</span> */}
             </div>
             <p className="mt-2 max-w-[220px] text-[14px] leading-[1.45] text-[#718198]">
               Create and share personalized greeting cards for your patients.
