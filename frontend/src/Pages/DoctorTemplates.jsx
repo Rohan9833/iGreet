@@ -14,24 +14,28 @@ const TEMPLATES = [
     id: "teachers-day",
     title: "Teachers Day",
     image: "/teachersday.png",
+    preview: "/teachersday.png",
     description: "A warm personalized card for teachers and mentors.",
   },
   {
     id: "independence-day",
     title: "Independence Day",
     image: "/independence.png",
+    preview: "/independence.jpg",
     description: "Celebrate the spirit of freedom with a personalized greeting.",
   },
   {
     id: "dussehra",
     title: "Dussehra",
     image: "/dussehra.png",
+    preview: "/dussehra.jpg",
     description: "Share festive wishes with a personalized Dussehra card.",
   },
   {
     id: "anniversary",
     title: "Anniversary",
     image: "/anniversary.png",
+    preview: "/anniversary.jpg",
     description: "Create a thoughtful anniversary greeting in a few steps.",
   },
   {
@@ -123,7 +127,7 @@ export default function DoctorTemplates() {
                       <div className="flex aspect-[3/4] w-full items-center justify-center bg-slate-950 text-white"><Film className="h-7 w-7 opacity-70" /></div>
                     )
                   ) : (
-                    <img src={template.image} alt={template.title} className={`block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`} />
+                    <img src={template.preview || template.image} alt={template.title} className={`block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`} />
                   )}
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-3 pt-10">
                     <h2 className="text-[12px] font-bold leading-[1.25] text-white">{template.title}</h2>
@@ -156,7 +160,7 @@ export default function DoctorTemplates() {
                   <div className="flex h-[360px] items-center justify-center bg-slate-950 text-white"><Film className="h-10 w-10 opacity-70" /></div>
                 )
               ) : (
-                <img src={previewTemplate.image} alt={previewTemplate.title} className="block max-h-[430px] w-full object-contain" />
+                <img src={previewTemplate.preview || previewTemplate.image} alt={previewTemplate.title} className="block max-h-[430px] w-full object-contain" />
               )}
               <button type="button" onClick={() => setPreviewTemplate(null)} className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#263b55] shadow-md" aria-label="Close template preview">
                 <X className="h-4 w-4" />
