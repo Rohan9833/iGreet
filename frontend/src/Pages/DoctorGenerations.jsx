@@ -407,8 +407,6 @@ export default function DoctorGenerations() {
             </div>
           )}
 
-          )}
-
           {selectedGeneration && (
             <div
               className="fixed inset-0 z-50 flex items-center justify-center bg-[#10233f]/70 p-4 backdrop-blur-sm"
