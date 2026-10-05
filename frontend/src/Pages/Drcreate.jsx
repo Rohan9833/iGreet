@@ -1120,7 +1120,7 @@ export default function Drcreate() {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              className="flex h-9 items-center gap-1.5 rounded-full border border-orange-100 bg-[#fff5ec] px-3 text-[12px] font-semibold text-[#e96526] shadow-sm"
+              className="flex h-9 items-center gap-1.5 rounded-full border border-orange-100 bg-[#fff5ec] px-3 text-[10px] font-semibold text-[#e96526] shadow-sm"
             >
               <Sparkles className="h-3.5 w-3.5" />
               <span>{doctor?.credits ?? 0} Credits</span>
@@ -1130,33 +1130,20 @@ export default function Drcreate() {
 
         {/* Welcome */}
         <section className="relative mt-4 h-[145px]">
-          <div className="relative z-10 pt-4">
+          <div className="relative z-10 ">
             <p className="text-[15px] font-medium text-[#718198]">Welcome,</p>
             <div className="mt-1 flex items-center gap-1.5">
-              <h1 className="text-[21px] font-bold tracking-[-0.7px] leading-tight text-[#10233f]">
-                Dr.{" "}
-                {doctor?.doctorName ? (
-                  doctor.doctorName.length > 17 ? (
-                    <>
-                      {doctor.doctorName.split(" ").slice(0, -1).join(" ")}
-                      <br />
-                      {doctor.doctorName.split(" ").slice(-1)}
-                    </>
-                  ) : (
-                    doctor.doctorName
-                  )
-                ) : (
-                  "Doctor"
-                )}
+              <h1 className="text-[23px] font-bold tracking-[-0.7px] leading-tight text-[#10233f]">
+                Dr. {doctor?.doctorName || "Doctor"}
               </h1>
               {/* <span className="text-[24px]">👋</span> */}
             </div>
             <p className="mt-1.5 max-w-[205px] text-[12px] leading-[1.4] text-[#718198]">
-              Personalized greeting cards and Videos.
+              Personalized greeting cards and videos.
             </p>
           </div>
 
-          <div className="absolute -right-2 bottom-0 z-0">
+          <div className="absolute -right-2 bottom-[12px] z-0">
             <DoctorIllustration />
           </div>
         </section>
