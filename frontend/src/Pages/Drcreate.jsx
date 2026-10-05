@@ -928,6 +928,92 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
 
 
 /* -------------------------------------------------------
+   Template selection preview
+------------------------------------------------------- */
+const TemplateSelectionModal = ({ template, onContinue, onClose }) => {
+  const isVideo = template.type === "video";
+
+  return (
+    <div
+      className="fixed inset-0 z-[55] flex items-center justify-center bg-[#10233f]/65 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-[370px] overflow-hidden rounded-[28px] bg-white shadow-2xl"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="relative bg-slate-100">
+          {isVideo ? (
+            template.id === "epilepsy-doctor-intro" ? (
+              <NashVideoPreview
+                src={getEpilepsyVideoPreviewUrl()}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="block max-h-[430px] w-full object-cover bg-slate-950"
+              />
+            ) : template.id === "kidney-doctor-intro" ? (
+              <DoctorMediaImage
+                src={getKidneyVideoPreviewUrl()}
+                alt={template.title}
+                className="block max-h-[430px] w-full object-cover bg-slate-950"
+              />
+            ) : template.preview ? (
+              <NashVideoPreview
+                src={template.preview}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="block max-h-[430px] w-full object-cover bg-slate-950"
+              />
+            ) : (
+              <div className="flex h-[360px] items-center justify-center bg-slate-950 text-white">
+                <Film className="h-10 w-10 opacity-70" />
+              </div>
+            )
+          ) : (
+            <img
+              src={template.image}
+              alt={template.title}
+              className="block max-h-[430px] w-full object-contain"
+            />
+          )}
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#263b55] shadow-md backdrop-blur"
+            aria-label="Close template preview"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="p-5">
+          <h3 className="text-[20px] font-bold tracking-[-0.5px] text-[#10233f]">
+            {template.title}
+          </h3>
+          <p className="mt-1 text-[13px] leading-[1.45] text-[#718198]">
+            Preview this template before continuing.
+          </p>
+
+          <button
+            type="button"
+            onClick={onContinue}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-[14px] font-semibold text-white shadow-sm transition active:scale-[0.98]"
+          >
+            Continue
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* -------------------------------------------------------
    Main Page
 ------------------------------------------------------- */
 export default function Drcreate() {
@@ -939,6 +1025,7 @@ export default function Drcreate() {
   const [loadingDoctor, setLoadingDoctor] = useState(true);
   const [doctorError, setDoctorError] = useState("");
   const [activeTemplate, setActiveTemplate] = useState(null);
+  const [previewTemplate, setPreviewTemplate] = useState(null);
   const [videoToast, setVideoToast] = useState(null);
 
   useEffect(() => {
@@ -1098,17 +1185,17 @@ export default function Drcreate() {
             </button>
           </div>
 
-          {/* Clickable templates */}
+          {/* Compact template grid */}
           <div className="mt-4 grid grid-cols-2 gap-3">
             {TEMPLATES.map((t) => (
               <button
                 key={t.id}
                 type="button"
-                onClick={() => setActiveTemplate(t)}
+                onClick={() => setPreviewTemplate(t)}
                 aria-label={t.title}
-                className="group overflow-hidden rounded-[14px] border border-orange-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
+                className="group overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
               >
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden bg-slate-50">
                   {t.type === "video" ? (
                     t.id === "epilepsy-doctor-intro" ? (
                       <NashVideoPreview
@@ -1117,13 +1204,13 @@ export default function Drcreate() {
                         muted
                         loop
                         playsInline
-                        className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
+                        className="block aspect-[4/5] w-full object-cover bg-slate-950"
                       />
                     ) : t.id === "kidney-doctor-intro" ? (
                       <DoctorMediaImage
                         src={getKidneyVideoPreviewUrl()}
                         alt={t.title}
-                        className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
+                        className="block aspect-[4/5] w-full object-cover bg-slate-950"
                       />
                     ) : t.preview ? (
                       <NashVideoPreview
@@ -1132,30 +1219,22 @@ export default function Drcreate() {
                         muted
                         loop
                         playsInline
-                        className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
+                        className="block aspect-[4/5] w-full object-cover bg-slate-950"
                       />
                     ) : (
-                      <div className="flex aspect-[1448/2048] w-full items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 px-4 text-center text-white">
-                        <div>
-                          <Film className="mx-auto h-8 w-8 text-white/80" />
-                          <p className="mt-3 text-[13px] font-bold">
-                            Doctor introduction video
-                          </p>
-                          <p className="mt-1 text-[10px] text-white/60">
-                            Preview unavailable
-                          </p>
-                        </div>
+                      <div className="flex aspect-[4/5] w-full items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 px-4 text-center text-white">
+                        <Film className="h-7 w-7 opacity-70" />
                       </div>
                     )
                   ) : (
                     <img
                       src={t.image}
                       alt={t.title}
-                      className="block aspect-[1448/2048] w-full object-cover"
+                      className="block aspect-[4/5] w-full object-cover"
                     />
                   )}
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-3 pb-3 pt-10">
-                    <span className="text-[13px] font-bold text-white">
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-2.5 pb-2.5 pt-8">
+                    <span className="text-[11px] font-bold leading-[1.2] text-white">
                       {t.title}
                     </span>
                   </div>
@@ -1165,6 +1244,17 @@ export default function Drcreate() {
           </div>
         </section>
       </section>
+
+      {previewTemplate && (
+        <TemplateSelectionModal
+          template={previewTemplate}
+          onContinue={() => {
+            setActiveTemplate(previewTemplate);
+            setPreviewTemplate(null);
+          }}
+          onClose={() => setPreviewTemplate(null)}
+        />
+      )}
 
       {/* Video generation toast */}
       {videoToast && (
