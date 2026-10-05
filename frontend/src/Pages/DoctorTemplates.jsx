@@ -103,7 +103,7 @@ export default function DoctorTemplates() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f6f9fc] px-4 py-5 font-sans text-[#10233f] sm:px-6 sm:py-8"><style>{`@keyframes templateSlideLeft{from{opacity:0;transform:translateX(28px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}@keyframes templateSlideRight{from{opacity:0;transform:translateX(-28px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}`}</style>
+    <main className="min-h-screen bg-[#f6f9fc] px-4 py-5 font-sans text-[#10233f] sm:px-6 sm:py-8"><style>{`@keyframes templateSlideLeft{0%{opacity:0;transform:translate3d(20px,0,0) scale(.985)}60%{opacity:.92}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}@keyframes templateSlideRight{0%{opacity:0;transform:translate3d(-20px,0,0) scale(.985)}60%{opacity:.92}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}.template-swipe{will-change:transform,opacity;backface-visibility:hidden;transform-origin:center;}`}</style>
       <section className="mx-auto w-full max-w-[900px]">
         <button
           type="button"
@@ -168,7 +168,7 @@ export default function DoctorTemplates() {
             </div>
           </div>
 
-          <div className="relative mt-3 overflow-hidden"><div key={templateType} className={templateType === "video" ? "columns-2 gap-3 sm:columns-3 lg:columns-4 animate-[templateSlideLeft_320ms_cubic-bezier(0.22,1,0.36,1)]" : "columns-2 gap-3 sm:columns-3 lg:columns-4 animate-[templateSlideRight_320ms_cubic-bezier(0.22,1,0.36,1)]"}>
+          <div className="relative mt-3 overflow-hidden"><div key={templateType} className={`template-swipe ${templateType === "video" ? "columns-2 gap-3 sm:columns-3 lg:columns-4 animate-[templateSlideLeft_480ms_cubic-bezier(0.16,1,0.3,1)]" : "columns-2 gap-3 sm:columns-3 lg:columns-4 animate-[templateSlideRight_480ms_cubic-bezier(0.16,1,0.3,1)]"}`}>
             {TEMPLATES.filter((template) =>
               templateType === "video"
                 ? template.type === "video"
