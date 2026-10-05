@@ -24,9 +24,9 @@ const navigation = [
 ];
 
 const pageTitles = {
-  "/admin": ["Dashboard", "Overview of your iGreet platform"],
+  "/admin": ["Dashboard", "Overview of your MediGreetings platform"],
   "/admin/qr-codes": ["QR Codes", "Generate, monitor and manage QR assignments"],
-  "/admin/doctors": ["Doctors", "View doctors connected to iGreet"],
+  "/admin/doctors": ["Doctors", "View doctors connected to MediGreetings"],
   "/admin/mrs": ["MRs", "View your field-force hierarchy and activity"],
   "/admin/generations": ["Generations", "Monitor doctor creations and credit usage"],
 };
@@ -119,7 +119,7 @@ export default function AdminLayout() { const adminUser = getAdminUser();
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-bold text-slate-800">Administrator</p>
-              <p className="text-[11px] text-slate-400">iGreet Admin</p>
+              <p className="text-[11px] text-slate-400">MediGreetings Admin</p>
             </div>
           </div>
 

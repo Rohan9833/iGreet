@@ -142,7 +142,7 @@ export default function MrLogin() {
         </form>
 
         <p className="mt-6 text-center text-xs leading-5 text-slate-400">
-          Your MR account is provided by the iGreet hierarchy system.
+          Your MR account is provided by the MediGreetings hierarchy system.
         </p>
       </section>
     </main>
