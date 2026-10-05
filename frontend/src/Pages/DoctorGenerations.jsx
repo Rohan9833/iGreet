@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarDays, Coins, Download, Eye, FileImage, Minus, Plus, Sparkles, X } from "lucide-react";
+import { ArrowLeft, Coins, Download, Eye, FileImage, Minus, Plus, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -31,13 +31,11 @@ const formatDate = (value) => {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "--";
 
-  return new Intl.DateTimeFormat("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
+
+  return day + "/" + month + "/" + year;
 };
 
 const isVideoGeneration = (generation) =>
@@ -238,21 +236,15 @@ export default function DoctorGenerations() {
         <section className="w-full overflow-hidden bg-white">
           <table className="w-full table-fixed border-collapse">
             <colgroup>
-              <col className="w-[112px] sm:w-[190px]" />
               <col />
               <col className="w-[74px] sm:w-[110px]" />
+              <col className="w-[82px] sm:w-[105px]" />
               <col className="w-[62px] sm:w-[90px]" />
               <col className="w-[42px] sm:w-[54px]" />
             </colgroup>
 
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="px-2 py-3 text-left sm:px-4">
-                  <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
-                    Created
-                  </span>
-                </th>
-
                 <th className="px-2 py-3 text-left sm:px-4">
                   <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
                     Receiver
@@ -262,6 +254,12 @@ export default function DoctorGenerations() {
                 <th className="px-2 py-3 text-left sm:px-4">
                   <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
                     Type
+                  </span>
+                </th>
+
+                <th className="px-2 py-3 text-left sm:px-4">
+                  <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
+                    Created
                   </span>
                 </th>
 
@@ -312,15 +310,6 @@ export default function DoctorGenerations() {
                     }
                   >
                     <td className="min-w-0 px-2 py-3 sm:px-4">
-                      <div className="flex min-w-0 items-center gap-1.5 text-[10px] text-[#52627a] sm:text-[11px]">
-                        <CalendarDays className="h-3.5 w-3.5 shrink-0 text-[#9aa8b8]" />
-                        <span className="truncate">
-                          {formatDate(generation.createdAt)}
-                        </span>
-                      </div>
-                    </td>
-
-                    <td className="min-w-0 px-2 py-3 sm:px-4">
                       <button
                         type="button"
                         onClick={() => {
@@ -338,7 +327,13 @@ export default function DoctorGenerations() {
                       </button>
                     </td>
 
-                    <td className="px-2 py-3 sm:px-4">
+                    <td className="min-w-0 px-2 py-3 sm:px-4">
+                      <span className="text-[10px] font-medium text-[#52627a] sm:text-[11px]">
+                        {formatDate(generation.createdAt)}
+                      </span>
+                    </td>
+
+                    <td className="px-2 py-3 text-center sm:px-4">
                       <span
                         className={
                           "inline-flex rounded-full px-2 py-1 text-[9px] font-bold sm:text-[10px] " +
