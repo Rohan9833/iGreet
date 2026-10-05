@@ -1,4 +1,11 @@
-import { ArrowLeft, ArrowRight, CheckCircle2, Film, Sparkles, X } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  Film,
+  Sparkles,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -6,7 +13,6 @@ import {
   getKidneyVideoPreviewUrl,
   getNashVideoPreviewUrl,
 } from "../api/doctor.api";
-
 
 const LocalTemplatePreview = ({ src, title, className = "" }) => {
   const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
@@ -41,8 +47,9 @@ const TEMPLATES = [
     id: "independence-day",
     title: "Independence Day",
     image: "/independence.png",
-    preview: "/independence_demo.png",
-    description: "Celebrate the spirit of freedom with a personalized greeting.",
+    preview: "/independenceday_demo.png",
+    description:
+      "Celebrate the spirit of freedom with a personalized greeting.",
   },
   {
     id: "dussehra",
@@ -60,10 +67,11 @@ const TEMPLATES = [
   },
   {
     id: "nash-doctor-intro",
-    title: "Doctor Introduction Video",
+    title: "Nash Video",
     type: "video",
-    preview: "/Nash_demo.mp4",
-    description: "Create a personalized doctor introduction video with your photo and details.",
+    preview: "/nash_demo.mp4",
+    description:
+      "Create a personalized doctor introduction video with your photo and details.",
   },
   {
     id: "kidney-doctor-intro",
@@ -98,7 +106,9 @@ export default function DoctorTemplates() {
       <section className="mx-auto w-full max-w-[900px]">
         <button
           type="button"
-          onClick={() => navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`)}
+          onClick={() =>
+            navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`)
+          }
           className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-[13px] font-semibold text-[#52627a] shadow-sm ring-1 ring-slate-100 transition hover:bg-slate-50"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -116,12 +126,17 @@ export default function DoctorTemplates() {
                 Choose a template
               </h1>
               <p className="mt-1 max-w-[560px] text-[14px] leading-[1.5] text-[#718198]">
-                Pick a design, add your recipient details and create a personalized card.
+                Pick a design, add your recipient details and create a
+                personalized card.
               </p>
             </div>
             <div className="rounded-2xl border border-orange-100 bg-[#fff8f1] px-4 py-3">
-              <p className="text-[11px] font-semibold text-[#718198]">Generation cost</p>
-              <p className="mt-0.5 text-[17px] font-bold text-orange-600">20 credits</p>
+              <p className="text-[11px] font-semibold text-[#718198]">
+                Generation cost
+              </p>
+              <p className="mt-0.5 text-[17px] font-bold text-orange-600">
+                20 credits
+              </p>
             </div>
           </div>
 
@@ -135,18 +150,19 @@ export default function DoctorTemplates() {
               >
                 <div className="relative overflow-hidden bg-slate-50">
                   <LocalTemplatePreview
-  src={template.preview || template.image}
-  title={template.title}
-  className={`block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"} ${template.type === "video" ? "bg-slate-950" : ""}`}
-/>
+                    src={template.preview || template.image}
+                    title={template.title}
+                    className={`block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"} ${template.type === "video" ? "bg-slate-950" : ""}`}
+                  />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-3 pt-10">
-                    <h2 className="text-[12px] font-bold leading-[1.25] text-white">{template.title}</h2>
+                    <h2 className="text-[12px] font-bold leading-[1.25] text-white">
+                      {template.title}
+                    </h2>
                   </div>
                 </div>
               </button>
             ))}
           </div>
-
         </div>
       </section>
       {previewTemplate && (
@@ -160,25 +176,41 @@ export default function DoctorTemplates() {
           >
             <div className="relative overflow-hidden bg-slate-100">
               <LocalTemplatePreview
-  src={previewTemplate.preview || previewTemplate.image}
-  title={previewTemplate.title}
-  className={`block w-full ${previewTemplate.type === "video" ? "max-h-[430px] object-cover bg-slate-950" : "max-h-[430px] object-contain"}`}
-/>
-              <button type="button" onClick={() => setPreviewTemplate(null)} className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#263b55] shadow-md" aria-label="Close template preview">
+                src={previewTemplate.preview || previewTemplate.image}
+                title={previewTemplate.title}
+                className={`block w-full ${previewTemplate.type === "video" ? "max-h-[430px] object-cover bg-slate-950" : "max-h-[430px] object-contain"}`}
+              />
+              <button
+                type="button"
+                onClick={() => setPreviewTemplate(null)}
+                className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#263b55] shadow-md"
+                aria-label="Close template preview"
+              >
                 <X className="h-4 w-4" />
               </button>
             </div>
             <div className="p-5">
-              <h3 className="text-[20px] font-bold tracking-[-0.5px] text-[#10233f]">{previewTemplate.title}</h3>
-              <p className="mt-1 text-[13px] leading-[1.45] text-[#718198]">{previewTemplate.description}</p>
-              <button type="button" onClick={() => { const templateId=previewTemplate.id; setPreviewTemplate(null); openTemplate(templateId); }} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-[14px] font-semibold text-white shadow-sm transition active:scale-[0.98]">
+              <h3 className="text-[20px] font-bold tracking-[-0.5px] text-[#10233f]">
+                {previewTemplate.title}
+              </h3>
+              <p className="mt-1 text-[13px] leading-[1.45] text-[#718198]">
+                {previewTemplate.description}
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  const templateId = previewTemplate.id;
+                  setPreviewTemplate(null);
+                  openTemplate(templateId);
+                }}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-[14px] font-semibold text-white shadow-sm transition active:scale-[0.98]"
+              >
                 Continue <ArrowRight className="h-4 w-4" />
               </button>
             </div>
           </div>
         </div>
       )}
-
     </main>
   );
 }
