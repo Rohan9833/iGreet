@@ -196,22 +196,6 @@ export default function DoctorGenerations() {
         </div>
       </header>
 
-      {!loading && !error && (
-        <section className="px-3 pt-3 sm:px-5 sm:pt-4">
-          <div className="flex items-center justify-between rounded-[14px] border border-orange-100 bg-white px-3 py-2.5 shadow-sm sm:px-4">
-            <div>
-              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-[#9aa8b8]">
-                Total Generations
-              </p>
-              <p className="mt-0.5 text-[18px] font-bold leading-none text-[#10233f] sm:text-[20px]">
-                {generations.length}
-              </p>
-            </div>
-            <Sparkles className="h-5 w-5 text-orange-400" />
-          </div>
-        </section>
-      )}
-
       {loading ? (
         <div className="flex min-h-[60vh] items-center justify-center">
           <div className="text-center">
@@ -252,6 +236,7 @@ export default function DoctorGenerations() {
         <section className="w-full overflow-hidden bg-white">
           <table className="w-full table-fixed border-collapse">
             <colgroup>
+              <col className="w-[38px] sm:w-[52px]" />
               <col />
               <col className="w-[74px] sm:w-[110px]" />
               <col className="w-[82px] sm:w-[105px]" />
@@ -261,6 +246,12 @@ export default function DoctorGenerations() {
 
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="px-1 py-2 text-center">
+                  <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
+                    SR No.
+                  </span>
+                </th>
+
                 <th className="px-2 py-2 text-left sm:px-4">
                   <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
                     Receiver
@@ -292,7 +283,8 @@ export default function DoctorGenerations() {
             </thead>
 
             <tbody>
-              {generations.map((generation) => {
+              {generations.map((generation, index) => {
+                const serialNumber = generations.length - index;
                 const video = isVideoGeneration(generation);
                 const expanded = expandedGenerationId === generation._id;
                 const receiver = getReceiverName(generation);
@@ -325,6 +317,12 @@ export default function DoctorGenerations() {
                       (expanded ? "bg-[#fffaf5]" : "bg-white")
                     }
                   >
+                    <td className="px-1 py-2 text-center">
+                      <span className="text-[10px] font-bold text-[#52627a]">
+                        {serialNumber}
+                      </span>
+                    </td>
+
                     <td className="min-w-0 px-2 py-2 sm:px-4">
                       <button
                         type="button"
@@ -408,7 +406,7 @@ export default function DoctorGenerations() {
                       key={generation._id + "-details"}
                       className="border-b border-slate-200 bg-[#fffaf5]"
                     >
-                      <td colSpan={5} className="px-3 py-4 sm:px-5">
+                      <td colSpan={6} className="px-3 py-4 sm:px-5">
                         <div className="grid min-w-0 grid-cols-2 gap-x-5 gap-y-4 sm:grid-cols-4 lg:grid-cols-6">
                           {details.map(([label, value]) => (
                             <div key={label} className="min-w-0">
