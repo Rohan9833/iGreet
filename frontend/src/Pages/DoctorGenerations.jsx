@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarDays, ChevronDown, Coins, Download, Eye, FileImage, Film, Play, Sparkles, X } from "lucide-react";
+import { ArrowLeft, CalendarDays, Coins, Download, Eye, FileImage, Film, Minus, Play, Plus, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -479,12 +479,11 @@ export default function DoctorGenerations() {
                           expanded ? "Hide details" : "Show details"
                         }
                       >
-                        <ChevronDown
-                          className={
-                            "h-3.5 w-3.5 transition-transform " +
-                            (expanded ? "rotate-180" : "")
-                          }
-                        />
+                        {expanded ? (
+                          <Minus className="h-3.5 w-3.5" />
+                        ) : (
+                          <Plus className="h-3.5 w-3.5" />
+                        )}
                       </button>
                     </td>
                   </tr>,
