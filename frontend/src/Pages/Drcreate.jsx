@@ -1243,7 +1243,7 @@ export default function Drcreate() {
           </div>
 
           {/* Compact template grid */}
-          <div className="relative mt-3 overflow-hidden">
+          <div className="relative mt-3 min-h-[313px] overflow-hidden">
             <div
               key={templateType}
               className={`template-swipe ${
