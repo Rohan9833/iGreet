@@ -6,55 +6,77 @@ import {
   getKidneyVideoPreviewUrl,
   getNashVideoPreviewUrl,
 } from "../api/doctor.api";
-import NashVideoPreview from "../Components/NashVideoPreview";
-import DoctorMediaImage from "../Components/DoctorMediaImage";
+
+
+const LocalTemplatePreview = ({ src, title, className = "" }) => {
+  const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
+
+  if (isVideo) {
+    return (
+      <video
+        src={src}
+        title={title}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className={className}
+      />
+    );
+  }
+
+  return <img src={src} alt={title} className={className} />;
+};
 
 const TEMPLATES = [
   {
     id: "teachers-day",
     title: "Teachers Day",
     image: "/teachersday.png",
+    preview: "/teachersday_demo.png",
     description: "A warm personalized card for teachers and mentors.",
   },
   {
     id: "independence-day",
     title: "Independence Day",
     image: "/independence.png",
+    preview: "/independence_demo.png",
     description: "Celebrate the spirit of freedom with a personalized greeting.",
   },
   {
     id: "dussehra",
     title: "Dussehra",
     image: "/dussehra.png",
+    preview: "/dussehra_demo.png",
     description: "Share festive wishes with a personalized Dussehra card.",
   },
   {
     id: "anniversary",
     title: "Anniversary",
     image: "/anniversary.png",
+    preview: "/anniversary_demo.png",
     description: "Create a thoughtful anniversary greeting in a few steps.",
   },
   {
     id: "nash-doctor-intro",
     title: "Doctor Introduction Video",
     type: "video",
-    preview: getNashVideoPreviewUrl(),
+    preview: "/Nash_demo.mp4",
     description: "Create a personalized doctor introduction video with your photo and details.",
   },
   {
     id: "kidney-doctor-intro",
     title: "Kidney Day Doctor Video",
     type: "video",
-    preview: getKidneyVideoPreviewUrl(),
-    previewType: "image",
+    preview: "/Kidney_demo.mp4",
     description: "Create a personalized Kidney Day doctor introduction video.",
   },
   {
     id: "epilepsy-doctor-intro",
     title: "Epilepsy Doctor Video",
     type: "video",
-    preview: getEpilepsyVideoPreviewUrl(),
-    previewType: "video",
+    preview: "/Epilepsy_demo.mp4",
     description: "Create a personalized Epilepsy doctor introduction video.",
   },
 ];
@@ -112,19 +134,11 @@ export default function DoctorTemplates() {
                 className="group mb-3 w-full break-inside-avoid overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               >
                 <div className="relative overflow-hidden bg-slate-50">
-                  {template.type === "video" ? (
-                    template.id === "epilepsy-doctor-intro" ? (
-                      <NashVideoPreview src={getEpilepsyVideoPreviewUrl()} autoPlay muted loop playsInline className={`block w-full object-cover bg-slate-950 ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`} />
-                    ) : template.id === "kidney-doctor-intro" ? (
-                      <DoctorMediaImage src={getKidneyVideoPreviewUrl()} alt={template.title} className={`block w-full object-cover bg-slate-950 ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`} />
-                    ) : template.preview ? (
-                      <NashVideoPreview src={template.preview} autoPlay muted loop playsInline className={`block w-full object-cover bg-slate-950 ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`} />
-                    ) : (
-                      <div className="flex aspect-[3/4] w-full items-center justify-center bg-slate-950 text-white"><Film className="h-7 w-7 opacity-70" /></div>
-                    )
-                  ) : (
-                    <img src={template.image} alt={template.title} className={`block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`} />
-                  )}
+                  <LocalTemplatePreview
+  src={template.preview || template.image}
+  title={template.title}
+  className={`block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"} ${template.type === "video" ? "bg-slate-950" : ""}`}
+/>
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-3 pt-10">
                     <h2 className="text-[12px] font-bold leading-[1.25] text-white">{template.title}</h2>
                   </div>
@@ -145,19 +159,11 @@ export default function DoctorTemplates() {
             onClick={(event) => event.stopPropagation()}
           >
             <div className="relative overflow-hidden bg-slate-100">
-              {previewTemplate.type === "video" ? (
-                previewTemplate.id === "epilepsy-doctor-intro" ? (
-                  <NashVideoPreview src={getEpilepsyVideoPreviewUrl()} autoPlay muted loop playsInline className="block max-h-[430px] w-full object-cover bg-slate-950" />
-                ) : previewTemplate.id === "kidney-doctor-intro" ? (
-                  <DoctorMediaImage src={getKidneyVideoPreviewUrl()} alt={previewTemplate.title} className="block max-h-[430px] w-full object-cover bg-slate-950" />
-                ) : previewTemplate.preview ? (
-                  <NashVideoPreview src={previewTemplate.preview} autoPlay muted loop playsInline className="block max-h-[430px] w-full object-cover bg-slate-950" />
-                ) : (
-                  <div className="flex h-[360px] items-center justify-center bg-slate-950 text-white"><Film className="h-10 w-10 opacity-70" /></div>
-                )
-              ) : (
-                <img src={previewTemplate.image} alt={previewTemplate.title} className="block max-h-[430px] w-full object-contain" />
-              )}
+              <LocalTemplatePreview
+  src={previewTemplate.preview || previewTemplate.image}
+  title={previewTemplate.title}
+  className={`block w-full ${previewTemplate.type === "video" ? "max-h-[430px] object-cover bg-slate-950" : "max-h-[430px] object-contain"}`}
+/>
               <button type="button" onClick={() => setPreviewTemplate(null)} className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#263b55] shadow-md" aria-label="Close template preview">
                 <X className="h-4 w-4" />
               </button>
