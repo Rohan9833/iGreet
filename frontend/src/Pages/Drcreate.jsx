@@ -51,7 +51,7 @@ const MediQRLogo = () => (
 ------------------------------------------------------- */
 const DoctorIllustration = () => (
   <div className="relative h-[145px] w-[135px] overflow-hidden">
-    <div className="absolute bottom-0 right-[4px] h-[118px] w-[118px] overflow-hidden rounded-full border-[5px] border-white bg-[#fff0e5] shadow-sm">
+    <div className="absolute bottom-0 right-[4px] h-[118px] w-[118px] overflow-hidden rounded-full border-[5px] border-white bg-[#fff0e5]">
       <img
         src="/asd123.png"
         alt="Smiling doctor wearing a white coat and stethoscope"
