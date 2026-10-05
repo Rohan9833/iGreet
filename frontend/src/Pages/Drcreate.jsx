@@ -51,8 +51,6 @@ const MediQRLogo = () => (
 ------------------------------------------------------- */
 const DoctorIllustration = () => (
   <div className="relative h-[145px] w-[135px] overflow-hidden">
-    <div className="absolute right-0 top-[4px] h-[130px] w-[130px] rounded-full bg-[#fff0e5]" />
-    <div className="absolute right-[10px] top-[32px] h-[80px] w-[80px] rounded-full bg-[#ffe6d2] opacity-70" />
     <div className="absolute bottom-0 right-[4px] h-[118px] w-[118px] overflow-hidden rounded-full border-[5px] border-white bg-[#fff0e5] shadow-sm">
       <img
         src="/asd123.png"
