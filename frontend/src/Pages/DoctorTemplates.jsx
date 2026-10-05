@@ -94,6 +94,7 @@ export default function DoctorTemplates() {
   const [searchParams] = useSearchParams();
   const qrToken = searchParams.get("qrToken") || "";
   const [previewTemplate, setPreviewTemplate] = useState(null);
+  const [templateType, setTemplateType] = useState("image");
 
   const openTemplate = (templateId) => {
     navigate(
@@ -140,8 +141,39 @@ export default function DoctorTemplates() {
             </div> */}
           </div>
 
-          <div className="mt-6 columns-2 gap-3 sm:columns-3 lg:columns-4">
-            {TEMPLATES.map((template, index) => (
+          <div className="mt-5 flex justify-end">
+            <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 p-1">
+              <button
+                type="button"
+                onClick={() => setTemplateType("image")}
+                className={`rounded-full px-4 py-2 text-[12px] font-semibold transition ${
+                  templateType === "image"
+                    ? "bg-white text-[#10233f] shadow-sm"
+                    : "text-[#718198]"
+                }`}
+              >
+                Images
+              </button>
+              <button
+                type="button"
+                onClick={() => setTemplateType("video")}
+                className={`rounded-full px-4 py-2 text-[12px] font-semibold transition ${
+                  templateType === "video"
+                    ? "bg-white text-[#10233f] shadow-sm"
+                    : "text-[#718198]"
+                }`}
+              >
+                Videos
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-3 columns-2 gap-3 sm:columns-3 lg:columns-4">
+            {TEMPLATES.filter((template) =>
+              templateType === "video"
+                ? template.type === "video"
+                : template.type !== "video",
+            ).map((template, index) => (
               <button
                 key={template.id}
                 type="button"
