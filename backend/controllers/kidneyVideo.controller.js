@@ -258,6 +258,10 @@ const generateKidneyVideo = async (req, res, next) => {
       status: "completed",
       outputUrl,
       metadata: {
+        // Keep video metadata compatible with the generic generations UI.
+        // Cards use metadata.receiverName; videos use the doctor's name.
+        receiverName: name.trim(),
+        doctorName: name.trim(),
         name: name.trim(),
         speciality: speciality.trim(),
         hospital: hospital.trim(),
