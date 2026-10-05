@@ -258,6 +258,8 @@ const generateEpilepsyVideo = async (req, res, next) => {
       status: "completed",
       outputUrl,
       metadata: {
+        receiverName: name.trim(),
+        doctorName: name.trim(),
         name: name.trim(),
         speciality: speciality.trim(),
         hospital: hospital.trim(),
