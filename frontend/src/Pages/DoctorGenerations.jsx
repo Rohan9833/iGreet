@@ -1,4 +1,15 @@
-import { ArrowLeft, CalendarDays, Coins, Download, FileImage, Film, Play, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  CalendarDays,
+  Coins,
+  Download,
+  Eye,
+  FileImage,
+  Film,
+  Play,
+  Sparkles,
+  X,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -34,9 +45,18 @@ const fallbackTemplateImage = (template) => {
   return "";
 };
 
-const isVideoGeneration = (generation) =>
-  generation?.type === "greeting-video" ||
-  generation?.template === "nash-doctor-intro";
+const isVideoGeneration = (generation) => {
+  const template = generation?.template || "";
+  return (
+    generation?.type === "greeting-video" ||
+    template === "nash-doctor-intro" ||
+    template === "kidney-doctor-intro" ||
+    template === "epilepsy-doctor-intro"
+  );
+};
+
+const generationTypeLabel = (generation) =>
+  isVideoGeneration(generation) ? "Video" : "Greeting Card";
 
 export default function DoctorGenerations() {
   const navigate = useNavigate();
@@ -224,135 +244,215 @@ export default function DoctorGenerations() {
               </button>
             </div>
           ) : (
-            <div className="mt-6 space-y-3">
-              {generations.map((generation) => {
-                const receiverName =
-                  generation.metadata?.receiverName || "Personalized card";
-                const resolvedImage = generationImageUrls[generation._id];
-                const loadingImage = imageLoading[generation._id];
+            <div className="mt-6 overflow-hidden rounded-[20px] border border-slate-200 bg-white">
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[860px] border-collapse text-left">
+                  <thead>
+                    <tr className="border-b border-slate-200 bg-slate-50">
+                      <th className="w-[82px] px-4 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-[#718198]">
+                        Preview
+                      </th>
+                      <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-[#718198]">
+                        Receiver
+                      </th>
+                      <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-[#718198]">
+                        Template
+                      </th>
+                      <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-[#718198]">
+                        Type
+                      </th>
+                      <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-[#718198]">
+                        Created
+                      </th>
+                      <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-[#718198]">
+                        Credits
+                      </th>
+                      <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-[#718198]">
+                        Status
+                      </th>
+                      <th className="w-[72px] px-4 py-3 text-center text-[10px] font-bold uppercase tracking-[0.08em] text-[#718198]">
+                        View
+                      </th>
+                    </tr>
+                  </thead>
 
-                return (
-                  <button
-                    key={generation._id}
-                    type="button"
-                    onClick={() => {
-                      setSelectedGeneration(generation);
-                      resolveGenerationImage(generation);
-                    }}
-                    className="flex w-full items-center gap-4 rounded-[22px] border border-slate-100 bg-slate-50 p-3 text-left transition hover:border-orange-100 hover:bg-[#fffaf5] sm:gap-5 sm:p-4"
-                  >
-                    <div className="relative h-[108px] w-[92px] shrink-0 overflow-hidden rounded-[16px] bg-white shadow-sm sm:h-[120px] sm:w-[104px]">
-                      {isVideoGeneration(generation) ? (
-                        <div className="relative h-full w-full bg-slate-950">
-                          {resolvedImage ? (
-                            <video
-                              src={resolvedImage}
-                              muted
-                              playsInline
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center">
-                              <Film className="h-5 w-5 text-white/80" />
+                  <tbody>
+                    {generations.map((generation) => {
+                      const receiverName =
+                        generation.metadata?.receiverName || "Personalized card";
+                      const resolvedImage = generationImageUrls[generation._id];
+                      const loadingImage = imageLoading[generation._id];
+
+                      return (
+                        <tr
+                          key={generation._id}
+                          onClick={() => {
+                            setSelectedGeneration(generation);
+                            resolveGenerationImage(generation);
+                          }}
+                          className="cursor-pointer border-b border-slate-100 last:border-b-0 transition hover:bg-[#fffaf5]"
+                        >
+                          <td className="px-4 py-3">
+                            <div className="relative h-[58px] w-[48px] overflow-hidden rounded-[10px] bg-slate-100 ring-1 ring-slate-200">
+                              {isVideoGeneration(generation) ? (
+                                <div className="relative h-full w-full bg-slate-950">
+                                  {resolvedImage ? (
+                                    <video
+                                      src={resolvedImage}
+                                      muted
+                                      playsInline
+                                      preload="metadata"
+                                      className="h-full w-full object-cover"
+                                    />
+                                  ) : (
+                                    <div className="flex h-full w-full items-center justify-center">
+                                      <Film className="h-4 w-4 text-slate-400" />
+                                    </div>
+                                  )}
+                                  <span className="absolute inset-0 flex items-center justify-center bg-black/10">
+                                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/90 text-orange-500 shadow-sm">
+                                      <Play className="ml-0.5 h-2.5 w-2.5 fill-current" />
+                                    </span>
+                                  </span>
+                                </div>
+                              ) : resolvedImage ? (
+                                <img
+                                  src={resolvedImage}
+                                  alt={receiverName}
+                                  onError={() => handleImageError(generation)}
+                                  className="h-full w-full object-cover"
+                                />
+                              ) : (
+                                <img
+                                  src={fallbackTemplateImage(generation.template)}
+                                  alt={titleFromTemplate(generation.template)}
+                                  className="h-full w-full object-cover"
+                                />
+                              )}
+
+                              {loadingImage && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-white/80 text-[8px] font-semibold text-slate-500">
+                                  ...
+                                </div>
+                              )}
                             </div>
-                          )}
-                          <span className="absolute inset-0 flex items-center justify-center">
-                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-orange-500 shadow-sm">
-                              <Play className="ml-0.5 h-3.5 w-3.5 fill-current" />
+                          </td>
+
+                          <td className="max-w-[190px] px-4 py-3">
+                            <p className="truncate text-[13px] font-semibold text-[#10233f]">
+                              {receiverName}
+                            </p>
+                            <p className="mt-0.5 truncate text-[10px] text-[#9aa8b8]">
+                              {generation.metadata?.senderName
+                                ? `From ${generation.metadata.senderName}`
+                                : "Personalized greeting"}
+                            </p>
+                          </td>
+
+                          <td className="max-w-[190px] px-4 py-3">
+                            <p className="truncate text-[12px] font-semibold text-[#52627a]">
+                              {titleFromTemplate(generation.template)}
+                            </p>
+                          </td>
+
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-semibold text-[#52627a]">
+                              {generationTypeLabel(generation)}
                             </span>
-                          </span>
-                        </div>
-                      ) : resolvedImage ? (
-                        <img
-                          src={resolvedImage}
-                          alt={receiverName}
-                          onError={() => handleImageError(generation)}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <img
-                          src={fallbackTemplateImage(generation.template)}
-                          alt={titleFromTemplate(generation.template)}
-                          className="h-full w-full object-cover"
-                        />
-                      )}
+                          </td>
 
-                      {loadingImage && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-white/75 text-[9px] font-semibold text-slate-500">
-                          Loading...
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="min-w-0 flex-1 self-stretch py-1 sm:py-2">
-                      <div className="flex h-full flex-col justify-between">
-                        <div className="min-w-0">
-                          <h2 className="truncate text-[17px] font-bold leading-tight text-[#10233f] sm:text-[18px]">
-                            {titleFromTemplate(generation.template)}
-                          </h2>
-                          <p className="mt-2 truncate text-[13px] text-[#52627a]">
-                            For <span className="font-semibold">{receiverName}</span>
-                          </p>
-
-                          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-[#718198]">
-                            <span className="inline-flex items-center gap-1">
-                              <CalendarDays className="h-3.5 w-3.5 shrink-0" />
+                          <td className="whitespace-nowrap px-4 py-3">
+                            <div className="inline-flex items-center gap-1.5 text-[11px] text-[#52627a]">
+                              <CalendarDays className="h-3.5 w-3.5 shrink-0 text-[#9aa8b8]" />
                               {formatDate(generation.createdAt)}
-                            </span>
-                            <span className="inline-flex items-center gap-1">
-                              <Coins className="h-3.5 w-3.5 shrink-0" />
-                              {generation.creditsUsed} credits
-                            </span>
-                          </div>
-                        </div>
+                            </div>
+                          </td>
 
-                        <span className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-bold capitalize text-emerald-600">
-                          {generation.status}
-                        </span>
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
+                          <td className="whitespace-nowrap px-4 py-3">
+                            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#52627a]">
+                              <Coins className="h-3.5 w-3.5 text-[#9aa8b8]" />
+                              {generation.creditsUsed ?? 0}
+                            </span>
+                          </td>
+
+                          <td className="px-4 py-3">
+                            <span
+                              className={
+                                generation.status === "completed"
+                                  ? "inline-flex rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold capitalize text-emerald-600"
+                                  : generation.status === "failed"
+                                    ? "inline-flex rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold capitalize text-red-600"
+                                    : "inline-flex rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold capitalize text-amber-600"
+                              }
+                            >
+                              {generation.status}
+                            </span>
+                          </td>
+
+                          <td className="px-4 py-3 text-center">
+                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-[#52627a] transition group-hover:bg-orange-50 group-hover:text-orange-500">
+                              <Eye className="h-4 w-4" />
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="border-t border-slate-100 bg-slate-50 px-4 py-2.5 text-[10px] text-[#9aa8b8]">
+                Click any generation to open the full preview and download options.
+              </div>
             </div>
+          )}
+
           )}
 
           {selectedGeneration && (
             <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-[#10233f]/60 p-4 backdrop-blur-sm"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-[#10233f]/70 p-4 backdrop-blur-sm"
               onClick={() => setSelectedGeneration(null)}
             >
               <div
-                className="w-full max-w-[520px] overflow-hidden rounded-[26px] bg-white shadow-2xl"
+                className="flex max-h-[92vh] w-full max-w-[760px] flex-col overflow-hidden rounded-[26px] bg-white shadow-2xl"
                 onClick={(event) => event.stopPropagation()}
               >
-                <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-                  <div>
-                    <h2 className="text-[18px] font-bold">
-                      {titleFromTemplate(selectedGeneration.template)}
-                    </h2>
-                    <p className="mt-0.5 text-[12px] text-[#718198]">
+                <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-orange-500">
+                      {generationTypeLabel(selectedGeneration)}
+                    </p>
+                    <h2 className="mt-1 truncate text-[18px] font-bold text-[#10233f]">
                       {selectedGeneration.metadata?.receiverName ||
                         "Personalized card"}
+                    </h2>
+                    <p className="mt-1 text-[12px] text-[#718198]">
+                      {titleFromTemplate(selectedGeneration.template)} ·{" "}
+                      {formatDate(selectedGeneration.createdAt)}
                     </p>
                   </div>
+
                   <button
                     type="button"
                     onClick={() => setSelectedGeneration(null)}
-                    className="rounded-full bg-slate-100 px-3 py-1.5 text-[12px] font-semibold text-slate-600"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200"
+                    aria-label="Close preview"
                   >
-                    Close
+                    <X className="h-4 w-4" />
                   </button>
                 </div>
 
-                <div className="bg-slate-50 p-5">
+                <div className="min-h-0 flex-1 overflow-auto bg-slate-50 p-4 sm:p-6">
                   {generationImageUrls[selectedGeneration._id] ? (
                     isVideoGeneration(selectedGeneration) ? (
                       <video
                         src={generationImageUrls[selectedGeneration._id]}
                         controls
+                        autoPlay
+                        muted
                         playsInline
-                        className="mx-auto max-h-[65vh] w-full rounded-xl bg-black shadow-md"
+                        className="mx-auto max-h-[58vh] w-auto max-w-full rounded-2xl bg-black shadow-md"
                       />
                     ) : (
                       <img
@@ -362,11 +462,11 @@ export default function DoctorGenerations() {
                           "Generated card"
                         }
                         onError={() => handleImageError(selectedGeneration)}
-                        className="mx-auto max-h-[65vh] w-auto max-w-full rounded-xl shadow-md"
+                        className="mx-auto max-h-[58vh] w-auto max-w-full rounded-2xl shadow-md"
                       />
                     )
                   ) : (
-                    <div className="flex h-64 items-center justify-center rounded-xl bg-white text-sm text-slate-500">
+                    <div className="flex min-h-[300px] items-center justify-center rounded-2xl bg-white text-sm text-slate-500">
                       {imageLoading[selectedGeneration._id]
                         ? "Loading generated file..."
                         : "Generated file is unavailable."}
@@ -374,9 +474,38 @@ export default function DoctorGenerations() {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between gap-3 px-5 py-4">
-                  <div className="text-[11px] text-[#718198]">
-                    Created {formatDate(selectedGeneration.createdAt)}
+                <div className="grid grid-cols-2 gap-3 border-t border-slate-100 px-5 py-4 sm:grid-cols-4">
+                  <div>
+                    <p className="text-[9px] font-bold uppercase tracking-wide text-[#9aa8b8]">
+                      Receiver
+                    </p>
+                    <p className="mt-1 truncate text-[11px] font-semibold text-[#52627a]">
+                      {selectedGeneration.metadata?.receiverName || "--"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-bold uppercase tracking-wide text-[#9aa8b8]">
+                      Type
+                    </p>
+                    <p className="mt-1 text-[11px] font-semibold text-[#52627a]">
+                      {generationTypeLabel(selectedGeneration)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-bold uppercase tracking-wide text-[#9aa8b8]">
+                      Credits
+                    </p>
+                    <p className="mt-1 text-[11px] font-semibold text-[#52627a]">
+                      {selectedGeneration.creditsUsed ?? 0}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-bold uppercase tracking-wide text-[#9aa8b8]">
+                      Status
+                    </p>
+                    <p className="mt-1 text-[11px] font-semibold capitalize text-emerald-600">
+                      {selectedGeneration.status}
+                    </p>
                   </div>
 
                   {(selectedGeneration.downloadUrl ||
@@ -385,10 +514,10 @@ export default function DoctorGenerations() {
                     <button
                       type="button"
                       onClick={() => handleDownload(selectedGeneration)}
-                      className="inline-flex items-center gap-1.5 rounded-full bg-orange-500 px-4 py-2 text-[12px] font-semibold text-white transition hover:bg-orange-400"
+                      className="col-span-2 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-[12px] font-semibold text-white transition hover:bg-orange-400 sm:col-span-4"
                     >
-                      <Download className="h-3.5 w-3.5" />
-                      Download Card
+                      <Download className="h-4 w-4" />
+                      Download {isVideoGeneration(selectedGeneration) ? "Video" : "Card"}
                     </button>
                   )}
                 </div>
