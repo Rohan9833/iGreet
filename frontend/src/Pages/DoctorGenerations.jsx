@@ -247,7 +247,7 @@ export default function DoctorGenerations() {
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="px-1 py-2 text-center">
-                  <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
+                  <span className="text-[7px] font-bold uppercase tracking-wide text-[#718198]">
                     SR No.
                   </span>
                 </th>
@@ -318,7 +318,7 @@ export default function DoctorGenerations() {
                     }
                   >
                     <td className="px-1 py-2 text-center">
-                      <span className="text-[10px] font-bold text-[#52627a]">
+                      <span className="text-[10px] font-medium text-[#9ea0a3]">
                         {serialNumber}
                       </span>
                     </td>

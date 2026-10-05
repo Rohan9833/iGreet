@@ -210,9 +210,7 @@ export default function DoctorTemplates() {
             </div>
           </div>
 
-          <p className="mt-1 text-center text-[11px] font-medium text-[#9aa8b8]">
-            Swipe left or right to browse templates
-          </p>          
+                 
         </div>
       </section>
       {previewTemplate && (

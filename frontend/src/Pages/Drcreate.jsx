@@ -1154,7 +1154,7 @@ export default function Drcreate() {
           onClick={() =>
             navigate(`/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`)
           }
-          className="group relative mt-1 flex min-h-[80px] w-full items-center gap-1 overflow-hidden rounded-[15px] border border-orange-100 bg-[#fff4e9] px-2.5 text-left transition active:scale-[0.99]"
+          className="group relative -mt-4 flex min-h-[80px] w-full items-center gap-1 overflow-hidden rounded-[15px] border border-orange-100 bg-[#fff4e9] px-2.5 text-left transition active:scale-[0.99]"
         >
           <GreetingCardIllustration />
           <div className="flex-1">
