@@ -50,16 +50,17 @@ const MediQRLogo = () => (
    Doctor Illustration (SVG)
 ------------------------------------------------------- */
 const DoctorIllustration = () => (
-  <div className="relative h-[175px] w-[160px] overflow-hidden">
-    <div className="absolute right-[-8px] top-[10px] h-[150px] w-[150px] rounded-full bg-[#fff0e5]" />
-    <div className="absolute right-[5px] top-[45px] h-[90px] w-[90px] rounded-full bg-[#ffe6d2] opacity-70" />
-
-    <img
-      src="/asd123.png"
-      alt="Smiling doctor wearing a white coat and stethoscope"
-      className="absolute bottom-[-12px] right-[-8px] h-[168px] w-[150px] object-contain object-bottom"
-      loading="eager"
-    />
+  <div className="relative h-[145px] w-[135px] overflow-hidden">
+    <div className="absolute right-0 top-[4px] h-[130px] w-[130px] rounded-full bg-[#fff0e5]" />
+    <div className="absolute right-[10px] top-[32px] h-[80px] w-[80px] rounded-full bg-[#ffe6d2] opacity-70" />
+    <div className="absolute bottom-0 right-[4px] h-[118px] w-[118px] overflow-hidden rounded-full border-[5px] border-white bg-[#fff0e5] shadow-sm">
+      <img
+        src="/asd123.png"
+        alt="Smiling doctor wearing a white coat and stethoscope"
+        className="h-full w-full object-contain object-bottom"
+        loading="eager"
+      />
+    </div>
   </div>
 );
 
@@ -1130,11 +1131,11 @@ export default function Drcreate() {
         </header>
 
         {/* Welcome */}
-        <section className="relative mt-6 h-[175px]">
-          <div className="relative z-10 pt-6">
-            <p className="text-[18px] font-medium text-[#718198]">Welcome,</p>
+        <section className="relative mt-4 h-[145px]">
+          <div className="relative z-10 pt-4">
+            <p className="text-[15px] font-medium text-[#718198]">Welcome,</p>
             <div className="mt-1 flex items-center gap-1.5">
-              <h1 className="text-[26px] font-bold tracking-[-1px] text-[#10233f] leading-tight">
+              <h1 className="text-[21px] font-bold tracking-[-0.7px] leading-tight text-[#10233f]">
                 Dr.{" "}
                 {doctor?.doctorName ? (
                   doctor.doctorName.length > 17 ? (
@@ -1152,12 +1153,12 @@ export default function Drcreate() {
               </h1>
               {/* <span className="text-[24px]">👋</span> */}
             </div>
-            <p className="mt-2 max-w-[220px] text-[14px] leading-[1.45] text-[#718198]">
+            <p className="mt-1.5 max-w-[205px] text-[12px] leading-[1.4] text-[#718198]">
               Personalized greeting cards and Videos.
             </p>
           </div>
 
-          <div className="absolute -right-4 bottom-0 z-0">
+          <div className="absolute -right-2 bottom-0 z-0">
             <DoctorIllustration />
           </div>
         </section>
@@ -1168,20 +1169,18 @@ export default function Drcreate() {
           onClick={() =>
             navigate(`/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`)
           }
-          className="group relative mt-4 flex min-h-[145px] w-full items-center gap-2 overflow-hidden rounded-[18px] border border-orange-100 bg-[#fff4e9] px-4 text-left transition active:scale-[0.99]"
+          className="group relative mt-3 flex min-h-[112px] w-full items-center gap-1.5 overflow-hidden rounded-[16px] border border-orange-100 bg-[#fff4e9] px-3 text-left transition active:scale-[0.99]"
         >
           <GreetingCardIllustration />
           <div className="flex-1">
-            <h2 className="text-[22px] font-bold leading-[1.1] tracking-[-0.6px] text-[#10233f]">
-              Create
-              <br />
-              Personalized Cards
+            <h2 className="whitespace-nowrap text-[17px] font-bold leading-none tracking-[-0.4px] text-[#10233f]">
+              Create Personalized Cards
             </h2>
-            <p className="mt-2 text-[12.5px] leading-[1.4] text-[#718198]">
+            <p className="mt-1 text-[10.5px] leading-[1.35] text-[#718198]">
               Design your personalized cards for your patients.
             </p>
           </div>
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white shadow-md transition group-active:scale-95">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white shadow-md transition group-active:scale-95">
             <ArrowRight className="h-5 w-5" />
           </div>
         </button>
@@ -1194,30 +1193,56 @@ export default function Drcreate() {
               `/doctor/generations?qrToken=${encodeURIComponent(qrToken)}`,
             )
           }
-          className="group relative mt-3 flex min-h-[135px] w-full items-center gap-2 overflow-hidden rounded-[18px] border border-blue-100 bg-[#f1f6ff] px-4 text-left transition active:scale-[0.99]"
+          className="group relative mt-2.5 flex min-h-[112px] w-full items-center gap-1.5 overflow-hidden rounded-[16px] border border-blue-100 bg-[#f1f6ff] px-3 text-left transition active:scale-[0.99]"
         >
           <TemplatesStackIllustration />
           <div className="flex-1">
-            <h2 className="text-[22px] font-bold leading-[1.1] tracking-[-0.6px] text-[#10233f]">
-              View
-              <br />
-              Generations
+            <h2 className="whitespace-nowrap text-[17px] font-bold leading-none tracking-[-0.4px] text-[#10233f]">
+              View Generations
             </h2>
-            <p className="mt-2 text-[12.5px] leading-[1.4] text-[#718198]">
+            <p className="mt-1 text-[10.5px] leading-[1.35] text-[#718198]">
               View all the personalized cards you have created.
             </p>
           </div>
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e3ecfb] text-[#17263a] transition group-active:scale-95">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#e3ecfb] text-[#17263a] transition group-active:scale-95">
             <ArrowRight className="h-5 w-5" />
           </div>
         </button>
 
         {/* Recent Creations */}
-        <section className="mt-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-[20px] font-bold tracking-[-0.5px] text-[#10233f]">
+        <section className="mt-5">
+          <div className="flex min-h-[44px] items-center justify-between gap-2 rounded-[14px] border border-slate-100 bg-white px-2">
+            <h2 className="shrink-0 text-[16px] font-bold tracking-[-0.3px] text-[#10233f]">
               Templates
             </h2>
+
+            <div className="flex min-w-0 flex-1 justify-center">
+              <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setTemplateType("image")}
+                  className={`rounded-full px-3 py-1.5 text-[10px] font-semibold transition ${
+                    templateType === "image"
+                      ? "bg-white text-[#10233f] shadow-sm"
+                      : "text-[#718198]"
+                  }`}
+                >
+                  Images
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTemplateType("video")}
+                  className={`rounded-full px-3 py-1.5 text-[10px] font-semibold transition ${
+                    templateType === "video"
+                      ? "bg-white text-[#10233f] shadow-sm"
+                      : "text-[#718198]"
+                  }`}
+                >
+                  Videos
+                </button>
+              </div>
+            </div>
+
             <button
               type="button"
               onClick={() =>
@@ -1225,39 +1250,11 @@ export default function Drcreate() {
                   `/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`,
                 )
               }
-              className="flex items-center gap-1 rounded-full bg-[#fff1e5] px-4 py-2 text-[13px] font-medium text-orange-500"
+              className="flex shrink-0 items-center gap-0.5 rounded-full bg-[#fff1e5] px-2.5 py-1.5 text-[10px] font-medium text-orange-500"
             >
               View All
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3 w-3" />
             </button>
-          </div>
-
-          {/* Template type toggle */}
-          <div className="mt-5 flex justify-end">
-            <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 p-1">
-              <button
-                type="button"
-                onClick={() => setTemplateType("image")}
-                className={`rounded-full px-4 py-2 text-[12px] font-semibold transition ${
-                  templateType === "image"
-                    ? "bg-white text-[#10233f] shadow-sm"
-                    : "text-[#718198]"
-                }`}
-              >
-                Images
-              </button>
-              <button
-                type="button"
-                onClick={() => setTemplateType("video")}
-                className={`rounded-full px-4 py-2 text-[12px] font-semibold transition ${
-                  templateType === "video"
-                    ? "bg-white text-[#10233f] shadow-sm"
-                    : "text-[#718198]"
-                }`}
-              >
-                Videos
-              </button>
-            </div>
           </div>
 
           {/* Compact template grid */}
