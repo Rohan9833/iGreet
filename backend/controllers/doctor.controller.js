@@ -356,7 +356,7 @@ const getGenerationFile = async (req, res, next) => {
 const downloadGenerationFile = async (req, res, next) => {
   try {
     const generation = await Generation.findById(req.params.generationId).select(
-      "outputUrl template",
+      "outputUrl template type metadata",
     );
 
     if (!generation) {
@@ -387,11 +387,23 @@ const downloadGenerationFile = async (req, res, next) => {
       });
     }
 
-    const safeTemplate = String(generation.template || "generation")
-      .replace(/[^a-z0-9-_]+/gi, "-")
-      .replace(/^-+|-+$/g, "") || "generation";
+    const safeTemplate =
+      String(generation.template || "generation")
+        .replace(/[^a-z0-9-_]+/gi, "-")
+        .replace(/^-+|-+$/g, "") || "generation";
 
-    return res.download(filePath, `${safeTemplate}-${generation._id}.png`);
+    const storedExtension = path.extname(filePath).toLowerCase();
+    const mimeType = String(generation.metadata?.mimeType || "");
+    const extension =
+      storedExtension ||
+      (mimeType.includes("video") || generation.type === "greeting-video"
+        ? ".mp4"
+        : ".png");
+
+    return res.download(
+      filePath,
+      `${safeTemplate}-${generation._id}${extension}`,
+    );
   } catch (error) {
     return next(error);
   }
