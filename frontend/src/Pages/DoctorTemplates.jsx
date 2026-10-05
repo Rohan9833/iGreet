@@ -27,12 +27,18 @@ const LocalTemplatePreview = ({ src, title, className = "" }) => {
         loop
         playsInline
         preload="auto"
-        className={className}
+        className={`block h-auto w-full ${className}`}
       />
     );
   }
 
-  return <img src={src} alt={title} className={className} />;
+  return (
+    <img
+      src={src}
+      alt={title}
+      className={`block h-auto w-full ${className}`}
+    />
+  );
 };
 
 const TEMPLATES = [
@@ -168,32 +174,39 @@ export default function DoctorTemplates() {
             </div>
           </div>
 
-          <div className="relative mt-3 overflow-hidden"><div key={templateType} className={`template-swipe ${templateType === "video" ? "columns-2 gap-3 sm:columns-3 lg:columns-4 animate-[templateSlideLeft_480ms_cubic-bezier(0.16,1,0.3,1)]" : "columns-2 gap-3 sm:columns-3 lg:columns-4 animate-[templateSlideRight_480ms_cubic-bezier(0.16,1,0.3,1)]"}`}>
-            {TEMPLATES.filter((template) =>
-              templateType === "video"
-                ? template.type === "video"
-                : template.type !== "video",
-            ).map((template, index) => (
-              <button
-                key={template.id}
-                type="button"
-                onClick={() => setPreviewTemplate(template)}
-                className="group mb-3 w-full break-inside-avoid overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <div className="relative overflow-hidden bg-slate-50">
-                  <LocalTemplatePreview
-                    src={template.preview || template.image}
-                    title={template.title}
-                    className={`block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"} ${template.type === "video" ? "bg-slate-950" : ""}`}
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-3 pt-10">
-                    <h2 className="text-[12px] font-bold leading-[1.25] text-white">
-                      {template.title}
-                    </h2>
+          <div className="relative mt-3 overflow-hidden">
+            <div
+              key={templateType}
+              className={
+                templateType === "video"
+                  ? "grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 animate-[templateSlideLeft_480ms_cubic-bezier(0.16,1,0.3,1)]"
+                  : "grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 animate-[templateSlideRight_480ms_cubic-bezier(0.16,1,0.3,1)]"
+              }
+            >
+              {TEMPLATES.filter((template) =>
+                templateType === "video"
+                  ? template.type === "video"
+                  : template.type !== "video",
+              ).map((template) => (
+                <button
+                  key={template.id}
+                  type="button"
+                  onClick={() => setPreviewTemplate(template)}
+                  className="group w-full min-w-0 overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <div className="relative w-full overflow-hidden rounded-[16px] bg-slate-50">
+                    <LocalTemplatePreview
+                      src={template.preview || template.image}
+                      title={template.title}
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-3 pt-10">
+                      <h2 className="text-[12px] font-bold leading-[1.25] text-white">
+                        {template.title}
+                      </h2>
+                    </div>
                   </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              ))}
             </div>
           </div>
 
