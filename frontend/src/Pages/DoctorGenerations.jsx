@@ -327,12 +327,6 @@ export default function DoctorGenerations() {
                       </button>
                     </td>
 
-                    <td className="min-w-0 px-2 py-3 sm:px-4">
-                      <span className="text-[10px] font-medium text-[#52627a] sm:text-[11px]">
-                        {formatDate(generation.createdAt)}
-                      </span>
-                    </td>
-
                     <td className="px-2 py-3 text-center sm:px-4">
                       <span
                         className={
@@ -343,6 +337,12 @@ export default function DoctorGenerations() {
                         }
                       >
                         {video ? "Video" : "Card"}
+                      </span>
+                    </td>
+
+                    <td className="min-w-0 px-2 py-3 sm:px-4">
+                      <span className="text-[10px] font-medium text-[#52627a] sm:text-[11px]">
+                        {formatDate(generation.createdAt)}
                       </span>
                     </td>
 
