@@ -179,8 +179,8 @@ export default function DoctorTemplates() {
               key={templateType}
               className={
                 templateType === "video"
-                  ? "grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 animate-[templateSlideLeft_480ms_cubic-bezier(0.16,1,0.3,1)]"
-                  : "grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 animate-[templateSlideRight_480ms_cubic-bezier(0.16,1,0.3,1)]"
+                  ? "grid grid-cols-3 gap-3 animate-[templateSlideLeft_480ms_cubic-bezier(0.16,1,0.3,1)]"
+                  : "grid grid-cols-3 gap-3 animate-[templateSlideRight_480ms_cubic-bezier(0.16,1,0.3,1)]"
               }
             >
               {TEMPLATES.filter((template) =>
