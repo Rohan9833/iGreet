@@ -184,7 +184,11 @@ export default function DoctorTemplates() {
                   <LocalTemplatePreview
                     src={template.preview || template.image}
                     title={template.title}
-                    className={`block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"} ${template.type === "video" ? "bg-slate-950" : ""}`}
+                    className={
+                      template.type === "video"
+                        ? "block aspect-[9/16] h-full w-full bg-slate-950 object-contain"
+                        : `block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`
+                    }
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-3 pt-10">
                     <h2 className="text-[12px] font-bold leading-[1.25] text-white">
@@ -208,14 +212,24 @@ export default function DoctorTemplates() {
           onClick={() => setPreviewTemplate(null)}
         >
           <div
-            className="w-full max-w-[370px] overflow-hidden rounded-[28px] bg-white shadow-2xl"
+            className="max-h-[calc(100dvh-2rem)] w-full max-w-[370px] overflow-y-auto rounded-[28px] bg-white shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="relative overflow-hidden bg-slate-100">
+            <div
+              className={
+                previewTemplate.type === "video"
+                  ? "relative flex h-[52vh] max-h-[430px] min-h-[300px] items-center justify-center overflow-hidden bg-slate-950"
+                  : "relative max-h-[430px] overflow-hidden bg-slate-100"
+              }
+            >
               <LocalTemplatePreview
                 src={previewTemplate.preview || previewTemplate.image}
                 title={previewTemplate.title}
-                className={`block w-full ${previewTemplate.type === "video" ? "max-h-[430px] object-cover bg-slate-950" : "max-h-[430px] object-contain"}`}
+                className={
+                  previewTemplate.type === "video"
+                    ? "block h-full w-full object-contain"
+                    : "block max-h-[430px] w-full object-contain"
+                }
               />
               <button
                 type="button"
