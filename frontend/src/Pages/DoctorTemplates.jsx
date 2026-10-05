@@ -180,11 +180,26 @@ export default function DoctorTemplates() {
                 onClick={() => setPreviewTemplate(template)}
                 className="group mb-3 w-full break-inside-avoid overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               >
-                <div className="relative overflow-hidden bg-slate-50">
+                <div
+                  className={
+                    template.type === "video"
+                      ? "relative w-full overflow-hidden rounded-[16px] bg-slate-950"
+                      : "relative overflow-hidden bg-slate-50"
+                  }
+                  style={
+                    template.type === "video"
+                      ? { aspectRatio: "9 / 16" }
+                      : undefined
+                  }
+                >
                   <LocalTemplatePreview
                     src={template.preview || template.image}
                     title={template.title}
-                    className={`block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"} ${template.type === "video" ? "bg-slate-950" : ""}`}
+                    className={
+                      template.type === "video"
+                        ? "absolute inset-0 block h-full w-full object-contain"
+                        : `block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`
+                    }
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-3 pt-10">
                     <h2 className="text-[12px] font-bold leading-[1.25] text-white">
@@ -211,11 +226,26 @@ export default function DoctorTemplates() {
             className="w-full max-w-[370px] overflow-hidden rounded-[28px] bg-white shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="relative overflow-hidden bg-slate-100">
+            <div
+              className={
+                previewTemplate.type === "video"
+                  ? "relative flex w-full items-center justify-center overflow-hidden bg-slate-950"
+                  : "relative max-h-[430px] overflow-hidden bg-slate-100"
+              }
+              style={
+                previewTemplate.type === "video"
+                  ? { aspectRatio: "9 / 16", maxHeight: "70vh" }
+                  : undefined
+              }
+            >
               <LocalTemplatePreview
                 src={previewTemplate.preview || previewTemplate.image}
                 title={previewTemplate.title}
-                className={`block w-full ${previewTemplate.type === "video" ? "max-h-[430px] object-cover bg-slate-950" : "max-h-[430px] object-contain"}`}
+                className={
+                  previewTemplate.type === "video"
+                    ? "absolute inset-0 block h-full w-full object-contain"
+                    : "block max-h-[430px] w-full object-contain"
+                }
               />
               <button
                 type="button"
