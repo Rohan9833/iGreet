@@ -1275,7 +1275,7 @@ export default function Drcreate() {
                   <LocalTemplatePreview
                     src={t.preview || t.image}
                     title={t.title}
-                    className={`block aspect-[4/5] w-full object-cover ${t.type === "video" ? "bg-slate-950" : ""}`}
+                    className={`block aspect-[4/5] w-full object-contain ${t.type === "video" ? "bg-slate-950" : ""}`}
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-2.5 pb-2.5 pt-8">
                     <span className="text-[11px] font-bold leading-[1.2] text-white">
