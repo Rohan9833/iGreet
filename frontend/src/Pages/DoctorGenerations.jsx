@@ -186,12 +186,12 @@ export default function DoctorGenerations() {
               </p>
             </div>
 
-            <div className="shrink-0 rounded-2xl border border-orange-100 bg-[#fff8f1] px-4 py-3 text-right">
+            {/* <div className="shrink-0 rounded-2xl border border-orange-100 bg-[#fff8f1] px-4 py-3 text-right">
               <p className="text-[11px] font-semibold text-[#718198]">Credits left</p>
               <p className="mt-0.5 text-[17px] font-bold text-orange-600">
                 {doctor?.credits ?? "--"}
               </p>
-            </div>
+            </div> */}
           </div>
 
           {loading ? (

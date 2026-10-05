@@ -8,7 +8,17 @@ import {
   getNashVideoPreviewUrl,
   API_BASE_URL,
 } from "../api/doctor.api";
-import { UserRound, ArrowRight, X, Send, Sparkles, Loader2, CheckCircle2, AlertCircle, Film } from "lucide-react";
+import {
+  UserRound,
+  ArrowRight,
+  X,
+  Send,
+  Sparkles,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  Film,
+} from "lucide-react";
 import { toBlob } from "html-to-image";
 import TeachersDayCard from "../Components/cards/TeachersDayCard";
 import IndependenceDayCard from "../Components/cards/IndependenceDayCard";
@@ -57,24 +67,42 @@ const DoctorIllustration = () => (
    Small illustrations for action cards
 ------------------------------------------------------- */
 const GreetingCardIllustration = () => (
-  <svg viewBox="0 0 120 110" className="h-[105px] w-[115px] shrink-0" fill="none">
+  <svg
+    viewBox="0 0 120 110"
+    className="h-[105px] w-[115px] shrink-0"
+    fill="none"
+  >
     <circle cx="48" cy="52" r="42" fill="#ffd4aa" />
     <g transform="rotate(-8 50 55)">
       <rect x="26" y="22" width="62" height="70" rx="7" fill="#f6b274" />
     </g>
     <g transform="rotate(5 60 58)">
-      <rect x="34" y="20" width="64" height="74" rx="7" fill="#fffaf4" stroke="#fde3c8" />
-      <path
-        d="M66 72 C50 60 54 46 66 53 C78 46 82 60 66 72 Z"
-        fill="#ef5f5a"
+      <rect
+        x="34"
+        y="20"
+        width="64"
+        height="74"
+        rx="7"
+        fill="#fffaf4"
+        stroke="#fde3c8"
       />
-      <path d="M52 40 L49 34 M66 38 L66 31 M80 40 L83 34" stroke="#f08a3c" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M66 72 C50 60 54 46 66 53 C78 46 82 60 66 72 Z" fill="#ef5f5a" />
+      <path
+        d="M52 40 L49 34 M66 38 L66 31 M80 40 L83 34"
+        stroke="#f08a3c"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );
 
 const TemplatesStackIllustration = () => (
-  <svg viewBox="0 0 120 110" className="h-[105px] w-[115px] shrink-0" fill="none">
+  <svg
+    viewBox="0 0 120 110"
+    className="h-[105px] w-[115px] shrink-0"
+    fill="none"
+  >
     <circle cx="52" cy="58" r="44" fill="#dfe8fb" opacity="0.7" />
     <g transform="rotate(-14 50 60)">
       <rect x="18" y="26" width="58" height="68" rx="8" fill="#477ed0" />
@@ -83,13 +111,45 @@ const TemplatesStackIllustration = () => (
       <rect x="28" y="22" width="60" height="70" rx="8" fill="#759ee1" />
     </g>
     <g transform="rotate(4 65 55)">
-      <rect x="40" y="16" width="62" height="72" rx="8" fill="#fff" stroke="#dbe6fb" />
+      <rect
+        x="40"
+        y="16"
+        width="62"
+        height="72"
+        rx="8"
+        fill="#fff"
+        stroke="#dbe6fb"
+      />
       <circle cx="58" cy="36" r="6" fill="#fbbf24" />
       <path d="M46 78 L66 50 L80 68 L88 58 L98 78 Z" fill="#34d399" />
       <path d="M66 50 L80 68 L66 78 L46 78 Z" fill="#10b981" />
     </g>
   </svg>
 );
+
+/* -------------------------------------------------------
+   Local template preview
+------------------------------------------------------- */
+const LocalTemplatePreview = ({ src, title, className = "" }) => {
+  const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
+
+  if (isVideo) {
+    return (
+      <video
+        src={src}
+        title={title}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className={className}
+      />
+    );
+  }
+
+  return <img src={src} alt={title} className={className} />;
+};
 
 /* -------------------------------------------------------
    Templates data + preview
@@ -99,42 +159,49 @@ const TEMPLATES = [
     id: "teachers-day",
     title: "Teachers Day",
     image: "/teachersday.png",
+    preview: "/teachersday_demo.png",
     fields: ["receiverName", "senderName", "image"],
   },
   {
     id: "independence-day",
     title: "Independence Day",
     image: "/independence.png",
+    preview: "/independenceday_demo.png",
     fields: ["receiverName", "image"],
   },
   {
     id: "dussehra",
     title: "Dussehra",
     image: "/dussehra.png",
+    preview: "/dussehra_demo.png",
     fields: ["receiverName", "image"],
   },
   {
     id: "anniversary",
     title: "Anniversary",
     image: "/anniversary.png",
+    preview: "/anniversary_demo.png",
     fields: ["receiverName", "image"],
-  },  {
+  },
+  {
     id: "nash-doctor-intro",
-    title: "Doctor Introduction Video",
+    title: "Nash Video",
     type: "video",
-    preview: getNashVideoPreviewUrl(),
+    preview: "/nash_demo.mp4",
     fields: ["name", "qualification", "specialization", "hospital", "image"],
   },
   {
     id: "kidney-doctor-intro",
     title: "Kidney Day Doctor Video",
     type: "video",
+    preview: "/Kidney_demo.mp4",
     fields: ["name", "speciality", "hospital", "city", "image"],
   },
   {
     id: "epilepsy-doctor-intro",
     title: "Epilepsy Doctor Video",
     type: "video",
+    preview: "/Epilepsy_demo.mp4",
     fields: ["name", "speciality", "hospital", "city", "image"],
   },
 ];
@@ -188,31 +255,23 @@ const FESTIVAL_LAYOUTS = {
   "independence-day": {
     image:
       "absolute left-[25%] top-[4%] h-[36%] w-[50%] rounded-full object-cover",
-    name:
-      "absolute left-[30%] right-[30%] top-[45.8%] text-center text-[5cqw] font-extrabold uppercase leading-none text-white",
+    name: "absolute left-[30%] right-[30%] top-[45.8%] text-center text-[5cqw] font-extrabold uppercase leading-none text-white",
   },
   dussehra: {
     image:
       "absolute left-[25%] top-[4%] h-[36%] w-[50%] rounded-full object-cover",
-    name:
-      "absolute left-[30%] right-[30%] top-[45.8%] text-center text-[5cqw] font-extrabold uppercase leading-none text-white",
+    name: "absolute left-[30%] right-[30%] top-[45.8%] text-center text-[5cqw] font-extrabold uppercase leading-none text-white",
   },
   anniversary: {
     image:
       "absolute left-[29%] top-[12%] h-[42%] w-[42%] rounded-full object-cover",
-    name:
-      "absolute left-[24%] right-[24%] top-[90%] text-center text-[5cqw] font-extrabold uppercase leading-none text-[#ef5f1f]",
+    name: "absolute left-[24%] right-[24%] top-[90%] text-center text-[5cqw] font-extrabold uppercase leading-none text-[#ef5f1f]",
   },
 };
 
-const FestivalCard = ({
-  template,
-  receiverName = "",
-  imageUrl = "",
-}) => {
+const FestivalCard = ({ template, receiverName = "", imageUrl = "" }) => {
   const layout =
-    FESTIVAL_LAYOUTS[template.id] ||
-    FESTIVAL_LAYOUTS["independence-day"];
+    FESTIVAL_LAYOUTS[template.id] || FESTIVAL_LAYOUTS["independence-day"];
 
   return (
     <div
@@ -226,23 +285,21 @@ const FestivalCard = ({
       />
 
       {imageUrl && (
-        <img
-          src={imageUrl}
-          alt="Uploaded recipient"
-          className={layout.image}
-        />
+        <img src={imageUrl} alt="Uploaded recipient" className={layout.image} />
       )}
 
-      {receiverName && (
-        <div className={layout.name}>
-          {receiverName}
-        </div>
-      )}
+      {receiverName && <div className={layout.name}>{receiverName}</div>}
     </div>
   );
 };
 
-const TemplatePreview = ({ template, width, receiverName, senderName, imageUrl }) => {
+const TemplatePreview = ({
+  template,
+  width,
+  receiverName,
+  senderName,
+  imageUrl,
+}) => {
   const common = {
     width: width || undefined,
     receiverName,
@@ -370,8 +427,7 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
   const handlePointerMove = (event) => {
     if (!dragRef.current) return;
 
-    const factor =
-      CROP_SIZE / Math.max(1, dragRef.current.renderedSize);
+    const factor = CROP_SIZE / Math.max(1, dragRef.current.renderedSize);
 
     updatePosition(
       dragRef.current.positionX +
@@ -382,9 +438,7 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
   };
 
   const stopDragging = (event) => {
-    if (
-      event?.currentTarget?.hasPointerCapture?.(event.pointerId)
-    ) {
+    if (event?.currentTarget?.hasPointerCapture?.(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
     dragRef.current = null;
@@ -399,10 +453,8 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
     const sourceCropSize =
       Math.min(image.naturalWidth, image.naturalHeight) / zoom;
 
-    const sourceCenterX =
-      image.naturalWidth / 2 - layout.x / layout.scale;
-    const sourceCenterY =
-      image.naturalHeight / 2 - layout.y / layout.scale;
+    const sourceCenterX = image.naturalWidth / 2 - layout.x / layout.scale;
+    const sourceCenterY = image.naturalHeight / 2 - layout.y / layout.scale;
 
     const sx = Math.max(
       0,
@@ -451,9 +503,7 @@ const CropEditor = ({ imageSrc, onCancel, onApply }) => {
       >
         <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
           <div>
-            <h3 className="text-[18px] font-bold text-[#10233f]">
-              Crop Photo
-            </h3>
+            <h3 className="text-[18px] font-bold text-[#10233f]">Crop Photo</h3>
             <p className="mt-0.5 text-[12px] text-slate-500">
               Drag the photo and adjust the zoom.
             </p>
@@ -606,7 +656,13 @@ const downloadGreetingCard = async (template, form) => {
 /* -------------------------------------------------------
    Popup form
 ------------------------------------------------------- */
-const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => {
+const TemplateModal = ({
+  template,
+  qrToken,
+  credits,
+  onGenerated,
+  onClose,
+}) => {
   const isTeachersDay = template.id === "teachers-day";
   const [form, setForm] = useState({
     receiverName: "",
@@ -684,7 +740,9 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
     }
 
     if (!canGenerate) {
-      setGenerationError("You have no credits left. You cannot create another generation.");
+      setGenerationError(
+        "You have no credits left. You cannot create another generation.",
+      );
       return;
     }
 
@@ -733,7 +791,9 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
             : "You have no credits left. You cannot create another generation.",
         );
       } else {
-        setGenerationError(error.message || "Unable to create the generation. Please try again.");
+        setGenerationError(
+          error.message || "Unable to create the generation. Please try again.",
+        );
       }
     } finally {
       setCreating(false);
@@ -889,14 +949,14 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
                 </div>
               )}
 
-              <div className="mt-4 flex items-center justify-between rounded-xl border border-orange-100 bg-orange-50 px-3.5 py-2.5">
+              {/* <div className="mt-4 flex items-center justify-between rounded-xl border border-orange-100 bg-orange-50 px-3.5 py-2.5">
                 <span className="text-[12px] font-medium text-[#718198]">
                   Generation cost
                 </span>
                 <span className="text-[13px] font-bold text-orange-600">
                   20 credits
                 </span>
-              </div>
+              </div> */}
 
               <button
                 type="submit"
@@ -926,6 +986,58 @@ const TemplateModal = ({ template, qrToken, credits, onGenerated, onClose }) => 
   );
 };
 
+/* -------------------------------------------------------
+   Template selection preview
+------------------------------------------------------- */
+const TemplateSelectionModal = ({ template, onContinue, onClose }) => {
+  const isVideo = template.type === "video";
+
+  return (
+    <div
+      className="fixed inset-0 z-[55] flex items-center justify-center bg-[#10233f]/65 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-[370px] overflow-hidden rounded-[28px] bg-white shadow-2xl"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="relative bg-slate-100">
+          <LocalTemplatePreview
+            src={template.preview || template.image}
+            title={template.title}
+            className={`block max-h-[430px] w-full ${isVideo ? "object-cover bg-slate-950" : "object-contain"}`}
+          />
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#263b55] shadow-md"
+            aria-label="Close template preview"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="p-5">
+          <h3 className="text-[20px] font-bold tracking-[-0.5px] text-[#10233f]">
+            {template.title}
+          </h3>
+          <p className="mt-1 text-[13px] leading-[1.45] text-[#718198]">
+            Preview this template before continuing.
+          </p>
+          <button
+            type="button"
+            onClick={onContinue}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-[14px] font-semibold text-white shadow-sm transition active:scale-[0.98]"
+          >
+            Continue
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 /* -------------------------------------------------------
    Main Page
@@ -939,6 +1051,7 @@ export default function Drcreate() {
   const [loadingDoctor, setLoadingDoctor] = useState(true);
   const [doctorError, setDoctorError] = useState("");
   const [activeTemplate, setActiveTemplate] = useState(null);
+  const [previewTemplate, setPreviewTemplate] = useState(null);
   const [videoToast, setVideoToast] = useState(null);
 
   useEffect(() => {
@@ -1019,13 +1132,26 @@ export default function Drcreate() {
           <div className="relative z-10 pt-6">
             <p className="text-[18px] font-medium text-[#718198]">Welcome,</p>
             <div className="mt-1 flex items-center gap-1.5">
-              <h1 className="whitespace-nowrap text-[26px] font-bold tracking-[-1px] text-[#10233f]">
-                {doctor?.doctorName || "Doctor"}
+              <h1 className="text-[26px] font-bold tracking-[-1px] text-[#10233f] leading-tight">
+                Dr.{" "}
+                {doctor?.doctorName ? (
+                  doctor.doctorName.length > 17 ? (
+                    <>
+                      {doctor.doctorName.split(" ").slice(0, -1).join(" ")}
+                      <br />
+                      {doctor.doctorName.split(" ").slice(-1)}
+                    </>
+                  ) : (
+                    doctor.doctorName
+                  )
+                ) : (
+                  "Doctor"
+                )}
               </h1>
               {/* <span className="text-[24px]">👋</span> */}
             </div>
             <p className="mt-2 max-w-[220px] text-[14px] leading-[1.45] text-[#718198]">
-              Create and share personalized greeting cards for your patients.
+              Personalized greeting cards and Videos.
             </p>
           </div>
 
@@ -1037,7 +1163,9 @@ export default function Drcreate() {
         {/* Create Personalized Cards */}
         <button
           type="button"
-          onClick={() => navigate(`/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`)}
+          onClick={() =>
+            navigate(`/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`)
+          }
           className="group relative mt-4 flex min-h-[145px] w-full items-center gap-2 overflow-hidden rounded-[18px] border border-orange-100 bg-[#fff4e9] px-4 text-left transition active:scale-[0.99]"
         >
           <GreetingCardIllustration />
@@ -1059,7 +1187,11 @@ export default function Drcreate() {
         {/* View Generations */}
         <button
           type="button"
-          onClick={() => navigate(`/doctor/generations?qrToken=${encodeURIComponent(qrToken)}`)}
+          onClick={() =>
+            navigate(
+              `/doctor/generations?qrToken=${encodeURIComponent(qrToken)}`,
+            )
+          }
           className="group relative mt-3 flex min-h-[135px] w-full items-center gap-2 overflow-hidden rounded-[18px] border border-blue-100 bg-[#f1f6ff] px-4 text-left transition active:scale-[0.99]"
         >
           <TemplatesStackIllustration />
@@ -1098,64 +1230,24 @@ export default function Drcreate() {
             </button>
           </div>
 
-          {/* Clickable templates */}
+          {/* Compact template grid */}
           <div className="mt-4 grid grid-cols-2 gap-3">
             {TEMPLATES.map((t) => (
               <button
                 key={t.id}
                 type="button"
-                onClick={() => setActiveTemplate(t)}
+                onClick={() => setPreviewTemplate(t)}
                 aria-label={t.title}
-                className="group overflow-hidden rounded-[14px] border border-orange-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
+                className="group overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
               >
-                <div className="relative overflow-hidden">
-                  {t.type === "video" ? (
-                    t.id === "epilepsy-doctor-intro" ? (
-                      <NashVideoPreview
-                        src={getEpilepsyVideoPreviewUrl()}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
-                      />
-                    ) : t.id === "kidney-doctor-intro" ? (
-                      <DoctorMediaImage
-                        src={getKidneyVideoPreviewUrl()}
-                        alt={t.title}
-                        className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
-                      />
-                    ) : t.preview ? (
-                      <NashVideoPreview
-                        src={t.preview}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="block aspect-[1448/2048] w-full object-cover bg-slate-950"
-                      />
-                    ) : (
-                      <div className="flex aspect-[1448/2048] w-full items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 px-4 text-center text-white">
-                        <div>
-                          <Film className="mx-auto h-8 w-8 text-white/80" />
-                          <p className="mt-3 text-[13px] font-bold">
-                            Doctor introduction video
-                          </p>
-                          <p className="mt-1 text-[10px] text-white/60">
-                            Preview unavailable
-                          </p>
-                        </div>
-                      </div>
-                    )
-                  ) : (
-                    <img
-                      src={t.image}
-                      alt={t.title}
-                      className="block aspect-[1448/2048] w-full object-cover"
-                    />
-                  )}
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-3 pb-3 pt-10">
-                    <span className="text-[13px] font-bold text-white">
+                <div className="relative overflow-hidden bg-slate-50">
+                  <LocalTemplatePreview
+                    src={t.preview || t.image}
+                    title={t.title}
+                    className={`block aspect-[4/5] w-full object-cover ${t.type === "video" ? "bg-slate-950" : ""}`}
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-2.5 pb-2.5 pt-8">
+                    <span className="text-[11px] font-bold leading-[1.2] text-white">
                       {t.title}
                     </span>
                   </div>
@@ -1165,6 +1257,17 @@ export default function Drcreate() {
           </div>
         </section>
       </section>
+
+      {previewTemplate && (
+        <TemplateSelectionModal
+          template={previewTemplate}
+          onContinue={() => {
+            setActiveTemplate(previewTemplate);
+            setPreviewTemplate(null);
+          }}
+          onClose={() => setPreviewTemplate(null)}
+        />
+      )}
 
       {/* Video generation toast */}
       {videoToast && (
@@ -1212,7 +1315,8 @@ export default function Drcreate() {
             setVideoToast({
               type: "loading",
               title: "Creating your video",
-              message: "Please wait while your doctor introduction is being generated.",
+              message:
+                "Please wait while your doctor introduction is being generated.",
             });
           }}
           onGenerationComplete={(data, error) => {
@@ -1266,7 +1370,8 @@ export default function Drcreate() {
             setVideoToast({
               type: "loading",
               title: "Creating your video",
-              message: "Please wait while your doctor introduction is being generated.",
+              message:
+                "Please wait while your doctor introduction is being generated.",
             });
           }}
           onGenerationComplete={(data, error) => {
