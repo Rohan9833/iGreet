@@ -1,5 +1,6 @@
-import { ArrowLeft, ArrowRight, CheckCircle2, Film, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Film, Sparkles, X } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import {
   getEpilepsyVideoPreviewUrl,
   getKidneyVideoPreviewUrl,
@@ -61,6 +62,7 @@ export default function DoctorTemplates() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const qrToken = searchParams.get("qrToken") || "";
+  const [previewTemplate, setPreviewTemplate] = useState(null);
 
   const openTemplate = (templateId) => {
     navigate(
@@ -100,85 +102,61 @@ export default function DoctorTemplates() {
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {TEMPLATES.map((template) => (
+          <div className="mt-6 columns-2 gap-3 sm:columns-3 lg:columns-4">
+            {TEMPLATES.map((template, index) => (
               <button
                 key={template.id}
                 type="button"
-                onClick={() => openTemplate(template.id)}
-                className="group overflow-hidden rounded-[20px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                onClick={() => setPreviewTemplate(template)}
+                className="group mb-3 w-full break-inside-avoid overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               >
                 <div className="relative overflow-hidden bg-slate-50">
                   {template.type === "video" ? (
-                    <div className="relative flex aspect-[1448/2048] w-full items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 transition duration-300 group-hover:scale-[1.02]">
-                      {template.id === "epilepsy-doctor-intro" ? (
-                        <video
-                          src={getEpilepsyVideoPreviewUrl()}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          preload="auto"
-                          controls={false}
-                          className="h-full w-full object-cover"
-                          onCanPlay={(event) => {
-                            event.currentTarget.play().catch(() => {});
-                          }}
-                        />
-                      ) : template.id === "kidney-doctor-intro" ? (
-                        <img
-                          src={getKidneyVideoPreviewUrl()}
-                          alt={template.title}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : template.preview ? (
-                        <NashVideoPreview
-                          src={template.preview}
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex flex-col items-center justify-center px-5 text-center text-white">
-                          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
-                            <Film className="h-7 w-7" />
-                          </span>
-                          <span className="mt-3 text-sm font-bold">
-                            Doctor introduction video
-                          </span>
-                          <span className="mt-1 text-[10px] text-white/60">
-                            Preview unavailable
-                          </span>
-                        </div>
-                      )}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/10">
-                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-orange-500 shadow-lg">
-                          <Film className="h-5 w-5" />
-                        </span>
+                    template.id === "epilepsy-doctor-intro" ? (
+                      <video
+                        src={getEpilepsyVideoPreviewUrl()}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        controls={false}
+                        className={`block w-full object-cover bg-slate-950 ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`}
+                        onCanPlay={(event) => {
+                          event.currentTarget.play().catch(() => {});
+                        }}
+                      />
+                    ) : template.id === "kidney-doctor-intro" ? (
+                      <img
+                        src={getKidneyVideoPreviewUrl()}
+                        alt={template.title}
+                        className={`block w-full object-cover bg-slate-950 ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`}
+                      />
+                    ) : template.preview ? (
+                      <NashVideoPreview
+                        src={template.preview}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className={`block w-full object-cover bg-slate-950 ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`}
+                      />
+                    ) : (
+                      <div className="flex aspect-[3/4] w-full items-center justify-center bg-slate-950 text-white">
+                        <Film className="h-7 w-7 opacity-70" />
                       </div>
-                    </div>
+                    )
                   ) : (
                     <img
                       src={template.image}
                       alt={template.title}
-                      className="aspect-[1448/2048] w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                      className={`block w-full object-cover ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[3/4]"}`}
                     />
                   )}
-                  <div className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-orange-500 shadow-sm">
-                    <ArrowRight className="h-4 w-4" />
-                  </div>
-                </div>
-
-                <div className="p-4">
-                  <h2 className="text-[16px] font-bold">{template.title}</h2>
-                  <p className="mt-1.5 min-h-[42px] text-[12px] leading-[1.45] text-[#718198]">
-                    {template.description}
-                  </p>
-                  <div className="mt-3 flex items-center gap-1.5 text-[12px] font-semibold text-orange-600">
-                    <CheckCircle2 className="h-3.5 w-3.5" />
-                    Use this template
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-3 pt-10">
+                    <h2 className="text-[12px] font-bold leading-[1.25] text-white">
+                      {template.title}
+                    </h2>
                   </div>
                 </div>
               </button>
@@ -186,6 +164,91 @@ export default function DoctorTemplates() {
           </div>
         </div>
       </section>
+
+      {previewTemplate && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#10233f]/65 p-4 backdrop-blur-sm"
+          onClick={() => setPreviewTemplate(null)}
+        >
+          <div
+            className="w-full max-w-[370px] overflow-hidden rounded-[28px] bg-white shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="relative overflow-hidden bg-slate-100">
+              {previewTemplate.type === "video" ? (
+                previewTemplate.id === "epilepsy-doctor-intro" ? (
+                  <video
+                    src={getEpilepsyVideoPreviewUrl()}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                    controls={false}
+                    className="block max-h-[430px] w-full object-cover bg-slate-950"
+                    onCanPlay={(event) => event.currentTarget.play().catch(() => {})}
+                  />
+                ) : previewTemplate.id === "kidney-doctor-intro" ? (
+                  <img
+                    src={getKidneyVideoPreviewUrl()}
+                    alt={previewTemplate.title}
+                    className="block max-h-[430px] w-full object-cover bg-slate-950"
+                  />
+                ) : previewTemplate.preview ? (
+                  <NashVideoPreview
+                    src={previewTemplate.preview}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="block max-h-[430px] w-full object-cover bg-slate-950"
+                  />
+                ) : (
+                  <div className="flex h-[360px] items-center justify-center bg-slate-950 text-white">
+                    <Film className="h-10 w-10 opacity-70" />
+                  </div>
+                )
+              ) : (
+                <img
+                  src={previewTemplate.image}
+                  alt={previewTemplate.title}
+                  className="block max-h-[430px] w-full object-contain"
+                />
+              )}
+
+              <button
+                type="button"
+                onClick={() => setPreviewTemplate(null)}
+                className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#263b55] shadow-md"
+                aria-label="Close template preview"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="p-5">
+              <h3 className="text-[20px] font-bold tracking-[-0.5px] text-[#10233f]">
+                {previewTemplate.title}
+              </h3>
+              <p className="mt-1 text-[13px] leading-[1.45] text-[#718198]">
+                {previewTemplate.description}
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  const templateId = previewTemplate.id;
+                  setPreviewTemplate(null);
+                  openTemplate(templateId);
+                }}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-[14px] font-semibold text-white shadow-sm transition active:scale-[0.98]"
+              >
+                Continue
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
