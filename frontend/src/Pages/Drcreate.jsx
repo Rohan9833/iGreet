@@ -68,7 +68,7 @@ const DoctorIllustration = () => (
 const GreetingCardIllustration = () => (
   <svg
     viewBox="0 0 120 110"
-    className="h-[78px] w-[86px] shrink-0"
+    className="h-[70px] w-[86px] shrink-0"
     fill="none"
   >
     <circle cx="48" cy="52" r="42" fill="#ffd4aa" />
@@ -99,7 +99,7 @@ const GreetingCardIllustration = () => (
 const TemplatesStackIllustration = () => (
   <svg
     viewBox="0 0 120 110"
-    className="h-[78px] w-[86px] shrink-0"
+    className="h-[70px] w-[86px] shrink-0"
     fill="none"
   >
     <circle cx="52" cy="58" r="44" fill="#dfe8fb" opacity="0.7" />
@@ -1143,7 +1143,7 @@ export default function Drcreate() {
             </p>
           </div>
 
-          <div className="absolute -right-1 bottom-[8px] z-0">
+          <div className="absolute -right-1 bottom-[47px] z-0">
             <DoctorIllustration />
           </div>
         </section>
@@ -1154,7 +1154,7 @@ export default function Drcreate() {
           onClick={() =>
             navigate(`/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`)
           }
-          className="group relative mt-3 flex min-h-[100px] w-full items-center gap-1 overflow-hidden rounded-[15px] border border-orange-100 bg-[#fff4e9] px-2.5 text-left transition active:scale-[0.99]"
+          className="group relative mt-1 flex min-h-[80px] w-full items-center gap-1 overflow-hidden rounded-[15px] border border-orange-100 bg-[#fff4e9] px-2.5 text-left transition active:scale-[0.99]"
         >
           <GreetingCardIllustration />
           <div className="flex-1">
@@ -1196,7 +1196,7 @@ export default function Drcreate() {
 
         {/* Recent Creations */}
         <section className="mt-5">
-          <div className="flex min-h-[44px] items-center justify-between gap-2 rounded-[14px] border border-slate-100 bg-white px-2">
+          <div className="flex min-h-[44px] items-center justify-between gap-2 rounded-[14px] border border-slate-100 bg-white px-2 py-2">
             <h2 className="shrink-0 text-[16px] font-bold tracking-[-0.3px] text-[#10233f]">
               Templates
             </h2>
