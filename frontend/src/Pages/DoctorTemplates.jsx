@@ -94,6 +94,7 @@ export default function DoctorTemplates() {
   const [searchParams] = useSearchParams();
   const qrToken = searchParams.get("qrToken") || "";
   const [previewTemplate, setPreviewTemplate] = useState(null);
+  const [templateType, setTemplateType] = useState("image");
 
   const openTemplate = (templateId) => {
     navigate(
@@ -102,7 +103,7 @@ export default function DoctorTemplates() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f6f9fc] px-4 py-5 font-sans text-[#10233f] sm:px-6 sm:py-8">
+    <main className="min-h-screen bg-[#f6f9fc] px-4 py-5 font-sans text-[#10233f] sm:px-6 sm:py-8"><style>{`@keyframes templateSlideLeft{0%{opacity:0;transform:translate3d(20px,0,0) scale(.985)}60%{opacity:.92}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}@keyframes templateSlideRight{0%{opacity:0;transform:translate3d(-20px,0,0) scale(.985)}60%{opacity:.92}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}.template-swipe{will-change:transform,opacity;backface-visibility:hidden;transform-origin:center;}`}</style>
       <section className="mx-auto w-full max-w-[900px]">
         <button
           type="button"
@@ -140,8 +141,39 @@ export default function DoctorTemplates() {
             </div> */}
           </div>
 
-          <div className="mt-6 columns-2 gap-3 sm:columns-3 lg:columns-4">
-            {TEMPLATES.map((template, index) => (
+          <div className="mt-5 flex justify-end">
+            <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 p-1">
+              <button
+                type="button"
+                onClick={() => setTemplateType("image")}
+                className={`rounded-full px-4 py-2 text-[12px] font-semibold transition ${
+                  templateType === "image"
+                    ? "bg-white text-[#10233f] shadow-sm"
+                    : "text-[#718198]"
+                }`}
+              >
+                Images
+              </button>
+              <button
+                type="button"
+                onClick={() => setTemplateType("video")}
+                className={`rounded-full px-4 py-2 text-[12px] font-semibold transition ${
+                  templateType === "video"
+                    ? "bg-white text-[#10233f] shadow-sm"
+                    : "text-[#718198]"
+                }`}
+              >
+                Videos
+              </button>
+            </div>
+          </div>
+
+          <div className="relative mt-3 overflow-hidden"><div key={templateType} className={`template-swipe ${templateType === "video" ? "columns-2 gap-3 sm:columns-3 lg:columns-4 animate-[templateSlideLeft_480ms_cubic-bezier(0.16,1,0.3,1)]" : "columns-2 gap-3 sm:columns-3 lg:columns-4 animate-[templateSlideRight_480ms_cubic-bezier(0.16,1,0.3,1)]"}`}>
+            {TEMPLATES.filter((template) =>
+              templateType === "video"
+                ? template.type === "video"
+                : template.type !== "video",
+            ).map((template, index) => (
               <button
                 key={template.id}
                 type="button"
@@ -162,6 +194,7 @@ export default function DoctorTemplates() {
                 </div>
               </button>
             ))}
+            </div>
           </div>
 
           <p className="mt-1 text-center text-[11px] font-medium text-[#9aa8b8]">
