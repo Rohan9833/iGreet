@@ -488,6 +488,8 @@ const generateNashVideo = async (req, res, next) => {
       status: "completed",
       outputUrl,
       metadata: {
+        receiverName: name.trim(),
+        doctorName: name.trim(),
         name: name.trim(),
         qualification: qualification.trim(),
         specialization: specialization.trim(),
