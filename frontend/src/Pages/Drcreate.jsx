@@ -50,12 +50,12 @@ const MediQRLogo = () => (
    Doctor Illustration (SVG)
 ------------------------------------------------------- */
 const DoctorIllustration = () => (
-  <div className="relative h-[145px] w-[135px] overflow-hidden">
-    <div className="absolute bottom-0 right-[4px] h-[118px] w-[118px] overflow-hidden rounded-full border-[5px] border-white bg-[#fff0e5]">
+  <div className="relative h-[112px] w-[105px] overflow-hidden">
+    <div className="absolute bottom-0 right-[3px] h-[96px] w-[96px] overflow-hidden rounded-full border-[4px] border-white bg-[#fff0e5]">
       <img
         src="/asd123.png"
         alt="Smiling doctor wearing a white coat and stethoscope"
-        className="h-full w-full object-contain object-bottom"
+        className="h-full w-full scale-[1.08] object-contain object-bottom"
         loading="eager"
       />
     </div>
@@ -68,7 +68,7 @@ const DoctorIllustration = () => (
 const GreetingCardIllustration = () => (
   <svg
     viewBox="0 0 120 110"
-    className="h-[105px] w-[115px] shrink-0"
+    className="h-[78px] w-[86px] shrink-0"
     fill="none"
   >
     <circle cx="48" cy="52" r="42" fill="#ffd4aa" />
@@ -99,7 +99,7 @@ const GreetingCardIllustration = () => (
 const TemplatesStackIllustration = () => (
   <svg
     viewBox="0 0 120 110"
-    className="h-[105px] w-[115px] shrink-0"
+    className="h-[78px] w-[86px] shrink-0"
     fill="none"
   >
     <circle cx="52" cy="58" r="44" fill="#dfe8fb" opacity="0.7" />
@@ -1143,7 +1143,7 @@ export default function Drcreate() {
             </p>
           </div>
 
-          <div className="absolute -right-2 bottom-[12px] z-0">
+          <div className="absolute -right-1 bottom-[8px] z-0">
             <DoctorIllustration />
           </div>
         </section>
@@ -1154,19 +1154,19 @@ export default function Drcreate() {
           onClick={() =>
             navigate(`/doctor/templates?qrToken=${encodeURIComponent(qrToken)}`)
           }
-          className="group relative mt-3 flex min-h-[112px] w-full items-center gap-1.5 overflow-hidden rounded-[16px] border border-orange-100 bg-[#fff4e9] px-3 text-left transition active:scale-[0.99]"
+          className="group relative mt-3 flex min-h-[100px] w-full items-center gap-1 overflow-hidden rounded-[15px] border border-orange-100 bg-[#fff4e9] px-2.5 text-left transition active:scale-[0.99]"
         >
           <GreetingCardIllustration />
           <div className="flex-1">
-            <h2 className="whitespace-nowrap text-[17px] font-bold leading-none tracking-[-0.4px] text-[#10233f]">
+            <h2 className="whitespace-nowrap text-[15.5px] font-bold leading-none tracking-[-0.35px] text-[#10233f]">
               Create Personalized Cards
             </h2>
-            <p className="mt-1 text-[10.5px] leading-[1.35] text-[#718198]">
+            <p className="mt-1 text-[9.5px] leading-[1.3] text-[#718198]">
               Design your personalized cards for your patients.
             </p>
           </div>
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white shadow-md transition group-active:scale-95">
-            <ArrowRight className="h-5 w-5" />
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white shadow-md transition group-active:scale-95">
+            <ArrowRight className="h-4 w-4" />
           </div>
         </button>
 
@@ -1178,7 +1178,7 @@ export default function Drcreate() {
               `/doctor/generations?qrToken=${encodeURIComponent(qrToken)}`,
             )
           }
-          className="group relative mt-2.5 flex min-h-[112px] w-full items-center gap-1.5 overflow-hidden rounded-[16px] border border-blue-100 bg-[#f1f6ff] px-3 text-left transition active:scale-[0.99]"
+          className="group relative mt-2.5 flex min-h-[100px] w-full items-center gap-1 overflow-hidden rounded-[15px] border border-blue-100 bg-[#f1f6ff] px-2.5 text-left transition active:scale-[0.99]"
         >
           <TemplatesStackIllustration />
           <div className="flex-1">
@@ -1189,7 +1189,7 @@ export default function Drcreate() {
               View all the personalized cards you have created.
             </p>
           </div>
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#e3ecfb] text-[#17263a] transition group-active:scale-95">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#e3ecfb] text-[#17263a] transition group-active:scale-95">
             <ArrowRight className="h-5 w-5" />
           </div>
         </button>
