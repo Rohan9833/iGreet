@@ -189,12 +189,28 @@ export default function DoctorGenerations() {
             </div>
           </div>
 
-          <div className="shrink-0 rounded-full bg-orange-50 px-3 py-1.5 text-[10px] font-bold text-orange-600 sm:px-4 sm:py-2 sm:text-[11px]">
+          <div className="hidden shrink-0 rounded-full bg-orange-50 px-3 py-1.5 text-[10px] font-bold text-orange-600 sm:px-4 sm:py-2 sm:text-[11px]">
             {generations.length}{" "}
             {generations.length === 1 ? "Generation" : "Generations"}
           </div>
         </div>
       </header>
+
+      {!loading && !error && (
+        <section className="px-3 pt-3 sm:px-5 sm:pt-4">
+          <div className="flex items-center justify-between rounded-[14px] border border-orange-100 bg-white px-3 py-2.5 shadow-sm sm:px-4">
+            <div>
+              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-[#9aa8b8]">
+                Total Generations
+              </p>
+              <p className="mt-0.5 text-[18px] font-bold leading-none text-[#10233f] sm:text-[20px]">
+                {generations.length}
+              </p>
+            </div>
+            <Sparkles className="h-5 w-5 text-orange-400" />
+          </div>
+        </section>
+      )}
 
       {loading ? (
         <div className="flex min-h-[60vh] items-center justify-center">
@@ -245,31 +261,31 @@ export default function DoctorGenerations() {
 
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="px-2 py-3 text-left sm:px-4">
+                <th className="px-2 py-2 text-left sm:px-4">
                   <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
                     Receiver
                   </span>
                 </th>
 
-                <th className="px-2 py-3 text-left sm:px-4">
+                <th className="px-2 py-2 text-left sm:px-4">
                   <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
                     Type
                   </span>
                 </th>
 
-                <th className="px-2 py-3 text-left sm:px-4">
+                <th className="px-2 py-2 text-left sm:px-4">
                   <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
                     Created
                   </span>
                 </th>
 
-                <th className="px-2 py-3 text-center sm:px-4">
+                <th className="px-2 py-2 text-center sm:px-4">
                   <span className="text-[9px] font-bold uppercase tracking-wide text-[#718198]">
                     Download
                   </span>
                 </th>
 
-                <th className="px-1 py-3 text-center">
+                <th className="px-1 py-2 text-center">
                   <span className="sr-only">Details</span>
                 </th>
               </tr>
@@ -309,7 +325,7 @@ export default function DoctorGenerations() {
                       (expanded ? "bg-[#fffaf5]" : "bg-white")
                     }
                   >
-                    <td className="min-w-0 px-2 py-3 sm:px-4">
+                    <td className="min-w-0 px-2 py-2 sm:px-4">
                       <button
                         type="button"
                         onClick={() => {
@@ -318,16 +334,16 @@ export default function DoctorGenerations() {
                         }}
                         className="block min-w-0 max-w-full text-left"
                       >
-                        <p className="truncate text-[12px] font-bold text-[#10233f] sm:text-[13px]">
+                        <p className="truncate text-[11px] font-bold text-[#10233f] sm:text-[12px]">
                           {receiver}
                         </p>
-                        <p className="mt-0.5 truncate text-[9px] text-[#9aa8b8] sm:text-[10px]">
+                        <p className="mt-0.5 truncate text-[8px] text-[#9aa8b8] sm:text-[9px]">
                           {titleFromTemplate(generation.template)}
                         </p>
                       </button>
                     </td>
 
-                    <td className="px-2 py-3 text-center sm:px-4">
+                    <td className="px-2 py-2 text-center sm:px-4">
                       <span
                         className={
                           "inline-flex rounded-full px-2 py-1 text-[9px] font-bold sm:text-[10px] " +
@@ -340,17 +356,17 @@ export default function DoctorGenerations() {
                       </span>
                     </td>
 
-                    <td className="min-w-0 px-2 py-3 sm:px-4">
-                      <span className="text-[10px] font-medium text-[#52627a] sm:text-[11px]">
+                    <td className="min-w-0 px-2 py-2 sm:px-4">
+                      <span className="text-[9px] font-medium text-[#52627a] sm:text-[10px]">
                         {formatDate(generation.createdAt)}
                       </span>
                     </td>
 
-                    <td className="px-2 py-3 text-center sm:px-4">
+                    <td className="px-2 py-2 text-center sm:px-4">
                       <button
                         type="button"
                         onClick={() => handleDownload(generation)}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-orange-50 text-orange-500 hover:bg-orange-500 hover:text-white sm:h-9 sm:w-9"
+                        className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-orange-50 text-orange-500 hover:bg-orange-500 hover:text-white sm:h-7 sm:w-7"
                         aria-label={"Download " + (video ? "video" : "card")}
                         title={"Download " + (video ? "video" : "card")}
                       >
@@ -358,7 +374,7 @@ export default function DoctorGenerations() {
                       </button>
                     </td>
 
-                    <td className="px-1 py-3 text-center">
+                    <td className="px-1 py-2 text-center">
                       <button
                         type="button"
                         onClick={() =>
@@ -369,7 +385,7 @@ export default function DoctorGenerations() {
                           )
                         }
                         className={
-                          "inline-flex h-7 w-7 items-center justify-center rounded-full sm:h-8 sm:w-8 " +
+                          "inline-flex h-6 w-6 items-center justify-center rounded-full sm:h-7 sm:w-7 " +
                           (expanded
                             ? "bg-[#10233f] text-white"
                             : "bg-slate-100 text-[#52627a]")
