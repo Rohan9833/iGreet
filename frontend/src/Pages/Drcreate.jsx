@@ -1052,6 +1052,7 @@ export default function Drcreate() {
   const [doctorError, setDoctorError] = useState("");
   const [activeTemplate, setActiveTemplate] = useState(null);
   const [previewTemplate, setPreviewTemplate] = useState(null);
+  const [templateType, setTemplateType] = useState("image");
   const [videoToast, setVideoToast] = useState(null);
 
   useEffect(() => {
@@ -1230,9 +1231,39 @@ export default function Drcreate() {
             </button>
           </div>
 
+          {/* Template type toggle */}
+          <div className="mt-5 flex justify-end">
+            <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 p-1">
+              <button
+                type="button"
+                onClick={() => setTemplateType("image")}
+                className={`rounded-full px-4 py-2 text-[12px] font-semibold transition ${
+                  templateType === "image"
+                    ? "bg-white text-[#10233f] shadow-sm"
+                    : "text-[#718198]"
+                }`}
+              >
+                Images
+              </button>
+              <button
+                type="button"
+                onClick={() => setTemplateType("video")}
+                className={`rounded-full px-4 py-2 text-[12px] font-semibold transition ${
+                  templateType === "video"
+                    ? "bg-white text-[#10233f] shadow-sm"
+                    : "text-[#718198]"
+                }`}
+              >
+                Videos
+              </button>
+            </div>
+          </div>
+
           {/* Compact template grid */}
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            {TEMPLATES.map((t) => (
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            {TEMPLATES.filter((t) =>
+              templateType === "video" ? t.type === "video" : t.type !== "video",
+            ).map((t) => (
               <button
                 key={t.id}
                 type="button"
