@@ -160,15 +160,6 @@ export default function DoctorGenerations() {
     }
   };
 
-  const handleImageError = (generation) => {
-    if (
-      (generation?.previewUrl || generation?.outputUrl) &&
-      !generationImageUrls[generation._id]
-    ) {
-      resolveGenerationImage(generation);
-    }
-  };
-
   const handleDownload = async (generation) => {
     const fileUrl = generation?.downloadUrl || generation?.previewUrl || generation?.outputUrl;
     if (!fileUrl) return;
