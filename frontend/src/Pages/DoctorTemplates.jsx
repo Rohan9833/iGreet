@@ -221,11 +221,21 @@ export default function DoctorTemplates() {
             className="w-full max-w-[370px] overflow-hidden rounded-[28px] bg-white shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="relative overflow-hidden bg-slate-100">
+            <div
+              className={
+                previewTemplate.type === "video"
+                  ? "relative flex aspect-[9/16] max-h-[70vh] w-full items-center justify-center overflow-hidden bg-slate-950"
+                  : "relative max-h-[430px] overflow-hidden bg-slate-100"
+              }
+            >
               <LocalTemplatePreview
                 src={previewTemplate.preview || previewTemplate.image}
                 title={previewTemplate.title}
-                className={`block w-full ${previewTemplate.type === "video" ? "max-h-[430px] object-cover bg-slate-950" : "max-h-[430px] object-contain"}`}
+                className={
+                  previewTemplate.type === "video"
+                    ? "absolute inset-0 block h-full w-full object-contain"
+                    : "block max-h-[430px] w-full object-contain"
+                }
               />
               <button
                 type="button"
