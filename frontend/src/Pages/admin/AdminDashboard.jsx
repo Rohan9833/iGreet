@@ -42,7 +42,7 @@ export default function AdminDashboard() {
       <section className="relative overflow-hidden rounded-2xl bg-[#11233d] p-6 text-white sm:p-8">
         <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-orange-500/10" />
         <div className="relative max-w-2xl">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-300">iGreet Control Center</p>
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-300">MediGreetings Control Center</p>
           <h2 className="mt-3 text-2xl font-bold tracking-[-0.6px] sm:text-3xl">Manage your QR and doctor network</h2>
           <p className="mt-2 max-w-xl text-sm leading-6 text-slate-300">Monitor QR assignments, doctors, MRs and content activity from one place.</p>
           <Link to="/admin/qr-codes" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-bold text-white hover:bg-orange-400">

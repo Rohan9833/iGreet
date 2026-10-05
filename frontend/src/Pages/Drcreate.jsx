@@ -949,14 +949,14 @@ const TemplateModal = ({
                 </div>
               )}
 
-              <div className="mt-4 flex items-center justify-between rounded-xl border border-orange-100 bg-orange-50 px-3.5 py-2.5">
+              {/* <div className="mt-4 flex items-center justify-between rounded-xl border border-orange-100 bg-orange-50 px-3.5 py-2.5">
                 <span className="text-[12px] font-medium text-[#718198]">
                   Generation cost
                 </span>
                 <span className="text-[13px] font-bold text-orange-600">
                   20 credits
                 </span>
-              </div>
+              </div> */}
 
               <button
                 type="submit"
@@ -1132,13 +1132,26 @@ export default function Drcreate() {
           <div className="relative z-10 pt-6">
             <p className="text-[18px] font-medium text-[#718198]">Welcome,</p>
             <div className="mt-1 flex items-center gap-1.5">
-              <h1 className="whitespace-nowrap text-[26px] font-bold tracking-[-1px] text-[#10233f]">
-                {doctor?.doctorName || "Doctor"}
+              <h1 className="text-[26px] font-bold tracking-[-1px] text-[#10233f] leading-tight">
+                Dr.{" "}
+                {doctor?.doctorName ? (
+                  doctor.doctorName.length > 17 ? (
+                    <>
+                      {doctor.doctorName.split(" ").slice(0, -1).join(" ")}
+                      <br />
+                      {doctor.doctorName.split(" ").slice(-1)}
+                    </>
+                  ) : (
+                    doctor.doctorName
+                  )
+                ) : (
+                  "Doctor"
+                )}
               </h1>
               {/* <span className="text-[24px]">👋</span> */}
             </div>
             <p className="mt-2 max-w-[220px] text-[14px] leading-[1.45] text-[#718198]">
-              Create and share personalized greeting cards for your patients.
+              Personalized greeting cards and Videos.
             </p>
           </div>
 

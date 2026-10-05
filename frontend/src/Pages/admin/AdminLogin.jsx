@@ -35,7 +35,7 @@ export default function AdminLogin() {
               <span className="rounded-[4px] bg-orange-400" /><span className="rounded-[4px] bg-orange-400" />
               <span className="rounded-[4px] bg-orange-500" /><span className="rounded-[4px] bg-orange-500" />
             </div>
-            <span className="text-[28px] font-bold tracking-[-1px]"><span className="text-orange-500">i</span>Greet</span>
+            <span className="text-[28px] font-bold tracking-[-1px]"><span className="text-orange-500">Medi</span>Greetings</span>
           </div>
           <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Management portal</p>
         </div>

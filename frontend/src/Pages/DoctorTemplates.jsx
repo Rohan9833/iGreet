@@ -130,14 +130,14 @@ export default function DoctorTemplates() {
                 personalized card.
               </p>
             </div>
-            <div className="rounded-2xl border border-orange-100 bg-[#fff8f1] px-4 py-3">
+            {/* <div className="rounded-2xl border border-orange-100 bg-[#fff8f1] px-4 py-3">
               <p className="text-[11px] font-semibold text-[#718198]">
                 Generation cost
               </p>
               <p className="mt-0.5 text-[17px] font-bold text-orange-600">
                 20 credits
               </p>
-            </div>
+            </div> */}
           </div>
 
           <div className="mt-6 columns-2 gap-3 sm:columns-3 lg:columns-4">

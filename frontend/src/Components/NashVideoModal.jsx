@@ -355,14 +355,14 @@ export default function NashVideoModal({
               </div>
             )}
 
-            <div className="mt-4 flex items-center justify-between rounded-xl border border-orange-100 bg-orange-50 px-3.5 py-2.5">
+            {/* <div className="mt-4 flex items-center justify-between rounded-xl border border-orange-100 bg-orange-50 px-3.5 py-2.5">
               <span className="text-[12px] font-medium text-[#718198]">
                 Generation cost
               </span>
               <span className="text-[13px] font-bold text-orange-600">
                 {template?.creditCost ?? GENERATION_COST} credits
               </span>
-            </div>
+            </div> */}
 
             <button
               type="submit"

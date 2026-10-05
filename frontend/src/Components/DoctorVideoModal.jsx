@@ -257,9 +257,19 @@ export default function DoctorVideoModal({
                   className="block aspect-[9/16] w-full object-cover bg-slate-950"
                 />
               ) : (
-                <DoctorMediaImage
-                  src={getKidneyVideoPreviewUrl()}
-                  alt="Kidney Day video first frame"
+                // <DoctorMediaImage
+                //   // src={getKidneyVideoPreviewUrl()}
+                //   src = "/Kidney_demo.mp4"
+                //   alt="Kidney Day video first frame"
+                //   className="block aspect-[9/16] w-full object-cover bg-slate-950"
+                // />
+                <video
+                  src="/Kidney_demo.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
                   className="block aspect-[9/16] w-full object-cover bg-slate-950"
                 />
               )}
@@ -362,14 +372,14 @@ export default function DoctorVideoModal({
               </div>
             )}
 
-            <div className="mt-4 flex items-center justify-between rounded-xl border border-orange-100 bg-orange-50 px-3.5 py-2.5">
+            {/* <div className="mt-4 flex items-center justify-between rounded-xl border border-orange-100 bg-orange-50 px-3.5 py-2.5">
               <span className="text-[12px] font-medium text-[#718198]">
                 Generation cost
               </span>
               <span className="text-[13px] font-bold text-orange-600">
                 {generationCost} credits
               </span>
-            </div>
+            </div> */}
 
             <button
               type="submit"
