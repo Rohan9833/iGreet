@@ -1104,7 +1104,8 @@ export default function Drcreate() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#f6f9fc] font-sans"><style>{`@keyframes templateSlideLeft{0%{opacity:0;transform:translate3d(20px,0,0) scale(.985)}60%{opacity:.92}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}@keyframes templateSlideRight{0%{opacity:0;transform:translate3d(-20px,0,0) scale(.985)}60%{opacity:.92}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}.template-swipe{will-change:transform,opacity;backface-visibility:hidden;transform-origin:center;}`}</style>
+    <main className="relative min-h-screen overflow-hidden bg-[#f6f9fc] font-sans">
+      <style>{`@keyframes templateSlideLeft{0%{opacity:0;transform:translate3d(20px,0,0) scale(.985)}60%{opacity:.92}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}@keyframes templateSlideRight{0%{opacity:0;transform:translate3d(-20px,0,0) scale(.985)}60%{opacity:.92}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}.template-swipe{will-change:transform,opacity;backface-visibility:hidden;transform-origin:center;}`}</style>
       {/* Background decorations */}
       <div className="pointer-events-none absolute -left-[110px] top-[60px] h-[280px] w-[280px] rounded-full bg-[#fff0e7]" />
       <div className="pointer-events-none absolute -left-[100px] top-[210px] h-[70px] w-[260px] -rotate-[14deg] rounded-[50%] border-t-[7px] border-orange-400" />
@@ -1260,31 +1261,41 @@ export default function Drcreate() {
           </div>
 
           {/* Compact template grid */}
-          <div className="relative mt-3 overflow-hidden"><div key={templateType} className={`template-swipe ${templateType === "video" ? "grid grid-cols-2 gap-3 animate-[templateSlideLeft_480ms_cubic-bezier(0.16,1,0.3,1)]" : "grid grid-cols-2 gap-3 animate-[templateSlideRight_480ms_cubic-bezier(0.16,1,0.3,1)]"}`}>
-            {TEMPLATES.filter((t) =>
-              templateType === "video" ? t.type === "video" : t.type !== "video",
-            ).map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => setPreviewTemplate(t)}
-                aria-label={t.title}
-                className="group overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
-              >
-                <div className="relative overflow-hidden bg-slate-50">
-                  <LocalTemplatePreview
-                    src={t.preview || t.image}
-                    title={t.title}
-                    className={`block aspect-[4/5] w-full object-contain ${t.type === "video" ? "bg-slate-950" : ""}`}
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-2.5 pb-2.5 pt-8">
-                    <span className="text-[11px] font-bold leading-[1.2] text-white">
-                      {t.title}
-                    </span>
+          <div className="relative mt-3 overflow-hidden">
+            <div
+              key={templateType}
+              className={`template-swipe ${
+                templateType === "video"
+                  ? "grid grid-cols-3 gap-3 animate-[templateSlideLeft_480ms_cubic-bezier(0.16,1,0.3,1)]"
+                  : "grid grid-cols-3 gap-3 animate-[templateSlideRight_480ms_cubic-bezier(0.16,1,0.3,1)]"
+              }`}
+            >
+              {TEMPLATES.filter((t) =>
+                templateType === "video"
+                  ? t.type === "video"
+                  : t.type !== "video",
+              ).map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setPreviewTemplate(t)}
+                  aria-label={t.title}
+                  className="group overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
+                >
+                  <div className="relative overflow-hidden bg-slate-50">
+                    <LocalTemplatePreview
+                      src={t.preview || t.image}
+                      title={t.title}
+                      className={`block aspect-[4/5] w-full object-contain ${t.type === "video" ? "bg-slate-950" : ""}`}
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-2.5 pb-2.5 pt-8">
+                      <span className="text-[11px] font-bold leading-[1.2] text-white">
+                        {t.title}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              ))}
             </div>
           </div>
         </section>

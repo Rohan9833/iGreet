@@ -204,7 +204,7 @@ export default function MrForm() {
 
     try {
       await registerDoctor({ qrToken, ...formData });
-      alert("QR successfully assigned to the doctor.");
+      // alert("QR successfully assigned to the doctor.");
       navigate(`/doctor?qrToken=${encodeURIComponent(qrToken)}`, {
         replace: true,
       });
