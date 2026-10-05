@@ -246,7 +246,7 @@ export default function DoctorVideoModal({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-5">
-            <div className="mb-5 overflow-hidden rounded-2xl bg-slate-950">
+            <div className="mb-5 flex max-h-[58vh] min-h-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-950">
               {templateId === "epilepsy-doctor-intro" ? (
                 <NashVideoPreview
                   src={getEpilepsyVideoPreviewUrl()}
@@ -254,14 +254,14 @@ export default function DoctorVideoModal({
                   muted
                   loop
                   playsInline
-                  className="block aspect-[9/16] w-full object-cover bg-slate-950"
+                  className="block h-full max-h-[58vh] w-full object-contain bg-slate-950"
                 />
               ) : (
                 // <DoctorMediaImage
                 //   // src={getKidneyVideoPreviewUrl()}
                 //   src = "/Kidney_demo.mp4"
                 //   alt="Kidney Day video first frame"
-                //   className="block aspect-[9/16] w-full object-cover bg-slate-950"
+                //   className="block h-full max-h-[58vh] w-full object-contain bg-slate-950"
                 // />
                 <video
                   src="/Kidney_demo.mp4"
