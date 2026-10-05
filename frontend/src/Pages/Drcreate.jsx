@@ -92,6 +92,30 @@ const TemplatesStackIllustration = () => (
 );
 
 /* -------------------------------------------------------
+   Local template preview
+------------------------------------------------------- */
+const LocalTemplatePreview = ({ src, title, className = "" }) => {
+  const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
+
+  if (isVideo) {
+    return (
+      <video
+        src={src}
+        title={title}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className={className}
+      />
+    );
+  }
+
+  return <img src={src} alt={title} className={className} />;
+};
+
+/* -------------------------------------------------------
    Templates data + preview
 ------------------------------------------------------- */
 const TEMPLATES = [
@@ -99,42 +123,49 @@ const TEMPLATES = [
     id: "teachers-day",
     title: "Teachers Day",
     image: "/teachersday.png",
+    preview: "/teachersday_demo.png",
     fields: ["receiverName", "senderName", "image"],
   },
   {
     id: "independence-day",
     title: "Independence Day",
     image: "/independence.png",
+    preview: "/independence_demo.png",
     fields: ["receiverName", "image"],
   },
   {
     id: "dussehra",
     title: "Dussehra",
     image: "/dussehra.png",
+    preview: "/dussehra_demo.png",
     fields: ["receiverName", "image"],
   },
   {
     id: "anniversary",
     title: "Anniversary",
     image: "/anniversary.png",
+    preview: "/anniversary_demo.png",
     fields: ["receiverName", "image"],
-  },  {
+  },
+  {
     id: "nash-doctor-intro",
     title: "Doctor Introduction Video",
     type: "video",
-    preview: getNashVideoPreviewUrl(),
+    preview: "/Nash_demo.mp4",
     fields: ["name", "qualification", "specialization", "hospital", "image"],
   },
   {
     id: "kidney-doctor-intro",
     title: "Kidney Day Doctor Video",
     type: "video",
+    preview: "/Kidney_demo.mp4",
     fields: ["name", "speciality", "hospital", "city", "image"],
   },
   {
     id: "epilepsy-doctor-intro",
     title: "Epilepsy Doctor Video",
     type: "video",
+    preview: "/Epilepsy_demo.mp4",
     fields: ["name", "speciality", "hospital", "city", "image"],
   },
 ];
@@ -943,37 +974,11 @@ const TemplateSelectionModal = ({ template, onContinue, onClose }) => {
         onClick={(event) => event.stopPropagation()}
       >
         <div className="relative bg-slate-100">
-          {isVideo ? (
-            template.id === "epilepsy-doctor-intro" ? (
-              <NashVideoPreview
-                src={getEpilepsyVideoPreviewUrl()}
-                autoPlay muted loop playsInline
-                className="block max-h-[430px] w-full object-cover bg-slate-950"
-              />
-            ) : template.id === "kidney-doctor-intro" ? (
-              <DoctorMediaImage
-                src={getKidneyVideoPreviewUrl()}
-                alt={template.title}
-                className="block max-h-[430px] w-full object-cover bg-slate-950"
-              />
-            ) : template.preview ? (
-              <NashVideoPreview
-                src={template.preview}
-                autoPlay muted loop playsInline
-                className="block max-h-[430px] w-full object-cover bg-slate-950"
-              />
-            ) : (
-              <div className="flex h-[360px] items-center justify-center bg-slate-950 text-white">
-                <Film className="h-10 w-10 opacity-70" />
-              </div>
-            )
-          ) : (
-            <img
-              src={template.image}
-              alt={template.title}
-              className="block max-h-[430px] w-full object-contain"
-            />
-          )}
+          <LocalTemplatePreview
+  src={template.preview || template.image}
+  title={template.title}
+  className={`block max-h-[430px] w-full ${isVideo ? "object-cover bg-slate-950" : "object-contain"}`}
+/>
 
           <button
             type="button"
@@ -1189,21 +1194,11 @@ export default function Drcreate() {
                 className="group overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
               >
                 <div className="relative overflow-hidden bg-slate-50">
-                  {t.type === "video" ? (
-                    t.id === "epilepsy-doctor-intro" ? (
-                      <NashVideoPreview src={getEpilepsyVideoPreviewUrl()} autoPlay muted loop playsInline className="block aspect-[4/5] w-full object-cover bg-slate-950" />
-                    ) : t.id === "kidney-doctor-intro" ? (
-                      <DoctorMediaImage src={getKidneyVideoPreviewUrl()} alt={t.title} className="block aspect-[4/5] w-full object-cover bg-slate-950" />
-                    ) : t.preview ? (
-                      <NashVideoPreview src={t.preview} autoPlay muted loop playsInline className="block aspect-[4/5] w-full object-cover bg-slate-950" />
-                    ) : (
-                      <div className="flex aspect-[4/5] w-full items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-orange-950 px-4 text-center text-white">
-                        <Film className="h-7 w-7 opacity-70" />
-                      </div>
-                    )
-                  ) : (
-                    <img src={t.image} alt={t.title} className="block aspect-[4/5] w-full object-cover" />
-                  )}
+                  <LocalTemplatePreview
+  src={t.preview || t.image}
+  title={t.title}
+  className={`block aspect-[4/5] w-full object-cover ${t.type === "video" ? "bg-slate-950" : ""}`}
+/>
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-2.5 pb-2.5 pt-8">
                     <span className="text-[11px] font-bold leading-[1.2] text-white">{t.title}</span>
                   </div>
