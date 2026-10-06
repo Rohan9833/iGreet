@@ -66,11 +66,7 @@ const DoctorIllustration = () => (
    Small illustrations for action cards
 ------------------------------------------------------- */
 const GreetingCardIllustration = () => (
-  <svg
-    viewBox="0 0 120 110"
-    className="h-[70px] w-[86px] shrink-0"
-    fill="none"
-  >
+  <svg viewBox="0 0 120 110" className="h-[70px] w-[86px] shrink-0" fill="none">
     <circle cx="48" cy="52" r="42" fill="#ffd4aa" />
     <g transform="rotate(-8 50 55)">
       <rect x="26" y="22" width="62" height="70" rx="7" fill="#f6b274" />
@@ -97,11 +93,7 @@ const GreetingCardIllustration = () => (
 );
 
 const TemplatesStackIllustration = () => (
-  <svg
-    viewBox="0 0 120 110"
-    className="h-[70px] w-[86px] shrink-0"
-    fill="none"
-  >
+  <svg viewBox="0 0 120 110" className="h-[70px] w-[86px] shrink-0" fill="none">
     <circle cx="52" cy="58" r="44" fill="#dfe8fb" opacity="0.7" />
     <g transform="rotate(-14 50 60)">
       <rect x="18" y="26" width="58" height="68" rx="8" fill="#477ed0" />
@@ -1000,11 +992,13 @@ const TemplateSelectionModal = ({ template, onContinue, onClose }) => {
         className="w-full max-w-[370px] overflow-hidden rounded-[28px] bg-white shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="relative bg-slate-100">
+        <div className="relative bg-white">
           <LocalTemplatePreview
             src={template.preview || template.image}
             title={template.title}
-            className={`block max-h-[430px] w-full ${isVideo ? "object-cover bg-slate-950" : "object-contain"}`}
+            className={`block max-h-[430px] w-full bg-white ${
+              isVideo ? "object-cover" : "object-contain"
+            }`}
           />
 
           <button
@@ -1264,14 +1258,14 @@ export default function Drcreate() {
                   aria-label={t.title}
                   className="group overflow-hidden rounded-[16px] border border-slate-100 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98]"
                 >
-                  <div className="relative overflow-hidden bg-slate-50">
+                  <div className="relative overflow-hidden bg-white">
                     <LocalTemplatePreview
                       src={t.preview || t.image}
                       title={t.title}
-                      className={`block aspect-[4/5] w-full object-contain ${t.type === "video" ? "bg-slate-950" : ""}`}
+                      className="block aspect-[4/5] w-full bg-white object-contain"
                     />
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-2.5 pb-2.5 pt-8">
-                      <span className="text-[11px] font-bold leading-[1.2] text-white">
+                      <span className="block text-[11px] font-bold leading-[0.95] tracking-[-0.15px] text-white">
                         {t.title}
                       </span>
                     </div>
